@@ -36,17 +36,17 @@ class SessionAdmin(admin.ModelAdmin):
 
 
 class AuthenticationAuditAdmin(admin.ModelAdmin):
-    list_display = ["timestamp", "person", "ip_address"]
-    list_display_links = ["timestamp", "person", "ip_address"]
-    search_fields = ["timestamp", "person", "ip_address"]
-    readonly_fields = ["timestamp", "person", "ip_address"]
+    list_display = ["timestamp", "ip_address"]
+    list_display_links = ["timestamp", "ip_address"]
+    search_fields = ["timestamp", "ip_address"]
+    readonly_fields = ["timestamp", "ip_address"]
     fieldsets = [
         ("Date Information", {
             "fields": ["timestamp"],
             "classes": ["wide"]
         }),
         ("User Information", {
-            "fields": ["person", "ip_address"],
+            "fields": ["ip_address"],
             "classes": ["wide"]
         })
     ]
@@ -90,4 +90,4 @@ class AuditAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Session, SessionAdmin)
-admin.site.register(AuthenticationAudit, AuthenticationAuditAdmin))
+admin.site.register(AuthenticationAudit, AuthenticationAuditAdmin)

@@ -2,6 +2,9 @@ from django.contrib.auth import get_user_model
 from django.core.validators import MaxLengthValidator
 from django.db import models
 
+from django_extensions.db.models import TimeStampedModel
+
+from core.validators import telephone_number_validator
 
 USER_MODEL = get_user_model()
 
@@ -70,9 +73,6 @@ class BaseUserAuthentication(TimeStampedModel):
         "companies.Company", null=True, blank=True, on_delete=models.SET_NULL
     )
     in_office = models.BooleanField("In Office", default=False)
-    title = models.PositiveIntegerField(
-        choices=TITLE_CHOICES, default=TITLE_CHOICE_UNKNOWN
-    )
     first_name = models.CharField("First Name", max_length=30)
     middle_name = models.CharField("Middle Name", max_length=30, blank=True)
     maiden_name = models.CharField("Maiden Name", max_length=150, blank=True)
@@ -123,13 +123,13 @@ class BaseUserAuthentication(TimeStampedModel):
 
 class AuthenticationAudit(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
-    person = models.ForeignKey(
-        "directory.Person",
-        null=True,
-        blank=True,
-        limit_choices_to={"user__is_active": True},
-        on_delete=models.CASCADE
-    )
+    # person = models.ForeignKey(
+    #     "directory.Person",
+    #     null=True,
+    #     blank=True,
+    #     limit_choices_to={"user__is_active": True},
+    #     on_delete=models.CASCADE
+    # )
     ip_address = models.GenericIPAddressField("IP Address")
 
     class Meta:

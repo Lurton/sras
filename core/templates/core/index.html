@@ -1,0 +1,20 @@
+{% extends "base-static.html" %}
+
+{% load static %}
+
+{% block top_bar_links %}
+{#	<a href="{% url "core:login" %}" class="btn-link text-white ml-auto">#}
+{#		Login&nbsp;&nbsp;<i class="fal fa-sign-in-alt"></i>#}
+{#	</a>#}
+{% endblock top_bar_links %}
+
+{% block base_content %}
+	<div class="row mb-g">
+		<div class="col">
+			<h1 class="fs-xxl fw-500 mt-4 text-white">{{ site_title }}</h1>
+			<p class="h3 fw-300 my-3 text-white opacity-70 pr-3">
+				Welcome to the {{ site_title }} platform...
+			</p>
+		</div>
+	</div>
+{% endblock base_content %}

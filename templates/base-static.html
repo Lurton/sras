@@ -1,0 +1,49 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="msapplication-tap-highlight" content="no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no, minimal-ui">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="description" content="{{ site_description }}">
+		<meta name="author" content="{{ site_author }}">
+		<title>{{ site_title }}{% if application %} | {{ application }}{% endif %}</title>
+		{% include "base-google.html" %}
+		{% include "base-styles.html" %}
+		{% block styles %}{% endblock styles %}
+	</head>
+	<body>
+		<div class="page-wrapper">
+			<div class="page-inner bg-brand-gradient">
+				<div class="page-content-wrapper bg-transparent m-0">
+					<div class="height-10 w-100 shadow-lg px-4 bg-brand-gradient">
+						<div class="d-flex align-items-center container p-0">
+							<div class="page-logo width-mobile-auto m-0 align-items-center justify-content-center p-0 bg-transparent bg-img-none shadow-0 border-0">
+								<a href="{% url "core:index" %}" class="page-logo-link press-scale-down d-flex align-items-center">
+									<img src="{% static "images/gomotion_logo_white.png" %}" alt="{{ site_title }}" aria-roledescription="logo" style="max-width: 260px;width: 200px; height: 50px;max-height: 60px;">
+								</a>
+							</div>
+							{% block top_bar_links %}{% endblock top_bar_links %}
+						</div>
+					</div>
+					<div class="flex-1" style="background: url('{% static "images/pattern-1.svg" %}') no-repeat center bottom fixed; background-size: cover;">
+						<div class="container py-4 py-lg-5 my-lg-5 px-4 px-sm-0">
+							{% block base_content %}{% endblock base_content %}
+							<div class="position-absolute pos-bottom pos-left pos-right p-3 text-white">
+								&copy; {{ site_description }}
+								<div class="float-right">
+									Built by: <a href="https://www.thegocompany.co.za/" target="https://www.thegocompany.co.za/" class="text-white">Argus Ndabashinze</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		{% include "base-colors.html" %}
+		{% include "base-scripts.html" %}
+		{% block scripts %}{% endblock scripts %}
+	</body>
+</html>

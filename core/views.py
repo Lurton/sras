@@ -1,6 +1,12 @@
-from django.http import HttpResponse
+from django.template.response import TemplateResponse
 
 
-# Create your views here.
-def index(request):
-    return HttpResponse("Fuck you")
+def index(request, template_name="core/index.html"):
+    """
+    This is the landing welcome page of the system.
+    """
+    if request.user:
+        if request.user.is_authenticated:
+            # return redirect("core:dashboard")
+            pass
+    return TemplateResponse(request, template_name)

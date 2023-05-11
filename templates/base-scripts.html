@@ -1,0 +1,86 @@
+{% load static %}
+<script src="{% static "js/vendors.bundle.min.js" %}"></script>
+<script src="{% static "js/app.bundle.min.js" %}"></script>
+<script src="{% static "js/toastr.min.js" %}"></script>
+<script src="{% static "js/select2.bundle.min.js" %}"></script>
+<script src="{% static "js/jquery.waypoints.min.js" %}"></script>
+<script src="{% static "js/infinite.min.js" %}"></script>
+<script src="{% static "js/jstree.min.js" %}"></script>
+<script src="{% static "js/datatables.bundle.min.js" %}"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("body").tooltip({
+            "selector": "[data-toggle=tooltip]",
+            "container": "body",
+            "trigger": "hover",
+            "placement": "auto"
+        });
+        $('[data-toggle-second="tooltip"]').tooltip();
+        toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "onclick": null,
+            "showDuration": 300,
+            "hideDuration": 1000,
+            "timeOut": 8000,
+            "extendedTimeOut": 1000,
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        };
+        $(".select2").select2({
+            "allowClear": true,
+            "language": {
+                "noResults": function() {
+                    return "No results found.";
+                }
+            }
+        });
+        $(".character_limit").on("load propertychange keyup input paste", function() {
+            let limit = $(this).attr("maxlength");
+            let remaining_chars = limit - $(this).val().length;
+            if (remaining_chars <= 0) {
+                $(this).val($(this).val().substring(0, limit));
+            }
+            $(".character_limit_counter").text(remaining_chars <= 0 ? 0 : remaining_chars);
+        }).trigger("load");
+        {% if messages %}
+            {% for message in messages %}
+                {% if not message.extra_tags %}
+	                {% if "info" in message.tags %}
+	                    toastr.info("{{ message|safe }}", "Information");
+	                {% endif %}
+	                {% if "success" in message.tags %}
+	                    toastr.success("{{ message|safe }}", "Success");
+	                {% endif %}
+	                {% if "warning" in message.tags %}
+	                    toastr.warning("{{ message|safe }}", "Warning");
+	                {% endif %}
+	                {% if "error" in message.tags %}
+	                    toastr.error("{{ message|safe }}", "Error");
+	                {% endif %}
+                {% else %}
+                    toastr.info("{{ message|safe }}", "{{ message.extra_tags|safe }}");
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+        {% if form.errors %}
+            {% if form.non_field_errors %}
+                {% for non_field_error in form.non_field_errors %}
+                    toastr.error('{{ non_field_error|safe }}', "Error");
+                {% endfor %}
+            {% endif %}
+            {% for field in form %}
+                {% if field.errors %}
+                    {% for field_error in field.errors %}
+                        toastr.error('{{ field_error|safe }}', "{{ field.label|safe }}");
+	                {% endfor %}
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    });
+</script>
