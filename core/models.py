@@ -138,10 +138,10 @@ class AuthenticationAudit(models.Model):
         ordering = ["timestamp"]
         constraints = [
             models.UniqueConstraint(
-                fields=["timestamp", "person", "ip_address"],
-                name="authentication_audit_timestamp_person_ip_address"
+                fields=["timestamp", "ip_address"],
+                name="authentication_audit_timestamp_ip_address"
             )
         ]
 
     def __str__(self):
-        return f"{self.person} - {self.timestamp} [{self.ip_address}]"
+        return f"{self.timestamp} [{self.ip_address}]"
