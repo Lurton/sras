@@ -1,0 +1,54 @@
+{% load widget_tweaks humanize %}
+
+{% for hidden_field in form.hidden_fields %}
+	{{ hidden_field }}
+{% endfor %}
+
+{% for field in form.visible_fields %}
+	{% if "hr_above" in field.field.extras %}<hr>{% endif %}
+	<div class="form-group">
+	    <label class="form-label ml-1{% if field.errors %} text-danger{% endif %}" for="{{ field.auto_id }}">{{ field.label }}{% if field.field.required %}<span class="text-danger small font-normal px-1">*</span>{% endif %}</label>
+        {% if "input_group" in field.field.extras %}
+			<div class="input-group">
+				<div class="input-group-prepend">
+					<span class="input-group-text{% if field.errors %} text-danger{% endif %}">{{ field.field.extras.input_group|safe }}</span>
+				</div>
+                {% if field.errors %}
+                    {{ field|add_class:"form-control is-invalid" }}
+                {% else %}
+                    {{ field|add_class:"form-control" }}
+                {% endif %}
+			</div>
+		{% elif "input_file" in field.field.extras %}
+			<div class="custom-file">
+				{% if field.errors %}
+					{{ field|add_class:"custom-file-input is-invalid" }}
+                    <label class="custom-file-label text-danger">Choose a file...</label>
+				{% else %}
+					{{ field|add_class:"custom-file-input" }}
+                    <label class="custom-file-label">Choose a file...</label>
+				{% endif %}
+			</div>
+		{% else %}
+			{% if field.errors %}
+				{{ field|add_class:"form-control is-invalid" }}
+			{% else %}
+				{{ field|add_class:"form-control" }}
+			{% endif %}
+		{% endif %}
+		{% if field.errors %}
+			<div class="invalid-feedback ml-1" style="display: block;">
+				{% for error in field.errors %}
+					&bull;&nbsp;{{ error|safe }}<br>
+				{% endfor %}
+			</div>
+		{% endif %}
+		{% if field.help_text %}
+			<span class="help-block ml-1">{{ field.help_text|safe }}</span>
+		{% endif %}
+		{% if "character_limit" in field.field.extras %}
+			<span class="help-block small ml-1">Characters remaining: <span class="character_limit_counter">{{ field.field.extras.character_limit|intcomma }}</span></span>
+		{% endif %}
+	</div>
+	{% if "hr_below" in field.field.extras %}<hr>{% endif %}
+{% endfor %}

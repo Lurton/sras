@@ -1,0 +1,3 @@
+GOOGLE_RECAPTCHA_VERIFY_ENDPOINT = "https://www.google.com/recaptcha/api/siteverify"
+GOOGLE_RECAPTCHA_SITE_KEY = ""
+GOOGLE_RECAPTCHA_SECRET_KEY = ""

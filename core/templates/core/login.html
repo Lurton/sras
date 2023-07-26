@@ -1,0 +1,79 @@
+{% extends "base-static.html" %}
+
+{% load static %}
+
+{% block top_bar_links %}
+{#	<a href="{% url "core:core_password_reset" %}" class="btn-link text-white ml-auto">#}
+{#		Password Reset<i class="fal fa-unlock ml-2"></i>#}
+{#	</a>#}
+{% endblock top_bar_links %}
+
+{% block base_content %}
+	<div class="row">
+		<div class="col-md-6">
+			<h1 class="fs-xxl fw-500 mt-4 text-white">{{ site_title }}</h1>
+			<p class="h3 fw-300 my-3 text-white opacity-70 pr-3">
+				Welcome to the {{ site_title }} platform...
+			</p>
+		</div>
+		<div class="col-md-6">
+			<div class="card">
+				<div class="card-header bg-primary-400 bg-info-gradient">
+					<div class="card-title">Login</div>
+				</div>
+				<div class="card-body">
+					<form id="base_form" action="{{ request.get_full_path }}" method="post">
+						{% csrf_token %}
+						{% include "base-form.html" with form=form %}
+					</form>
+				</div>
+				<div class="card-footer bg-faded text-right">
+					<a href="{% url "core:index" %}" class="btn btn-outline-primary waves-effect waves-themed">
+						<i class="fal fa-times mr-2"></i>Cancel
+					</a>
+					<button type="submit" id="btn_submit" class="btn btn-outline-dark waves-effect waves-themed ml-2">
+						<i class="fal fa-check mr-2"></i>Submit
+					</button>
+				</div>
+				<div class="card-footer bg-faded text-right text-muted">
+{#					Forgot your password? <a href="{% url "core:core_password_reset" %}" class="color-info-900">Password Reset</a>#}
+				</div>
+			</div>
+			{% include "base-form-footer.html" %}
+		</div>
+	</div>
+	<div class="row mb-g text-right">
+		<div class="col-md-12 mb-g">
+			<div class="g-recaptcha float-right" data-badge="inline" data-sitekey="{{ google_recaptcha_site_key }}" data-callback="reCaptchaValidated" data-size="invisible"></div>
+		</div>
+	</div>
+{% endblock base_content %}
+
+{% block scripts %}
+	<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+	<script type="text/javascript">
+        function reCaptchaValidated(token) {
+            document.getElementById("id_recaptcha").value = token;
+            bootbox.dialog({
+                "size": "extra-large",
+                "centerVertical": true,
+                "className": "modal-alert",
+                "title": "Logging in...",
+                "message": '<p><div class="spinner-border" role="status"></div></p>'
+            });
+            $("#base_form").submit();
+        }
+        $(document).ready(function () {
+            $("#base_form").keydown(function(event) {
+                if (event.keyCode === 13) {
+                    $("#btn_submit:first, .btn_submit:first").trigger("click");
+                    return false;
+                }
+            });
+            $("#btn_submit, .btn_submit").click(function(event) {
+                event.preventDefault();
+                grecaptcha.execute();
+            });
+        });
+	</script>
+{% endblock scripts %}
