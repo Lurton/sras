@@ -134,6 +134,82 @@ def dashboard(request, template_name="core/dashboard.html"):
     return TemplateResponse(request, template_name, template_context)
 
 
+def register(request, template_name="core/register.html"):
+    """
+    This is the accounts' registration page that displays registration information which
+    needs to be captured before the user can access the system. This is for general
+    web users, not users that we have created i.e.: non-account users.
+    """
+    if request.method == "POST":
+        form = RegistrationForm(request.POST)
+
+        if form.is_valid():
+            requesting_ip = get_client_ip(request)
+
+            # Validate the Google reCaptcha token.
+            recaptcha = form.cleaned_data["recaptcha"]
+            response = verify_recaptcha(recaptcha, requesting_ip)
+
+            if response.get("success"):
+                first_name = form.cleaned_data["first_name"]
+                last_name = form.cleaned_data["last_name"]
+                email_address = form.cleaned_data["email_address"]
+
+                # Create the account.
+                new_account = Account(status=True)
+                new_account.save()
+
+                new_profile = form.save(commit=False)
+                new_profile.account = new_account
+                new_profile.save()
+                user_model = get_user_model()
+                requesting_user = user_model.objects.get(pk=new_profile.user_id)
+                password = requesting_user.password
+
+                requesting_user.set_password(password)
+                requesting_user.save()
+
+                # Send a welcome email message to the user.
+                subject = f"{settings.SITE_TITLE} | Account Information and Profile Sign-Up"
+                template = "email/signup-confirmation.html"
+                email_data = {
+                    "subject": f"{subject}",
+                    "full_name": f"{str(first_name).title()} {str(last_name).title()}",
+                    "password": f"{password}"
+                }
+                recipient = email_address
+
+                send_email(recipient, subject, template, email_data)
+
+                messages.success(
+                    request,
+                    "Your account and profile information have been created"
+                    " successfully!"
+                )
+                messages.warning(
+                    request,
+                    "The authentication details for your login have been emailed"
+                    " to you!"
+                )
+
+                return redirect("core:index")
+
+            else:
+                messages.error(
+                    request,
+                    "The Google reCaptcha challenge was unsuccessful. Please try again."
+                )
+        else:
+            messages.error(
+                request,
+                "There was an error while trying to register the account and"
+                " profile. Please try again!"
+            )
+    else:
+        form = RegistrationForm()
+
+    return TemplateResponse(request, template_name, {"form": form})
+
 
 def login(request, template_name="core/login.html"):
     """
