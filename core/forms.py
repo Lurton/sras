@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.hashers import check_password
 
 from core.models import USER_MODEL
+from core.utilities import cleanup_string
 from students.models import Student
 
 
@@ -69,7 +70,7 @@ class RegistrationForm(forms.ModelForm):
 
     class Meta:
         model = Student
-        fields = ["first_name", "last_name", "mobile_number", "email_address"]
+        fields = ["first_name", "last_name", "mobile_number", "personal_email_address"]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -86,7 +87,7 @@ class RegistrationForm(forms.ModelForm):
             "prepended": '<i class="fal fa-mobile"></i>'
         }
 
-        self.fields["email_address"].extras = {
+        self.fields["personal_email_address"].extras = {
             "prepended": '<i class="fal fa-at"></i>'
         }
 
@@ -121,10 +122,8 @@ class RegistrationForm(forms.ModelForm):
         # Verify all numbers, to prevent dirty data.
         mobile_number = cleaned_data.get("mobile_number")
         if mobile_number:
-            response = lookup_number(mobile_number)
-            if not response:
-                self._errors["mobile_number"] = self.error_class([
-                    mobile_number_error_message
-                ])
+            if len(mobile_number) != 10:
+                error_message = "Mobile number must be 10 digits"
+                self._errors["mobile_number"] = self.error_class([error_message])
 
         return cleaned_data

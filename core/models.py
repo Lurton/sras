@@ -69,9 +69,9 @@ class BaseUserAuthentication(TimeStampedModel):
                   " followed by six digits which increment. e.g.: PER-000001."
                   " This value will be auto-created."
     )
-    company = models.ForeignKey(
-        "companies.Company", null=True, blank=True, on_delete=models.SET_NULL
-    )
+    # campus = models.ForeignKey(
+    #     "companies.Company", null=True, blank=True, on_delete=models.SET_NULL
+    # )
     in_office = models.BooleanField("In Office", default=False)
     first_name = models.CharField("First Name", max_length=30)
     middle_name = models.CharField("Middle Name", max_length=30, blank=True)

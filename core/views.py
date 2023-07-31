@@ -1,6 +1,6 @@
 from django.conf import settings
 from django.contrib import messages
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
 from django.template.response import TemplateResponse
@@ -9,7 +9,7 @@ from django.utils.formats import date_format
 from django.utils.http import url_has_allowed_host_and_scheme
 
 from api_google.views import verify_recaptcha
-from core.forms import LoginForm
+from core.forms import LoginForm, RegistrationForm
 from core.models import BaseUserAuthentication
 from core.utilities import get_client_ip, get_date_time_now, send_email
 
@@ -155,16 +155,10 @@ def register(request, template_name="core/register.html"):
                 last_name = form.cleaned_data["last_name"]
                 email_address = form.cleaned_data["email_address"]
 
-                # Create the account.
-                new_account = Account(status=True)
-                new_account.save()
-
                 new_profile = form.save(commit=False)
-                new_profile.account = new_account
-                new_profile.save()
                 user_model = get_user_model()
                 requesting_user = user_model.objects.get(pk=new_profile.user_id)
-                password = requesting_user.password
+                password = "Letmein@123"
 
                 requesting_user.set_password(password)
                 requesting_user.save()
@@ -179,7 +173,7 @@ def register(request, template_name="core/register.html"):
                 }
                 recipient = email_address
 
-                send_email(recipient, subject, template, email_data)
+                # send_email(recipient, subject, template, email_data)
 
                 messages.success(
                     request,
@@ -273,7 +267,7 @@ def login(request, template_name="core/login.html"):
                 recipient = user.email
 
                 # Sends the login confirmation email to the person.
-                send_email(recipient, subject, template, email_data)
+                # send_email(recipient, subject, template, email_data)
 
                 messages.success(
                     request,

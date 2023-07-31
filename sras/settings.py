@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'core.apps.CoreConfig',
+    "students.apps.StudentsConfig",
     "widget_tweaks",
     "django.contrib.humanize",
 ]

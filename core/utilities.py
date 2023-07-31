@@ -1,5 +1,6 @@
 import datetime
 import threading
+import logging
 
 import pytz
 from django.conf import settings
@@ -8,6 +9,7 @@ from django.template import loader
 
 from django.utils import timezone
 
+LOGGER = logging.getLogger(__name__)
 
 def get_client_ip(request):
     """
@@ -159,3 +161,11 @@ def send_email(
             ).start()
         except Exception:
             LOGGER.exception("send_email")
+
+
+def cleanup_string(value: str) -> str:
+    """
+    This function is used in forms to strip all trailing whitespace characters
+    as well as remove any non-ascii encoded values.
+    """
+    return value.encode("ascii", errors="ignore").decode().strip()

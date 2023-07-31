@@ -1,0 +1,112 @@
+{% extends "base-static.html" %}
+
+{% load static %}
+
+{% block top_bar_links %}
+    <a href="{% url "core:login" %}" class="btn-link text-white ml-auto">
+        Login<i class="fal fa-sign-in-alt ml-2"></i>
+    </a>
+    <span style="color: #ffffff;" class="ml-2 mr-2">|</span>
+{#    <a href="{% url "core:core_password_reset" %}" class="btn-link text-white">#}
+{#        Password Reset<i class="fal fa-unlock ml-2"></i>#}
+{#    </a>#}
+{% endblock top_bar_links %}
+
+{% block base_content %}
+    <div class="row">
+        <div class="col-md-6 mb-5 text-center">
+            <h2 class="fs-xxl fw-500 mt-4 text-white">
+                {{ site_title }}
+                <small class="h3 fw-300 mt-3 mb-5 text-white opacity-60">
+                    The {{ site_title }} | Recharge Platform, is a mobile network independent pre-paid airtime and data-bundle recharging platform. It can be used by anyone who would like to "top-up" mobile devices with airtime and or data-bundles.
+                </small>
+            </h2>
+            <h3 class="mt-5 text-white">
+                Mobile Network Independent
+                <small class="fw-300 mb-5 text-white opacity-60">pre-paid airtime and data-bundle recharging platform.</small>
+            </h3>
+            <img src="{% static "images/vodacom_logo.png" %}" alt="Vodacom" class="img-fluid img-thumbnail mr-2 mb-2">
+            <img src="{% static "images/mtn_logo.png" %}" alt="MTN" class="img-fluid img-thumbnail mr-2 mb-2">
+            <img src="{% static "images/cellc_logo.png" %}" alt="Cell C" class="img-fluid img-thumbnail mr-2 mb-2">
+            <img src="{% static "images/telkom_logo.png" %}" alt="Telkom" class="img-fluid img-thumbnail mb-2">
+            <h3 class="mt-5 text-white">
+                How it Works
+                <small class="fw-300 mb-5 text-white opacity-60">instructional video.</small>
+            </h3>
+            <video width="480" controls preload="none" class="img-fluid img-thumbnail">
+                <source src="{% static "videos/instructrional-video.mp4" %}" type="video/mp4">
+            </video>
+            <h3 class="mt-5 text-white">
+                Buy Cellular Accessories Online
+                <small class="fw-300 mb-5 text-white opacity-60">visit our online store.</small>
+            </h3>
+            <div class="d-sm-flex flex-column align-items-center justify-content-center d-md-block">
+                <div class="d-flex flex-row">
+                    <a href="https://www.technomobi.co.za/" target="https://www.technomobi.co.za/">
+                        <img src="{% static "images/technomobi-banner.jpg" %}" alt="TechnoMobi" class="img-fluid img-thumbnail">
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-5">
+            <div class="card">
+                <div class="card-header bg-primary-700 bg-success-gradient">
+                    <div class="card-title">Register</div>
+                </div>
+                <div class="card-body">
+                    <form id="base_form" action="{{ request.get_full_path }}" method="post">
+                        {% csrf_token %}
+                        {% include "base-form.html" with form=form %}
+                    </form>
+                </div>
+                <div class="card-footer bg-faded text-right">
+                    <a href="{% url "core:index" %}" class="btn btn-outline-danger btn-lg waves-effect waves-themed">
+                        <i class="fal fa-times mr-2"></i>Cancel
+                    </a>
+                    <button type="submit" id="btn_submit" class="btn btn-outline-primary btn-lg waves-effect waves-themed ml-2">
+                        <i class="fal fa-check mr-2"></i>Submit
+                    </button>
+                </div>
+{#                <div class="card-footer bg-faded text-right small text-muted">#}
+{#                    Forgot your password? <a href="{% url "core:core_password_reset" %}">Password Reset</a>.#}
+{#                </div>#}
+            </div>
+            {% include "base-form-footer.html" %}
+            <div class="row mb-g text-right">
+                <div class="col-md-12 mb-g">
+                    <div class="g-recaptcha float-right" data-badge="inline" data-sitekey="{{ google_recaptcha_site_key }}" data-callback="reCaptchaValidated" data-size="invisible"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
+{% endblock base_content %}
+
+{% block scripts %}
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script type="text/javascript">
+        function reCaptchaValidated(token) {
+            document.getElementById("id_recaptcha").value = token;
+            sweetalert.fire({
+                "text": "Registering the account...",
+                "icon": "info",
+                "showConfirmButton": false,
+                "showCancelButton": false
+            });
+            sweetalert.showLoading();
+            $("#base_form").submit();
+        }
+        $(document).ready(function () {
+            $("#base_form").keydown(function (event) {
+                if (event.keyCode === 13) {
+                    $("#btn_submit, .btn_submit").trigger("click");
+                    return false;
+                }
+            });
+            $("#btn_submit, .btn_submit").click(function () {
+                grecaptcha.execute();
+            });
+        });
+    </script>
+{% endblock scripts %}
