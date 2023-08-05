@@ -154,11 +154,11 @@ def register(request, template_name="core/register.html"):
                 first_name = form.cleaned_data["first_name"]
                 last_name = form.cleaned_data["last_name"]
                 email_address = form.cleaned_data["email_address"]
+                password = form.cleaned_data["password"]
 
                 new_profile = form.save(commit=False)
                 user_model = get_user_model()
                 requesting_user = user_model.objects.get(pk=new_profile.user_id)
-                password = "Letmein@123"
 
                 requesting_user.set_password(password)
                 requesting_user.save()

@@ -54,9 +54,21 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "core.middleware.UserPersonPermissionMiddleware"
 ]
 
+# ============================================================= [OTHER SETTINGS]
+SITE_ID = 1
+SITE_TITLE = "Student Residence Administration System"
+SITE_VERSION = "1.0"
+SITE_DESCRIPTION = "The Cape Peninsula University of Technology Student Residence Administration System"
+SITE_AUTHOR = "Argus Ndabashinze"
+
 ROOT_URLCONF = 'sras.urls'
+
+# Authentication URL defaults.
+LOGIN_REDIRECT_URL = "/dashboard/"
+LOGIN_URL = "/login/"
 
 TEMPLATES = [
     {
@@ -69,6 +81,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'core.context_processors.template_variables'
             ],
         },
     },

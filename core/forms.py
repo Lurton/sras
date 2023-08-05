@@ -67,10 +67,12 @@ class LoginForm(forms.Form):
 
 class RegistrationForm(forms.ModelForm):
     recaptcha = forms.CharField(widget=forms.HiddenInput, required=True)
+    password = forms.CharField(widget=forms.PasswordInput, required=True)
+    password_repeat = forms.CharField(widget=forms.PasswordInput, required=True)
 
     class Meta:
         model = Student
-        fields = ["first_name", "last_name", "mobile_number", "personal_email_address"]
+        fields = ["first_name", "last_name", "mobile_number", "personal_email_address", "password", "password_repeat"]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -90,6 +92,8 @@ class RegistrationForm(forms.ModelForm):
         self.fields["personal_email_address"].extras = {
             "prepended": '<i class="fal fa-at"></i>'
         }
+
+        self.fields["password_repeat"].label = "Repeat Password"
 
     def clean(self):
         cleaned_data = super().clean()
@@ -125,5 +129,12 @@ class RegistrationForm(forms.ModelForm):
             if len(mobile_number) != 10:
                 error_message = "Mobile number must be 10 digits"
                 self._errors["mobile_number"] = self.error_class([error_message])
+
+        password = cleaned_data.get("password")
+        password_repeat = cleaned_data.get("password_repeat")
+
+        if password is not password_repeat:
+            error_message = "The 2 passwords do no match"
+            self._errors["password_repeat"] = self.error_class([error_message])
 
         return cleaned_data
