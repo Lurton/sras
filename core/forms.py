@@ -1,9 +1,21 @@
 from django import forms
 from django.contrib.auth.hashers import check_password
+from django.db import models
 
 from core.models import USER_MODEL
 from core.utilities import cleanup_string
 from students.models import Student
+
+
+class FormSearchType(models.TextChoices):
+    CONTAINS = "contains", "Contains"
+    STARTSWITH = "startswith", "Starts With"
+
+
+class FormSearchStatus(models.TextChoices):
+    ACTIVE = "active", "Active"
+    INACTIVE = "inactive", "Inactive"
+    ALL = "all", "All"
 
 
 class LoginForm(forms.Form):
@@ -138,3 +150,35 @@ class RegistrationForm(forms.ModelForm):
             self._errors["password_repeat"] = self.error_class([error_message])
 
         return cleaned_data
+
+
+class SearchForm(forms.Form):
+    search_type = forms.ChoiceField(
+        choices=FormSearchType.choices,
+        widget=forms.RadioSelect(), required=True
+    )
+    search_status = forms.ChoiceField(
+        choices=FormSearchStatus.choices,
+        widget=forms.RadioSelect(), required=False
+    )
+    search_parameters = forms.CharField(max_length=64, required=False)
+
+    def __init__(self, *args, **kwargs):
+        display_status = kwargs.pop("display_status", True)
+        super().__init__(*args, **kwargs)
+
+        self.fields["search_parameters"].widget.attrs.update({"autofocus": True})
+        self.fields["search_parameters"].widget.input_type = "search"
+        self.fields["search_type"].initial = "contains"
+        self.fields["search_type"].widget.attrs.update({
+            "class": "custom-control-input"
+        })
+
+        if display_status:
+            self.fields["search_status"].initial = "active"
+            self.fields["search_status"].required = True
+            self.fields["search_status"].widget.attrs.update({
+                "class": "custom-control-input"
+            })
+        else:
+            self.fields.pop("search_status")

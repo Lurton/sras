@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+
+{% load static humanize widget_tweaks %}
+
+{% block base_content %}
+	{% include "base-search.html" %}
+    <div class="row pt-5">
+		<div class="col-md-4">
+			<h2 class="mb-0">
+				<i class="fal fa-business-time mr-2"></i>Companies
+			</h2>
+			<hr>
+            <div class="row">
+		        <div class="col-md-6">
+{#                    <a href="{% url "companies:company_list" %}{% if search_parameters %}?{{ search_parameters }}{% endif %}">#}
+{#                        <div class="p-3 bg-primary-900 rounded overflow-hidden position-relative text-white mb-g shadow-hover-5">#}
+{#                            <h3 class="display-4 d-block l-h-n m-0 fw-500">{{ dashboard_values.companies.company_count|default:"0"|intcomma }}</h3>#}
+{#                            <h4 class="mb-0">Companies<i class="fal fa-external-link ml-2"></i></h4>#}
+{#                            <i class="fal fa-business-time position-absolute pos-right pos-bottom opacity-15" style="font-size: 6rem;"></i>#}
+{#                        </div>#}
+{#                    </a>#}
+                </div>
+                <div class="col-md-6">
+{#                    <a href="{% url "companies:document_list" %}{% if search_parameters %}?{{ search_parameters }}{% endif %}">#}
+{#                        <div class="p-3 bg-primary-600 rounded overflow-hidden position-relative text-white mb-g shadow-hover-5">#}
+{#                            <h3 class="display-4 d-block l-h-n m-0 fw-500">{{ dashboard_values.companies.document_count|default:"0"|intcomma }}</h3>#}
+{#                            <h4 class="mb-0">Documents<i class="fal fa-external-link ml-2"></i></h4>#}
+{#                            <i class="fal fa-folder-tree position-absolute pos-right pos-bottom opacity-15" style="font-size: 6rem;"></i>#}
+{#                        </div>#}
+{#                    </a>#}
+                </div>
+            </div>
+		</div>
+		<div class="col-md-4">
+			<h2 class="mb-0">
+				<i class="fal fa-users mr-2"></i>People
+			</h2>
+			<hr>
+            <div class="row">
+		        <div class="col-md-6">
+{#                    <a href="{% url "people:person_list" %}{% if search_parameters %}?{{ search_parameters }}{% endif %}">#}
+{#                        <div class="p-3 bg-gray-900 rounded overflow-hidden position-relative text-white mb-g shadow-hover-5">#}
+{#                            <h3 class="display-4 d-block l-h-n m-0 fw-500">{{ dashboard_values.people.people_count|default:"0"|intcomma }}</h3>#}
+{#                            <h4 class="mb-0">People<i class="fal fa-external-link ml-2"></i></h4>#}
+{#                            <i class="fal fa-users position-absolute pos-right pos-bottom opacity-15" style="font-size: 6rem;"></i>#}
+{#                        </div>#}
+{#                    </a>#}
+                </div>
+                <div class="col-md-6">
+{#                    <a href="{% url "people:document_list" %}{% if search_parameters %}?{{ search_parameters }}{% endif %}">#}
+{#                        <div class="p-3 bg-gray-600 rounded overflow-hidden position-relative text-white mb-g shadow-hover-5">#}
+{#                            <h3 class="display-4 d-block l-h-n m-0 fw-500">{{ dashboard_values.people.document_count|default:"0"|intcomma }}</h3>#}
+{#                            <h4 class="mb-0">Documents<i class="fal fa-external-link ml-2"></i></h4>#}
+{#                            <i class="fal fa-folder-tree position-absolute pos-right pos-bottom opacity-15" style="font-size: 6rem;"></i>#}
+{#                        </div>#}
+{#                    </a>#}
+                </div>
+            </div>
+		</div>
+		<div class="col-md-4">
+			<h2 class="mb-0">
+				<i class="fal fa-truck mr-2"></i>Assets
+			</h2>
+			<hr>
+            <div class="row">
+		        <div class="col-md-6">
+{#                    <a href="{% url "assets:asset_list" %}{% if search_parameters %}?{{ search_parameters }}{% endif %}">#}
+{#                        <div class="p-3 bg-warning-900 rounded overflow-hidden position-relative text-white mb-g shadow-hover-5">#}
+{#                            <h3 class="display-4 d-block l-h-n m-0 fw-500">{{ dashboard_values.assets.asset_count|default:"0"|intcomma }}</h3>#}
+{#                            <h4 class="mb-0">Assets<i class="fal fa-external-link ml-2"></i></h4>#}
+{#                            <i class="fal fa-truck position-absolute pos-right pos-bottom opacity-15" style="font-size: 6rem;"></i>#}
+{#                        </div>#}
+{#                    </a>#}
+                </div>
+                <div class="col-md-6">
+{#                    <a href="{% url "assets:document_list" %}{% if search_parameters %}?{{ search_parameters }}{% endif %}">#}
+{#                        <div class="p-3 bg-warning-600 rounded overflow-hidden position-relative text-white mb-g shadow-hover-5">#}
+{#                            <h3 class="display-4 d-block l-h-n m-0 fw-500">{{ dashboard_values.assets.document_count|default:"0"|intcomma }}</h3>#}
+{#                            <h4 class="mb-0">Documents<i class="fal fa-external-link ml-2"></i></h4>#}
+{#                            <i class="fal fa-folder-tree position-absolute pos-right pos-bottom opacity-15" style="font-size: 6rem;"></i>#}
+{#                        </div>#}
+{#                    </a>#}
+                </div>
+            </div>
+		</div>
+    </div>
+    <div class="row pt-5">
+        <div class="col-md-3">
+            <h2 class="mb-0">
+                <i class="fal fa-money-bill-wave mr-2"></i>Money
+            </h2>
+            <hr>
+{#            <a href="{% url "money:bank_account_list" %}{% if search_parameters %}?{{ search_parameters }}{% endif %}">#}
+{#                <div class="p-3 bg-danger-600 rounded overflow-hidden position-relative text-white mb-g shadow-hover-5">#}
+{#                    <h3 class="display-4 d-block l-h-n m-0 fw-500">{{ dashboard_values.bank_account_count|default:"0"|intcomma }}</h3>#}
+{#                    <h4 class="mb-0">Bank Accounts<i class="fal fa-external-link ml-2"></i></h4>#}
+{#                    <i class="fal fa-university position-absolute pos-right pos-bottom opacity-15" style="font-size: 6rem;"></i>#}
+{#                </div>#}
+{#            </a>#}
+        </div>
+        <div class="col-md-9">
+            <h2 class="mb-0">
+                <i class="fal fa-warehouse-alt mr-2"></i>Customers
+            </h2>
+            <hr>
+            <div class="row">
+                <div class="col-md-4">
+{#                    <a href="{% url "customers:customer_list" %}{% if search_parameters %}?{{ search_parameters }}{% endif %}">#}
+{#                        <div class="p-3 bg-success-300 rounded overflow-hidden position-relative text-white mb-g shadow-hover-5">#}
+{#                            <h3 class="display-4 d-block l-h-n m-0 fw-500">{{ dashboard_values.customers.customer_count|default:"0"|intcomma }}</h3>#}
+{#                            <h4 class="mb-0">Customers<i class="fal fa-external-link ml-2"></i></h4>#}
+{#                            <i class="fal fa-warehouse-alt position-absolute pos-right pos-bottom opacity-15" style="font-size: 6rem;"></i>#}
+{#                        </div>#}
+{#                    </a>#}
+                </div>
+                <div class="col-md-4">
+{#                    <a href="{% url "customers:contact_list" %}{% if search_parameters %}?{{ search_parameters }}{% endif %}">#}
+{#                        <div class="p-3 bg-success-600 rounded overflow-hidden position-relative text-white mb-g shadow-hover-5">#}
+{#                            <h3 class="display-4 d-block l-h-n m-0 fw-500">{{ dashboard_values.customers.contact_count|default:"0"|intcomma }}</h3>#}
+{#                            <h4 class="mb-0">Contacts<i class="fal fa-external-link ml-2"></i></h4>#}
+{#                            <i class="fal fa-address-book position-absolute pos-right pos-bottom opacity-15" style="font-size: 6rem;"></i>#}
+{#                        </div>#}
+{#                    </a>#}
+                </div>
+                <div class="col-md-4">
+{#                    <a href="{% url "customers:location_list" %}{% if search_parameters %}?{{ search_parameters }}{% endif %}">#}
+{#                        <div class="p-3 bg-success-900 rounded overflow-hidden position-relative text-white mb-g shadow-hover-5">#}
+{#                            <h3 class="display-4 d-block l-h-n m-0 fw-500">{{ dashboard_values.customers.location_count|default:"0"|intcomma }}</h3>#}
+{#                            <h4 class="mb-0">Locations<i class="fal fa-external-link ml-2"></i></h4>#}
+{#                            <i class="fal fa-map-marker-alt position-absolute pos-right pos-bottom opacity-15" style="font-size: 6rem;"></i>#}
+{#                        </div>#}
+{#                    </a>#}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock base_content %}
+
+{% block scripts %}
+	{% include "base-list-script.html" %}
+	<script type="text/javascript">
+        $(document).ready(function() {
+            $("#btn_reset").click(function() {
+                window.location.assign("{% url "core:core_dashboard" %}");
+            });
+        });
+	</script>
+{% endblock scripts %}

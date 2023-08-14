@@ -6,10 +6,10 @@ from django.shortcuts import redirect
 from django.template.response import TemplateResponse
 from django.urls import reverse
 from django.utils.formats import date_format
-from django.utils.http import url_has_allowed_host_and_scheme
+from django.utils.http import url_has_allowed_host_and_scheme, urlencode
 
 from api_google.views import verify_recaptcha
-from core.forms import LoginForm, RegistrationForm
+from core.forms import LoginForm, RegistrationForm, SearchForm
 from core.models import BaseUserAuthentication
 from core.utilities import get_client_ip, get_date_time_now, send_email
 from students.apps import StudentsConfig
@@ -35,46 +35,46 @@ def dashboard(request, template_name="core/dashboard.html"):
     attempt.
     """
     # Handle the search if present from the querystring.
-    # querystring = request.GET
-    # search_parameters = querystring.dict()
-    #
-    # if request.method == "POST":
-    #     form = SearchForm(request.POST, initial=search_parameters)
-    #
-    #     if form.is_valid():
-    #         # Format the input from the form into a "GET" querystring used for
-    #         # the redirect.
-    #         querystring = urlencode(form.cleaned_data)
-    #
-    #         redirect_url = reverse("core:core_dashboard") + f"?{querystring}"
-    #
-    #         return redirect(redirect_url)
-    #
-    #     else:
-    #         messages.error(
-    #             request, "There was an error while trying to perform the search."
-    #         )
-    #
-    # else:
-    #     form = SearchForm(initial=search_parameters)
-    #
-    # if search_parameters:
-    #     messages.info(
-    #         request, "You entered the following search criteria."
-    #     )
-    #     messages.info(
-    #         request,
-    #         f"{search_parameters.get('search_type').title()}"
-    #         f" | {search_parameters.get('search_status').title()}",
-    #         extra_tags="Search Type | Search Status"
-    #     )
-    #     if search_parameters.get("search_parameters"):
-    #         messages.info(
-    #             request, search_parameters.get("search_parameters"),
-    #             extra_tags="Search Parameters"
-    #         )
-    #
-    # # Fetch all the respective searches from the individual applications.
+    querystring = request.GET
+    search_parameters = querystring.dict()
+
+    if request.method == "POST":
+        form = SearchForm(request.POST, initial=search_parameters)
+
+        if form.is_valid():
+            # Format the input from the form into a "GET" querystring used for
+            # the redirect.
+            querystring = urlencode(form.cleaned_data)
+
+            redirect_url = reverse("core:core_dashboard") + f"?{querystring}"
+
+            return redirect(redirect_url)
+
+        else:
+            messages.error(
+                request, "There was an error while trying to perform the search."
+            )
+
+    else:
+        form = SearchForm(initial=search_parameters)
+
+    if search_parameters:
+        messages.info(
+            request, "You entered the following search criteria."
+        )
+        messages.info(
+            request,
+            f"{search_parameters.get('search_type').title()}"
+            f" | {search_parameters.get('search_status').title()}",
+            extra_tags="Search Type | Search Status"
+        )
+        if search_parameters.get("search_parameters"):
+            messages.info(
+                request, search_parameters.get("search_parameters"),
+                extra_tags="Search Parameters"
+            )
+
+    # Fetch all the respective searches from the individual applications.
     # company_queryset = company_search(
     #     request, search_parameters=search_parameters
     # )
@@ -105,31 +105,31 @@ def dashboard(request, template_name="core/dashboard.html"):
     # location_queryset = location_search(
     #     request, search_parameters=search_parameters
     # )
-    #
-    # dashboard_values = {
-    #     "companies": {
-    #         "company_count": company_queryset.count(),
-    #         "document_count": company_document_queryset.count()
-    #     },
-    #     "people": {
-    #         "people_count": people_queryset.count(),
-    #         "document_count": people_document_queryset.count()
-    #     },
-    #     "assets": {
-    #         "asset_count": asset_queryset.count(),
-    #         "document_count": asset_document_queryset.count()
-    #     },
-    #     "bank_account_count": bank_account_queryset.count(),
-    #     "customers": {
-    #         "customer_count": customer_queryset.count(),
-    #         "contact_count": contact_queryset.count(),
-    #         "location_count": location_queryset.count()
-    #     }
-    # }
-    #
+
+    dashboard_values = {
+        # "companies": {
+        #     "company_count": company_queryset.count(),
+        #     "document_count": company_document_queryset.count()
+        # },
+        # "people": {
+        #     "people_count": people_queryset.count(),
+        #     "document_count": people_document_queryset.count()
+        # },
+        # "assets": {
+        #     "asset_count": asset_queryset.count(),
+        #     "document_count": asset_document_queryset.count()
+        # },
+        # "bank_account_count": bank_account_queryset.count(),
+        # "customers": {
+        #     "customer_count": customer_queryset.count(),
+        #     "contact_count": contact_queryset.count(),
+        #     "location_count": location_queryset.count()
+        # }
+    }
+
     template_context = {
-        # "form": form,
-        # "dashboard_values": dashboard_values,
+        "form": form,
+        "dashboard_values": dashboard_values,
         # "search_parameters": urlencode(search_parameters)
     }
 
@@ -257,10 +257,10 @@ def login(request, template_name="core/login.html"):
                 # Security checks on the IP address as we also want to record
                 # the login attempt in the `BaseAuthentication` table.
                 # Note: session checks also occur in the signals.
-                BaseUserAuthentication.objects.create(
-                    user=user,
-                    ip_address=requesting_ip
-                )
+                # BaseUserAuthentication.objects.create(
+                #     user=user,
+                #     ip_address=requesting_ip
+                # )
 
                 # Send an e-mail message to the user account about the
                 # successful login.
