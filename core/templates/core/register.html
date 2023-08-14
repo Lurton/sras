@@ -88,13 +88,13 @@
     <script type="text/javascript">
         function reCaptchaValidated(token) {
             document.getElementById("id_recaptcha").value = token;
-            sweetalert.fire({
-                "text": "Registering the account...",
-                "icon": "info",
-                "showConfirmButton": false,
-                "showCancelButton": false
+            bootbox.dialog({
+                "size": "extra-large",
+                "centerVertical": true,
+                "className": "modal-alert",
+                "title": "Registering the account...",
+                "message": '<p><div class="spinner-border" role="status"></div></p>'
             });
-            sweetalert.showLoading();
             $("#base_form").submit();
         }
         $(document).ready(function () {

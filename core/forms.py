@@ -108,7 +108,7 @@ class RegistrationForm(forms.ModelForm):
             if isinstance(value, str):
                 cleaned_data[field] = cleanup_string(value)
 
-        email_address = cleaned_data.get("email_address")
+        email_address = cleaned_data.get("personal_email_address")
 
         # Ensure that email addresses are unique across the system and valid.
         formatted_email = email_address.lower()
@@ -121,7 +121,7 @@ class RegistrationForm(forms.ModelForm):
             error_message = "A profile with this email address already exists on the system."
             self._errors["email_address"] = self.error_class([error_message])
 
-        self.cleaned_data["email_address"] = formatted_email
+        self.cleaned_data["personal_email_address"] = formatted_email
 
         # Verify all numbers, to prevent dirty data.
         mobile_number = cleaned_data.get("mobile_number")
@@ -133,7 +133,7 @@ class RegistrationForm(forms.ModelForm):
         password = cleaned_data.get("password")
         password_repeat = cleaned_data.get("password_repeat")
 
-        if password is not password_repeat:
+        if password != password_repeat:
             error_message = "The 2 passwords do no match"
             self._errors["password_repeat"] = self.error_class([error_message])
 

@@ -62,13 +62,6 @@ class BaseUserAuthentication(TimeStampedModel):
     user = models.OneToOneField(
         USER_MODEL, null=True, blank=True, on_delete=models.CASCADE
     )
-    code = models.CharField(
-        "Person Code", max_length=10, unique=True,
-        help_text="This is a unique person code and is in the following format:"
-                  " three letters of the object type, followed by a hyphen,"
-                  " followed by six digits which increment. e.g.: PER-000001."
-                  " This value will be auto-created."
-    )
     # campus = models.ForeignKey(
     #     "companies.Company", null=True, blank=True, on_delete=models.SET_NULL
     # )
