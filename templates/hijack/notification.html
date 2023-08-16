@@ -1,0 +1,12 @@
+{% load static %}
+
+{% block content %}
+	<div class="p-3 rounded bg-danger-900 opacity-80 text-center" style="position: fixed; top: 5px; right: 5px; z-index: 1000;">
+		<form action="{% url "hijack:release" %}" method="POST">
+			{% csrf_token %}
+			<input type="hidden" name="next" value="/administration/">
+			<p>You are currently impersonating:<br><em>{{ request.user }}</em>.</p>
+			<button class="btn btn-sm btn-block btn-dark" type="submit">Release</button>
+		</form>
+	</div>
+{% endblock content %}

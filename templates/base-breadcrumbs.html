@@ -1,0 +1,166 @@
+{% if application == "Dashboard" %}
+	<li class="breadcrumb-item active">
+		<i class="fal fa-th-large mr-1 fs-md"></i>Dashboard
+	</li>
+{% else %}
+	<li class="breadcrumb-item">
+		<a href="{% url "core:index" %}">
+			<i class="fal fa-th-large mr-1 fs-md"></i>Dashboard
+		</a>
+	</li>
+{% endif %}
+{% if application == "Help" %}
+	<li class="breadcrumb-item active">
+		<i class="fal fa-question-circle mr-1 fs-md"></i>Help
+	</li>
+{% endif %}
+{% if application == "Companies" %}
+	{% if "/companies/list/" in request.path %}
+		<li class="breadcrumb-item active">
+            <i class="fal fa-business-time mr-1 fs-md"></i>Companies
+		</li>
+	{% else %}
+		<li class="breadcrumb-item">
+			<i class="fal fa-truck mr-1 fs-md"></i>
+{#			<a href="{% url "companies:company_list" %}">Companies</a>#}
+		</li>
+	{% endif %}
+    {% if "/companies/documents/" in request.path %}
+		{% if "/list/" in request.path %}
+			<li class="breadcrumb-item active">Documents</li>
+		{% else %}
+			<li class="breadcrumb-item">
+{#				<a href="{% url "companies:document_list" %}">Documents</a>#}
+			</li>
+		{% endif %}
+	{% endif %}
+{% endif %}
+{% if application == "People" %}
+	{% if "/people/list/" in request.path %}
+		<li class="breadcrumb-item active">
+            <i class="fal fa-users mr-1 fs-md"></i>People
+		</li>
+	{% else %}
+		<li class="breadcrumb-item">
+			<i class="fal fa-users mr-1 fs-md"></i>
+{#			<a href="{% url "people:person_list" %}">People</a>#}
+		</li>
+	{% endif %}
+    {% if "/people/documents/" in request.path %}
+		{% if "/list/" in request.path %}
+			<li class="breadcrumb-item active">Documents</li>
+		{% else %}
+			<li class="breadcrumb-item">
+{#				<a href="{% url "people:document_list" %}">Documents</a>#}
+			</li>
+		{% endif %}
+	{% endif %}
+{% endif %}
+{% if application == "Assets" %}
+	{% if "/assets/list/" in request.path %}
+		<li class="breadcrumb-item active">
+			<i class="fal fa-truck mr-1 fs-md"></i>Assets
+		</li>
+	{% else %}
+		<li class="breadcrumb-item">
+			<i class="fal fa-truck mr-1 fs-md"></i>
+{#			<a href="{% url "assets:asset_list" %}">Assets</a>#}
+		</li>
+	{% endif %}
+    {% if "/assets/documents/" in request.path %}
+		{% if "/list/" in request.path %}
+			<li class="breadcrumb-item active">Documents</li>
+		{% else %}
+			<li class="breadcrumb-item">
+{#				<a href="{% url "assets:document_list" %}">Documents</a>#}
+			</li>
+		{% endif %}
+	{% endif %}
+    {% if "/assets/models/" in request.path %}
+		{% if "/list/" in request.path %}
+			<li class="breadcrumb-item active">Models</li>
+		{% else %}
+			<li class="breadcrumb-item">
+{#				<a href="{% url "assets:model_list" %}">Models</a>#}
+			</li>
+		{% endif %}
+	{% endif %}
+{% endif %}
+{% if application == "Money" %}
+	<li class="breadcrumb-item active">
+		<i class="fal fa-money-bill-wave mr-1 fs-md"></i>Money
+	</li>
+	{% if "/money/bank-accounts/" in request.path %}
+		{% if "/list/" in request.path %}
+			<li class="breadcrumb-item active">Bank Accounts</li>
+		{% else %}
+			<li class="breadcrumb-item">
+{#				<a href="{% url "money:bank_account_list" %}">Bank Accounts</a>#}
+			</li>
+		{% endif %}
+	{% endif %}
+{% endif %}
+{% if application == "Customers" %}
+	{% if "/customers/list/" in request.path %}
+		<li class="breadcrumb-item active">
+			<i class="fal fa-warehouse-alt mr-1 fs-md"></i>Customers
+		</li>
+	{% else %}
+		<li class="breadcrumb-item">
+			<i class="fal fa-warehouse-alt mr-1 fs-md"></i>
+{#			<a href="{% url "customers:customer_list" %}">Customers</a>#}
+		</li>
+	{% endif %}
+	{% if "/customers/contacts/" in request.path %}
+		{% if "/list/" in request.path %}
+			<li class="breadcrumb-item active">Contacts</li>
+		{% else %}
+			<li class="breadcrumb-item">
+{#				<a href="{% url "customers:contact_list" %}">Contacts</a>#}
+			</li>
+		{% endif %}
+	{% endif %}
+	{% if "/customers/locations/" in request.path %}
+		{% if "/list/" in request.path %}
+			<li class="breadcrumb-item active">Locations</li>
+		{% else %}
+			<li class="breadcrumb-item">
+{#				<a href="{% url "customers:location_list" %}">Locations</a>#}
+			</li>
+		{% endif %}
+	{% endif %}
+{% endif %}
+{% if application == "Settings" %}
+	<li class="breadcrumb-item">
+		<i class="fal fa-cogs mr-1 fs-md"></i>Settings
+	</li>
+    {% if "/organizations/view/" in request.path %}
+		<li class="breadcrumb-item active">Organizations</li>
+	{% endif %}
+	{% if "/profiles/" in request.path %}
+		{% if "/list/" in request.path %}
+			<li class="breadcrumb-item active">Profiles</li>
+		{% else %}
+			<li class="breadcrumb-item">
+{#				<a href="{% url "settings:profile_list" %}">Profiles</a>#}
+			</li>
+		{% endif %}
+	{% endif %}
+{% endif %}
+{% if application == "Reports" %}
+	{% if "/list/" in request.path %}
+		<li class="breadcrumb-item active">
+			<i class="fal fa-chart-bar mr-1 fs-md"></i>Reports
+		</li>
+	{% else %}
+		<li class="breadcrumb-item">
+			<i class="fal fa-chart-bar mr-1 fs-md"></i>
+{#			<a href="{% url "reports:report_list" %}">Reports</a>#}
+		</li>
+	{% endif %}
+{% endif %}
+{% if application == "Tools" %}
+	<li class="breadcrumb-item">
+		<i class="fal fa-tools mr-1 fs-md"></i>Tools
+	</li>
+{% endif %}

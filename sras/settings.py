@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     "students.apps.StudentsConfig",
     "widget_tweaks",
     "django.contrib.humanize",
+    "hijack",
+    "hijack.contrib.admin"
 ]
 
 MIDDLEWARE = [
@@ -54,7 +56,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    "core.middleware.UserPersonPermissionMiddleware"
+    "core.middleware.UserPersonPermissionMiddleware",
+    "hijack.middleware.HijackUserMiddleware"
 ]
 
 # ============================================================= [OTHER SETTINGS]

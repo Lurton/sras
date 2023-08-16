@@ -1,0 +1,113 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="msapplication-tap-highlight" content="no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no, minimal-ui">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="description" content="{{ site_description }}">
+		<meta name="author" content="{{ site_author }}">
+		<title>{{ site_title }}{% if application %} | {{ application }}{% endif %}</title>
+		{% include "base-google.html" %}
+		{% include "base-styles.html" %}
+		{% block styles %}{% endblock styles %}
+	</head>
+	<body class="header-function-fixed nav-function-fixed mod-nav-link">
+		{% include "base-scripts-body.html" %}
+		<div class="page-wrapper">
+			<div class="page-inner">
+				{% if user.is_authenticated %}
+					{% include "base-sidebar.html" %}
+				{% endif %}
+				<div class="page-content-wrapper">
+					{% if user.is_authenticated %}
+						{% include "base-navbar.html" %}
+					{% endif %}
+					<main id="js-page-content" role="main" class="page-content">
+						<ol class="breadcrumb page-breadcrumb">
+							{% include "base-breadcrumbs.html" %}
+							{% block breadcrumbs %}{% endblock breadcrumbs %}
+							<li class="position-absolute pos-top pos-right d-none d-sm-block">{{ date_display }}</li>
+						</ol>
+						<div class="subheader mb-0">
+							<h1 class="subheader-title">
+								{% if application == "Dashboard" or application == "Search" %}
+									<i class="subheader-icon fal fa-th-large"></i>
+								{% elif application == "Help" %}
+									<i class="subheader-icon fal fa-question-circle"></i>
+								{% elif application == "Companies" %}
+									<i class="subheader-icon fal fa-business-time"></i>
+								{% elif application == "People" %}
+									<i class="subheader-icon fal fa-users"></i>
+								{% elif application == "Assets" %}
+									<i class="subheader-icon fal fa-truck"></i>
+								{% elif application == "Money" %}
+									<i class="subheader-icon fal fa-money-bill-wave"></i>
+								{% elif application == "Customers" %}
+									<i class="subheader-icon fal fa-warehouse-alt"></i>
+								{% elif application == "Documents" %}
+									<i class="subheader-icon fal fa-folder-tree"></i>
+								{% elif application == "Profiles" %}
+									<i class="subheader-icon fal fa-user"></i>
+								{% elif application == "Reports" %}
+									<i class="subheader-icon fal fa-chart-bar"></i>
+								{% elif application == "Tools" %}
+									<i class="subheader-icon fal fa-tools"></i>
+                                {% elif application == "Settings" %}
+									<i class="subheader-icon fal fa-cogs"></i>
+								{% endif %}
+								{% if application == "Search" %}Dashboard{% else %}{{ application|default:"Dashboard" }}{% endif %}
+								<small>{% block sub_heading %}{% endblock sub_heading %}</small>
+							</h1>
+							{% block definitions_block %}
+								<div class="subheader-block d-lg-flex align-items-center border-faded border-top-0 border-bottom-0 pl-3 pr-3">
+{#									<a href="{% url "core:core_help" %}" class="btn btn-sm btn-outline-secondary waves-effect waves-themed">#}
+										<i class="fal fa-question-circle mr-2"></i>Using {{ site_title }}
+									</a>
+								</div>
+								<div class="subheader-block d-lg-flex align-items-center border-faded border-top-0 border-bottom-0 pl-3 pr-3">
+									<a href="javascript:history.back();" class="btn btn-sm btn-outline-secondary waves-effect waves-themed">
+										<i class="fal fa-arrow-left mr-2"></i> Go Back
+									</a>
+								</div>
+							{% endblock definitions_block %}
+							{% block sub_header_block %}{% endblock sub_header_block %}
+						</div>
+						<div class="row" style="padding-bottom: 1.5rem;">
+							<div class="col-md-12">
+								<hr>
+								<form id="base_form" action="{{ request.get_full_path }}" method="post"{% if form.is_multipart %} enctype="multipart/form-data"{% endif %}>
+									{% csrf_token %}
+									{% block base_content %}{% endblock base_content %}
+								</form>
+								{% block base_list_content %}{% endblock base_list_content %}
+							</div>
+						</div>
+					</main>
+					<div class="page-content-overlay" data-action="toggle" data-class="mobile-nav-on"></div>
+					<footer class="page-footer bg-faded border-faded border-left-0 border-right-0 border-bottom-0" role="contentinfo">
+						<div class="d-flex align-items-center flex-1 text-muted">
+							<span class="hidden-md-down fw-500">&copy; {{ site_description }}</span>
+						</div>
+						<div class="d-flex align-items-center text-muted text-right">
+	                        <span class="hidden-md-down fw-500">
+	                            Powered by: <a href="https://www.thegocompany.co.za/" target="https://www.thegocompany.co.za/" class="text-secondary fw-500">The Go Company</a>
+	                        </span>
+						</div>
+					</footer>
+					{% include "base-colors.html" %}
+				</div>
+			</div>
+		</div>
+		<nav class="shortcut-menu d-none d-sm-block">
+			<a href="#" class="menu-item btn waves-effect waves-themed" data-toggle="tooltip" data-placement="left" title="Scroll Top" data-original-title="Scroll Top">
+				<i class="fal fa-arrow-up"></i>
+			</a>
+		</nav>
+		{% include "base-scripts.html" %}
+		{% block scripts %}{% endblock scripts %}
+		{% block modal %}{% endblock modal %}
+	</body>
+</html>

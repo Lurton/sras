@@ -50,7 +50,7 @@ class UserPersonPermissionMiddleware:
                         return self.get_response(request)
 
                 # The base `user_object` which is added to the request.
-                person = request.user.person
+                person = request.user
                 user_object = {
                     "person": person, "permissions": DEFAULT_PERMISSIONS
                 }

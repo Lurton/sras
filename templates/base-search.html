@@ -1,0 +1,45 @@
+{% load widget_tweaks %}
+
+<div class="row">
+	<div class="col-md-12">
+		<div class="border-faded bg-faded p-3 shadow">
+			<div class="form-group" style="margin-bottom: 0 !important;">
+				<div class="input-group input-group-lg">
+					{% if form.search_parameters.errors %}
+						{{ form.search_parameters|add_class:"form-control is-invalid"|append_attr:"placeholder:Search..." }}
+					{% else %}
+						{{ form.search_parameters|add_class:"form-control"|append_attr:"placeholder:Search..." }}
+					{% endif %}
+					<div class="input-group-append">
+						<button type="button" id="btn_submit" class="btn btn-primary waves-effect waves-themed text-white">
+							<i class="fal fa-search mr-2"></i>Search
+						</button>
+						<button type="button" id="btn_reset" class="btn btn-primary waves-effect waves-themed text-white">
+							<i class="fal fa-sync mr-2"></i>Reset
+						</button>
+					</div>
+				</div>
+				<div class="pt-3">
+					<div class="pl-1 custom-control custom-control-inline font-weight-bold">Search Type:</div>
+					{% for radio in form.search_type %}
+						<div class="custom-control custom-radio custom-control-inline custom-radio-rounded">
+							{{ radio.tag }}
+							<label for="{{ radio.id_for_label }}" class="custom-control-label">{{ radio.choice_label }}</label>
+						</div>
+					{% endfor %}
+                    {% if form.search_status %}
+                        <div class="pl-1 custom-control custom-control-inline font-weight-bold">|</div>
+                        <div class="pl-1 custom-control custom-control-inline font-weight-bold">Search Status:</div>
+                        {% for radio in form.search_status %}
+                            <div class="custom-control custom-radio custom-control-inline custom-radio-rounded">
+                                {{ radio.tag }}
+                                <label for="{{ radio.id_for_label }}" class="custom-control-label">{{ radio.choice_label }}</label>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<hr>

@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
+    path("hijack/", include("hijack.urls")),
     path('administration/', admin.site.urls),
     path('', include("core.urls"))
 ]

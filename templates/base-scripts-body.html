@@ -1,0 +1,33 @@
+<script>
+    "use strict";
+    let classHolder = document.getElementsByTagName("BODY")[0],
+        themeSettings = (localStorage.getItem("themeSettings")) ? JSON.parse(localStorage.getItem("themeSettings")) :
+            {},
+        themeURL = themeSettings.themeURL || "",
+        themeOptions = themeSettings.themeOptions || "";
+    if (themeSettings.themeOptions) {
+        classHolder.className = themeSettings.themeOptions;
+    }
+    if (themeSettings.themeURL && !document.getElementById("mytheme")) {
+        let cssfile = document.createElement("link");
+        cssfile.id = "mytheme";
+        cssfile.rel = "stylesheet";
+        cssfile.href = themeURL;
+        document.getElementsByTagName("head")[0].appendChild(cssfile);
+
+    } else if (themeSettings.themeURL && document.getElementById("mytheme")) {
+        document.getElementById("mytheme").href = themeSettings.themeURL;
+    }
+    let saveSettings = function () {
+        themeSettings.themeOptions = String(classHolder.className).split(/[^\w-]+/).filter(function (item) {
+            return /^(nav|header|footer|mod|display)-/i.test(item);
+        }).join(" ");
+        if (document.getElementById("mytheme")) {
+            themeSettings.themeURL = document.getElementById("mytheme").getAttribute("href");
+        }
+        localStorage.setItem("themeSettings", JSON.stringify(themeSettings));
+    };
+    let resetSettings = function () {
+        localStorage.setItem("themeSettings", "");
+    };
+</script>

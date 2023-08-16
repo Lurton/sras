@@ -1,0 +1,30 @@
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#base_form").keydown(function(event) {
+            if (event.keyCode === 13) {
+                $("#btn_submit:first, .btn_submit:first").trigger("click");
+                return false;
+            }
+        });
+        $("#btn_submit, .btn_submit").click(function(event) {
+            event.preventDefault();
+            bootbox.dialog({
+                "size": "extra-large",
+                "centerVertical": true,
+                "className": "modal-alert",
+                "title": "Searching...",
+                "message": '<p><div class="spinner-border" role="status"></div></p>'
+            });
+            $("#base_form").submit();
+        });
+        let infinite = new Waypoint.Infinite({
+            element: $(".infinite-container")[0],
+            onBeforePageLoad: function() {
+                $(".infinite-loader").show();
+            },
+            onAfterPageLoad: function($items) {
+                $(".infinite-loader").hide();
+            }
+        });
+    });
+</script>
