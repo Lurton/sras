@@ -46,7 +46,7 @@ def dashboard(request, template_name="core/dashboard.html"):
             # the redirect.
             querystring = urlencode(form.cleaned_data)
 
-            redirect_url = reverse("core:core_dashboard") + f"?{querystring}"
+            redirect_url = reverse("core:dashboard") + f"?{querystring}"
 
             return redirect(redirect_url)
 

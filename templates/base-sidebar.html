@@ -2,7 +2,7 @@
 <aside class="page-sidebar">
 	<div class="page-logo">
 		<a href="{% url "core:index" %}" class="press-scale-down d-flex align-items-center position-relative">
-			<img src="{% static "images/gomotion_logo_sidebar.png" %}" alt="{{ site_title }}" height="46" width="200" style="height: 46px; width: 200px;">
+			<img src="{% static "images/cput_logo.png" %}" alt="{{ site_title }}" height="46" width="200" style="height: 46px; width: 200px;">
 		</a>
 	</div>
 	<nav id="js-primary-nav" class="primary-nav js-list-filter" role="navigation">
@@ -25,7 +25,7 @@
 {#					{{ request.profile.email_address|lower }}#}
 {#				</a>#}
 			</div>
-			<img src="{% static "images/sidebar-cover.png" %}" class="cover" alt="{{ site_title }}">
+			<img src="{% static "images/cput_sidebar.png" %}" class="cover" alt="{{ site_title }}">
 			<a href="javascript:void(0);" class="pull-trigger-btn" data-action="toggle" data-class="list-filter-active" data-target=".page-sidebar" data-focus="nav_filter_input">
 				<i class="fal fa-angle-down"></i>
 			</a>
@@ -37,141 +37,8 @@
 					<span class="nav-link-text">Dashboard</span>
 				</a>
 			</li>
-            <li{% if application == "Companies" %} class="active open"{% endif %}>
-				<a href="javascript:void(0);" data-filter-tags="companies" class="waves-effect waves-themed">
-					<i class="fal fa-business-time"></i>
-					<span class="nav-link-text">Companies</span>
-				</a>
-                <ul>
-                    <li{% if application == "Companies" and "/documents/" not in request.path %} class="active"{% endif %}>
-{#                        <a href="{% url "companies:company_list" %}" data-filter-tags="companies" class="waves-effect waves-themed">#}
-{#                            <span class="nav-link-text">Companies</span>#}
-{#                        </a>#}
-                    </li>
-                    <li{% if application == "Companies" and "/documents/" in request.path %} class="active"{% endif %}>
-{#                        <a href="{% url "companies:document_list" %}" data-filter-tags="documents" class="waves-effect waves-themed">#}
-{#                            <span class="nav-link-text">Documents</span>#}
-{#                        </a>#}
-                    </li>
-                </ul>
-            </li>
-            <li{% if application == "People" %} class="active open"{% endif %}>
-				<a href="javascript:void(0);" data-filter-tags="people" class="waves-effect waves-themed">
-					<i class="fal fa-users"></i>
-					<span class="nav-link-text">People</span>
-				</a>
-                <ul>
-                    <li{% if application == "People" and "/documents/" not in request.path %} class="active"{% endif %}>
-{#                        <a href="{% url "people:person_list" %}" data-filter-tags="companies" class="waves-effect waves-themed">#}
-{#                            <span class="nav-link-text">People</span>#}
-{#                        </a>#}
-                    </li>
-                    <li{% if application == "People" and "/documents/" in request.path %} class="active"{% endif %}>
-{#                        <a href="{% url "people:document_list" %}" data-filter-tags="documents" class="waves-effect waves-themed">#}
-{#                            <span class="nav-link-text">Documents</span>#}
-{#                        </a>#}
-                    </li>
-                </ul>
-            </li>
-			<li{% if application == "Assets" %} class="active open"{% endif %}>
-				<a href="javascript:void(0);" data-filter-tags="assets" class="waves-effect waves-themed">
-					<i class="fal fa-truck"></i>
-					<span class="nav-link-text">Assets</span>
-				</a>
-				<ul>
-					<li{% if application == "Assets" and "/documents/" not in request.path and "/models/" not in request.path %} class="active"{% endif %}>
-{#						<a href="{% url "assets:asset_list" %}" data-filter-tags="assets" class="waves-effect waves-themed">#}
-{#							<span class="nav-link-text">Assets</span>#}
-{#						</a>#}
-					</li>
-                    <li{% if application == "Assets" and "/documents/" in request.path and "/models/" not in request.path %} class="active"{% endif %}>
-{#                        <a href="{% url "assets:document_list" %}" data-filter-tags="documents" class="waves-effect waves-themed">#}
-{#                            <span class="nav-link-text">Documents</span>#}
-{#                        </a>#}
-                    </li>
-					<li{% if application == "Assets" and "/documents/" not in request.path and "/models/" in request.path %} class="active"{% endif %}>
-{#						<a href="{% url "assets:model_list" %}" data-filter-tags="assets models" class="waves-effect waves-themed">#}
-{#							<span class="nav-link-text">Models</span>#}
-{#						</a>#}
-					</li>
-				</ul>
-			</li>
-			<li{% if application == "Money" %} class="active open"{% endif %}>
-				<a href="javascript:void(0);" data-filter-tags="money" class="waves-effect waves-themed">
-					<i class="fal fa-money-bill-wave"></i>
-					<span class="nav-link-text">Money</span>
-				</a>
-				<ul>
-					<li{% if "/money/bank-accounts/list/" in request.path %} class="active"{% endif %}>
-{#						<a href="{% url "money:bank_account_list" %}" data-filter-tags="money bank accounts" class="waves-effect waves-themed">#}
-{#							<span class="nav-link-text">Bank Accounts</span>#}
-{#						</a>#}
-					</li>
-				</ul>
-			</li>
-			<li{% if application == "Customers" %} class="active open"{% endif %}>
-				<a href="javascript:void(0);" data-filter-tags="customers" class="waves-effect waves-themed">
-					<i class="fal fa-warehouse-alt"></i>
-					<span class="nav-link-text">Customers</span>
-				</a>
-                <ul>
-					<li{% if application == "Customers" and "/contacts/" not in request.path and "/locations/" not in request.path %} class="active"{% endif %}>
-{#						<a href="{% url "customers:customer_list" %}" data-filter-tags="customers customer list" class="waves-effect waves-themed">#}
-{#							<span class="nav-link-text">Customers</span>#}
-{#						</a>#}
-					</li>
-					<li{% if application == "Customers" and "/contacts/" in request.path %} class="active"{% endif %}>
-{#                        <a href="{% url "customers:contact_list" %}" data-filter-tags="customers contact list" class="waves-effect waves-themed">#}
-{#                            <span class="nav-link-text">Contacts</span>#}
-{#                        </a>#}
-                    </li>
-	                <li{% if application == "Customers" and "/locations/" in request.path %} class="active"{% endif %}>
-{#                        <a href="{% url "customers:location_list" %}" data-filter-tags="customers location list">#}
-{#                            <span class="nav-link-text">Locations</span>#}
-{#                        </a>#}
-                    </li>
-				</ul>
-			</li>
 			<li class="nav-title">Tools</li>
-			<li{% if application == "Tools" and "/fuel-prices/" not in request.path %} class="active"{% endif %}>
-{#				<a href="{% url "tools:amortization_calculator" %}" data-filter-tags="tools calculator" class="waves-effect waves-themed">#}
-{#					<i class="fal fa-calculator"></i>#}
-{#					<span class="nav-link-text">Calculators</span>#}
-{#				</a>#}
-			</li>
-			<li{% if application == "Tools" and "/fuel-prices/" in request.path %} class="active"{% endif %}>
-{#				<a href="{% url "tools:fuel_prices" %}" data-filter-tags="tools fuel prices" class="waves-effect waves-themed">#}
-{#					<i class="fal fa-gas-pump"></i>#}
-{#					<span class="nav-link-text">Fuel Prices</span>#}
-{#				</a>#}
-			</li>
-			<li{% if application == "Reports" %} class="active"{% endif %}>
-{#				<a href="{% url "reports:report_list" %}" data-filter-tags="tools reports" class="waves-effect waves-themed">#}
-{#					<i class="fal fa-chart-bar"></i>#}
-{#					<span class="nav-link-text">Reports</span>#}
-{#				</a>#}
-			</li>
             <li class="nav-title">Settings</li>
-            <li{% if application == "Settings" and "/organizations/" in request.path %} class="active"{% endif %}>
-{#				<a href="{% url "settings:organization_view" request.organization.pk %}" data-filter-tags="settings organization" class="waves-effect waves-themed">#}
-{#					<i class="fal fa-archive"></i>#}
-{#					<span class="nav-link-text">Organization</span>#}
-{#				</a>#}
-			</li>
-			<li{% if application == "Settings" and "/profiles/" in request.path %} class="active"{% endif %}>
-{#				<a href="{% url "settings:profile_list" %}" data-filter-tags="settings profiles" class="waves-effect waves-themed">#}
-{#					<i class="fal fa-users"></i>#}
-{#					<span class="nav-link-text">Profiles</span>#}
-{#				</a>#}
-			</li>
-            {% if request.profile.api %}
-                <li{% if application == "Settings" and "/api/" in request.path %} class="active"{% endif %}>
-{#                    <a href="{% url "settings:api_view" %}" data-filter-tags="settings api" class="waves-effect waves-themed">#}
-{#                        <i class="fal fa-brackets-curly"></i>#}
-{#                        <span class="nav-link-text">API</span>#}
-{#                    </a>#}
-                </li>
-            {% endif %}
 		</ul>
 		<div class="filter-message js-filter-message bg-success-600"></div>
 	</nav>
