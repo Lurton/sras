@@ -4,7 +4,7 @@ from django.db import models
 
 from core.models import USER_MODEL
 from core.utilities import cleanup_string
-from students.models import Student
+from administration.models import Personnel
 
 
 class FormSearchType(models.TextChoices):
@@ -83,7 +83,7 @@ class RegistrationForm(forms.ModelForm):
     password_repeat = forms.CharField(widget=forms.PasswordInput, required=True)
 
     class Meta:
-        model = Student
+        model = Personnel
         fields = ["first_name", "last_name", "mobile_number", "personal_email_address", "password", "password_repeat"]
 
     def __init__(self, *args, **kwargs):

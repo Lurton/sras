@@ -12,8 +12,8 @@ from api_google.views import verify_recaptcha
 from core.forms import LoginForm, RegistrationForm, SearchForm
 from core.models import BaseUserAuthentication
 from core.utilities import get_client_ip, get_date_time_now, send_email
-from students.apps import StudentsConfig
-from students.models import Student
+from administration.apps import AdministrationConfig
+from administration.models import Personnel
 
 
 def index(request, template_name="core/index.html"):
@@ -152,13 +152,13 @@ def register(request, template_name="core/register.html"):
             recaptcha = form.cleaned_data["recaptcha"]
             response = verify_recaptcha(recaptcha, requesting_ip)
 
+            new_student = form.save(commit=False)
+
             if response.get("success"):
                 first_name = form.cleaned_data["first_name"]
                 last_name = form.cleaned_data["last_name"]
                 email_address = form.cleaned_data["personal_email_address"]
                 password = form.cleaned_data["password"]
-
-                new_profile = form.save()
 
                 user_model = get_user_model()
                 user_account = user_model.objects.create(
@@ -170,8 +170,9 @@ def register(request, template_name="core/register.html"):
                     is_active=True
                 )
 
-                student = Student.objects.get(personal_email_address=email_address)
-                student.user = user_account
+                new_student.user = user_account
+                new_student.personnel_type = Personnel.Type.STUDENT
+                new_student.save()
 
                 # Send a welcome email message to the user.
                 subject = f"{settings.SITE_TITLE} | Account Information and Profile Sign-Up"
