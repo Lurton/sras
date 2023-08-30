@@ -37,6 +37,12 @@
 					<span class="nav-link-text">Dashboard</span>
 				</a>
 			</li>
+			<li{% if application == "Dashboard" %} class="active"{% endif %}>
+				<a href="{% url "core:dashboard" %}" data-filter-tags="dashboard" class="waves-effect waves-themed">
+					<i class="fal fa-th-large"></i>
+					<span class="nav-link-text">Campuses</span>
+				</a>
+			</li>
 			<li class="nav-title">Tools</li>
             <li class="nav-title">Settings</li>
 		</ul>
