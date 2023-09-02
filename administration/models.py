@@ -1,6 +1,6 @@
 from django.db import models
-from django.urls import reverse
 
+from administration.utilities import get_document_upload_path
 from core.models import BaseUserAuthentication
 
 
@@ -17,6 +17,7 @@ class Personnel(BaseUserAuthentication):
         null=True
     )
     personnel_type = models.PositiveIntegerField(choices=Type.choices)
+    image = models.FileField(upload_to=get_document_upload_path, null=True, blank=True)
 
     class Meta:
         verbose_name = "Student"
@@ -49,6 +50,7 @@ class Campus(models.Model):
         null=True,
         help_text="This is the mailing group email address for the campus."
     )
+    image = models.FileField(upload_to=get_document_upload_path, null=True, blank=True)
 
     class Meta:
         verbose_name = "Campus"
@@ -63,6 +65,7 @@ class Campus(models.Model):
 class Residence(models.Model):
     name = models.CharField("Residence", max_length=64, unique=True)
     campus = models.ForeignKey("administration.Campus", on_delete=models.CASCADE, blank=False)
+    image = models.FileField(upload_to=get_document_upload_path, null=True, blank=True)
 
     class Meta:
         verbose_name = "Residence"
@@ -78,6 +81,7 @@ class Room(models.Model):
     number = models.CharField("Residence", max_length=64, unique=True)
     floor = models.IntegerField("Floor")
     residence = models.ForeignKey("administration.Residence", on_delete=models.CASCADE, blank=False)
+    image = models.FileField(upload_to=get_document_upload_path, null=True, blank=True)
 
     class Meta:
         verbose_name = "Room"

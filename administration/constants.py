@@ -1,0 +1,5 @@
+MEDIA_ROOT = "media/"
+MEDIA_PERSONNEL_PREFIX = "people/"
+MEDIA_CAMPUS_PREFIX = "campuses/"
+MEDIA_RESIDENCE_PREFIX = "residences/"
+MEDIA_ROOM_PREFIX = "rooms/"
