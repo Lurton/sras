@@ -82,7 +82,7 @@ class BaseUserAuthentication(TimeStampedModel):
         "Home Number", max_length=10, blank=True,
         validators=telephone_number_validator
     )
-    personal_email_address = models.EmailField("Personal Email Address")
+    student_email = models.EmailField("Student Email")
     show_contact_details = models.BooleanField(
         "Show Contact Details",
         default=True

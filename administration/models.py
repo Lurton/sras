@@ -14,7 +14,7 @@ class Personnel(BaseUserAuthentication):
         "Student Number",
         max_length=9,
         blank=False,
-        null=True
+        unique=True
     )
     personnel_type = models.PositiveIntegerField(choices=Type.choices)
     image = models.FileField(upload_to=get_document_upload_path, null=True, blank=True)
@@ -78,7 +78,7 @@ class Residence(models.Model):
 
 
 class Room(models.Model):
-    number = models.CharField("Residence", max_length=64, unique=True)
+    number = models.CharField("Residence", max_length=64)
     floor = models.IntegerField("Floor")
     residence = models.ForeignKey("administration.Residence", on_delete=models.CASCADE, blank=False)
     image = models.FileField(upload_to=get_document_upload_path, null=True, blank=True)

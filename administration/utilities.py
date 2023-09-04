@@ -37,3 +37,9 @@ def get_document_upload_path(instance, filename):
     full_document_path.append(filename)
 
     return "/".join(full_document_path)
+
+
+def generate_student_number(student):
+    student_number = student.student_email.strip("@")[0]
+
+    return student_number
