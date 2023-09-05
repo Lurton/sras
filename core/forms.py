@@ -113,6 +113,7 @@ class RegistrationForm(forms.ModelForm):
         # This is to catch and display any individual field errors from the
         # form during the default clean.
         if self._errors:
+            print(self._errors)
             return cleaned_data
 
         # Ensure that fields across the system are neat and valid.
@@ -131,15 +132,15 @@ class RegistrationForm(forms.ModelForm):
         ).count()
         if auth_user_email_count >= 1:
             error_message = "A profile with this email address already exists on the system."
-            self._errors["email_address"] = self.error_class([error_message])
+            self._errors["student_email"] = self.error_class([error_message])
 
-        if formatted_email[:-13] != "@mycput.ac.za":
+        if formatted_email[-13:] != "@mycput.ac.za":
             error_message = "Invalid student email"
-            self._errors["email_address"] = self.error_class([error_message])
+            self._errors["student_email"] = self.error_class([error_message])
 
         if len(formatted_email) != 22:
             error_message = "That student email is incorrect"
-            self._errors["email_address"] = self.error_class([error_message])
+            self._errors["student_email"] = self.error_class([error_message])
 
         self.cleaned_data["student_email"] = formatted_email
 

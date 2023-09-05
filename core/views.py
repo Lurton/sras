@@ -157,7 +157,7 @@ def register(request, template_name="core/register.html"):
             if response.get("success"):
                 first_name = form.cleaned_data["first_name"]
                 last_name = form.cleaned_data["last_name"]
-                email_address = form.cleaned_data["personal_email_address"]
+                email_address = form.cleaned_data["student_email"]
                 password = form.cleaned_data["password"]
 
                 user_model = get_user_model()
