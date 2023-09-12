@@ -1,148 +1,122 @@
 {% extends "base.html" %}
 
-{% load static humanize widget_tweaks %}
+{% load static l10n %}
+
+{% block breadcrumbs %}<li class="breadcrumb-item active">{{ profile }}</li>{% endblock breadcrumbs %}
+
+{% block sub_heading %}{{ profile }}{% endblock sub_heading %}
 
 {% block base_content %}
-	{% include "base-search.html" %}
-    <div class="row pt-5">
-		<div class="col-md-4">
-			<h2 class="mb-0">
-{#				<i class="fal fa-business-time mr-2"></i>Companies#}
-			</h2>
-			<hr>
-            <div class="row">
-		        <div class="col-md-6">
-{#                    <a href="{% url "companies:company_list" %}{% if search_parameters %}?{{ search_parameters }}{% endif %}">#}
-{#                        <div class="p-3 bg-primary-900 rounded overflow-hidden position-relative text-white mb-g shadow-hover-5">#}
-{#                            <h3 class="display-4 d-block l-h-n m-0 fw-500">{{ dashboard_values.companies.company_count|default:"0"|intcomma }}</h3>#}
-{#                            <h4 class="mb-0">Companies<i class="fal fa-external-link ml-2"></i></h4>#}
-{#                            <i class="fal fa-business-time position-absolute pos-right pos-bottom opacity-15" style="font-size: 6rem;"></i>#}
-{#                        </div>#}
-{#                    </a>#}
+    <div class="row">
+        <div class="col-md-6">
+            <div class="panel shadow">
+                <div class="panel-hdr bg-faded">
+                    <h2>Welcome to the CPUT Student Residence Administration System</h2>
                 </div>
-                <div class="col-md-6">
-{#                    <a href="{% url "companies:document_list" %}{% if search_parameters %}?{{ search_parameters }}{% endif %}">#}
-{#                        <div class="p-3 bg-primary-600 rounded overflow-hidden position-relative text-white mb-g shadow-hover-5">#}
-{#                            <h3 class="display-4 d-block l-h-n m-0 fw-500">{{ dashboard_values.companies.document_count|default:"0"|intcomma }}</h3>#}
-{#                            <h4 class="mb-0">Documents<i class="fal fa-external-link ml-2"></i></h4>#}
-{#                            <i class="fal fa-folder-tree position-absolute pos-right pos-bottom opacity-15" style="font-size: 6rem;"></i>#}
-{#                        </div>#}
-{#                    </a>#}
+                <div class="panel-container">
+                    <div class="panel-content">
+                        <h3 class="mb-g">Hi {{ profile.first_name }},</h3>
+                        <p>Welcome to RDX and congratulations on taking the best step in your relationship adventure.</p>
+                        <p>Welcome to RDX and congratulations on taking the best step in your relationship adventure.</p>
+                        <p>Welcome to RDX and congratulations on taking the best step in your relationship adventure.</p>
+                        <p>In order to get started you need to complete your profile by working through the following RDX Sections. This is an extensive process and will require some time to complete. Please ensure that you have some quiet time as your progress.</p>
+                        <p>There are 3 sections that need to be completed in order to have a full profile.</p>
+                    </div>
                 </div>
             </div>
-		</div>
-		<div class="col-md-4">
-			<h2 class="mb-0">
-{#				<i class="fal fa-users mr-2"></i>People#}
-			</h2>
-			<hr>
-            <div class="row">
-		        <div class="col-md-6">
-{#                    <a href="{% url "people:person_list" %}{% if search_parameters %}?{{ search_parameters }}{% endif %}">#}
-{#                        <div class="p-3 bg-gray-900 rounded overflow-hidden position-relative text-white mb-g shadow-hover-5">#}
-{#                            <h3 class="display-4 d-block l-h-n m-0 fw-500">{{ dashboard_values.people.people_count|default:"0"|intcomma }}</h3>#}
-{#                            <h4 class="mb-0">People<i class="fal fa-external-link ml-2"></i></h4>#}
-{#                            <i class="fal fa-users position-absolute pos-right pos-bottom opacity-15" style="font-size: 6rem;"></i>#}
-{#                        </div>#}
-{#                    </a>#}
-                </div>
-                <div class="col-md-6">
-{#                    <a href="{% url "people:document_list" %}{% if search_parameters %}?{{ search_parameters }}{% endif %}">#}
-{#                        <div class="p-3 bg-gray-600 rounded overflow-hidden position-relative text-white mb-g shadow-hover-5">#}
-{#                            <h3 class="display-4 d-block l-h-n m-0 fw-500">{{ dashboard_values.people.document_count|default:"0"|intcomma }}</h3>#}
-{#                            <h4 class="mb-0">Documents<i class="fal fa-external-link ml-2"></i></h4>#}
-{#                            <i class="fal fa-folder-tree position-absolute pos-right pos-bottom opacity-15" style="font-size: 6rem;"></i>#}
-{#                        </div>#}
-{#                    </a>#}
-                </div>
-            </div>
-		</div>
-		<div class="col-md-4">
-			<h2 class="mb-0">
-{#				<i class="fal fa-truck mr-2"></i>Assets#}
-			</h2>
-			<hr>
-            <div class="row">
-		        <div class="col-md-6">
-{#                    <a href="{% url "assets:asset_list" %}{% if search_parameters %}?{{ search_parameters }}{% endif %}">#}
-{#                        <div class="p-3 bg-warning-900 rounded overflow-hidden position-relative text-white mb-g shadow-hover-5">#}
-{#                            <h3 class="display-4 d-block l-h-n m-0 fw-500">{{ dashboard_values.assets.asset_count|default:"0"|intcomma }}</h3>#}
-{#                            <h4 class="mb-0">Assets<i class="fal fa-external-link ml-2"></i></h4>#}
-{#                            <i class="fal fa-truck position-absolute pos-right pos-bottom opacity-15" style="font-size: 6rem;"></i>#}
-{#                        </div>#}
-{#                    </a>#}
-                </div>
-                <div class="col-md-6">
-{#                    <a href="{% url "assets:document_list" %}{% if search_parameters %}?{{ search_parameters }}{% endif %}">#}
-{#                        <div class="p-3 bg-warning-600 rounded overflow-hidden position-relative text-white mb-g shadow-hover-5">#}
-{#                            <h3 class="display-4 d-block l-h-n m-0 fw-500">{{ dashboard_values.assets.document_count|default:"0"|intcomma }}</h3>#}
-{#                            <h4 class="mb-0">Documents<i class="fal fa-external-link ml-2"></i></h4>#}
-{#                            <i class="fal fa-folder-tree position-absolute pos-right pos-bottom opacity-15" style="font-size: 6rem;"></i>#}
-{#                        </div>#}
-{#                    </a>#}
-                </div>
-            </div>
-		</div>
-    </div>
-    <div class="row pt-5">
-        <div class="col-md-3">
-            <h2 class="mb-0">
-{#                <i class="fal fa-money-bill-wave mr-2"></i>Money#}
-            </h2>
-            <hr>
-{#            <a href="{% url "money:bank_account_list" %}{% if search_parameters %}?{{ search_parameters }}{% endif %}">#}
-{#                <div class="p-3 bg-danger-600 rounded overflow-hidden position-relative text-white mb-g shadow-hover-5">#}
-{#                    <h3 class="display-4 d-block l-h-n m-0 fw-500">{{ dashboard_values.bank_account_count|default:"0"|intcomma }}</h3>#}
-{#                    <h4 class="mb-0">Bank Accounts<i class="fal fa-external-link ml-2"></i></h4>#}
-{#                    <i class="fal fa-university position-absolute pos-right pos-bottom opacity-15" style="font-size: 6rem;"></i>#}
-{#                </div>#}
-{#            </a>#}
         </div>
-        <div class="col-md-9">
-            <h2 class="mb-0">
-{#                <i class="fal fa-warehouse-alt mr-2"></i>Customers#}
-            </h2>
-            <hr>
-            <div class="row">
-                <div class="col-md-4">
-{#                    <a href="{% url "customers:customer_list" %}{% if search_parameters %}?{{ search_parameters }}{% endif %}">#}
-{#                        <div class="p-3 bg-success-300 rounded overflow-hidden position-relative text-white mb-g shadow-hover-5">#}
-{#                            <h3 class="display-4 d-block l-h-n m-0 fw-500">{{ dashboard_values.customers.customer_count|default:"0"|intcomma }}</h3>#}
-{#                            <h4 class="mb-0">Customers<i class="fal fa-external-link ml-2"></i></h4>#}
-{#                            <i class="fal fa-warehouse-alt position-absolute pos-right pos-bottom opacity-15" style="font-size: 6rem;"></i>#}
-{#                        </div>#}
-{#                    </a>#}
+        <div class="col-md-6">
+            <div class="panel shadow">
+                <div class="panel-hdr bg-faded">
+                    <h2>Relationship Dynamix Sections</h2>
                 </div>
-                <div class="col-md-4">
-{#                    <a href="{% url "customers:contact_list" %}{% if search_parameters %}?{{ search_parameters }}{% endif %}">#}
-{#                        <div class="p-3 bg-success-600 rounded overflow-hidden position-relative text-white mb-g shadow-hover-5">#}
-{#                            <h3 class="display-4 d-block l-h-n m-0 fw-500">{{ dashboard_values.customers.contact_count|default:"0"|intcomma }}</h3>#}
-{#                            <h4 class="mb-0">Contacts<i class="fal fa-external-link ml-2"></i></h4>#}
-{#                            <i class="fal fa-address-book position-absolute pos-right pos-bottom opacity-15" style="font-size: 6rem;"></i>#}
-{#                        </div>#}
-{#                    </a>#}
-                </div>
-                <div class="col-md-4">
-{#                    <a href="{% url "customers:location_list" %}{% if search_parameters %}?{{ search_parameters }}{% endif %}">#}
-{#                        <div class="p-3 bg-success-900 rounded overflow-hidden position-relative text-white mb-g shadow-hover-5">#}
-{#                            <h3 class="display-4 d-block l-h-n m-0 fw-500">{{ dashboard_values.customers.location_count|default:"0"|intcomma }}</h3>#}
-{#                            <h4 class="mb-0">Locations<i class="fal fa-external-link ml-2"></i></h4>#}
-{#                            <i class="fal fa-map-marker-alt position-absolute pos-right pos-bottom opacity-15" style="font-size: 6rem;"></i>#}
-{#                        </div>#}
-{#                    </a>#}
+                <div class="panel-container">
+                    <div class="panel-content mb-g">
+                        <div class="row">
+                            <div class="col-md-9">
+                                <div class="my-2">
+                                    <strong>Apply</strong><br>
+                                    {{ profile.get_er_questions_answered_count }} / {{ profile.get_er_questions_count }}
+                                </div>
+                            </div>
+                            <div class="col-md-3 mt-3">
+                                {% if profile.er_complete and profile.er_answers_valid_check %}
+                                    <a href="{% url "er_overview" %}" class="btn btn-block btn-outline-success waves-effect waves-themed"><span class="fal fa-check mr-2"></span>Complete</a>
+                                {% elif profile.er_complete and not profile.er_answers_valid_check %}
+                                    <a href="{% url "er_overview" %}" class="btn btn-block btn-outline-danger waves-effect waves-themed"><span class="fal fa-play mr-2"></span>Review</a>
+                                {% elif profile.get_er_questions_answered_count == 0 %}
+                                    <a href="{% url "er_overview" %}" class="btn btn-block btn-outline-danger waves-effect waves-themed"><i class="fal fa-play mr-2"></i>Start</a>
+                                {% else %}
+                                    <a href="{% url "er_overview" %}" class="btn btn-block btn-outline-info waves-effect waves-themed"><i class="fal fa-play mr-2"></i>Continue</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="progress bg-gray-400">
+                                    {% if profile.er_complete and not profile.er_answers_valid_check %}
+                                        <div class="progress-bar bg-success-400" role="progressbar" style="width: {{ er_progress_percentage }}%;" aria-valuenow="{{ profile.get_er_questions_answered_count }}" aria-valuemin="0" aria-valuemax="{{ profile.get_er_questions_count }}"><strong class="text-white">Review Categories</strong></div>
+                                    {% else %}
+                                        <div class="progress-bar bg-success-400" role="progressbar" style="width: {{ er_progress_percentage }}%;" aria-valuenow="{{ profile.get_er_questions_answered_count }}" aria-valuemin="0" aria-valuemax="{{ profile.get_er_questions_count }}"><strong class="text-white">{{ er_progress_percentage }}%</strong></div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-9">
+                                <div class="my-2">
+                                    <strong>Transfer to different residence</strong><br>
+                                    {{ profile.get_cp_questions_answered_count }} / {{ profile.get_cp_questions_count }}
+                                </div>
+                            </div>
+                            <div class="col-md-3 mt-3">
+                                {% if profile.cp_complete %}
+                                    <span class="btn btn-block btn-outline-success waves-effect waves-themed"><span class="fal fa-check mr-2"></span>Complete</span>
+                                {% elif profile.get_cp_questions_answered_count == 0 %}
+                                    <a href="{% url "cp_questions_overview" %}" class="btn btn-block btn-outline-danger waves-effect waves-themed"><i class="fal fa-play mr-2"></i>Start</a>
+                                {% else %}
+                                    <a href="{% url "cp_questions_overview" %}" class="btn btn-block btn-outline-info waves-effect waves-themed"><i class="fal fa-play mr-2"></i>Continue</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="progress bg-gray-400">
+                                    <div class="progress-bar bg-success-400" role="progressbar" style="width: {{ cp_progress_percentage }}%;" aria-valuenow="{{ profile.get_cp_questions_answered_count }}" aria-valuemin="0" aria-valuemax="{{ profile.get_cp_questions_count }}"><strong class="text-white">{{ cp_progress_percentage }}%</strong></div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-9">
+                                <div class="my-2">
+                                    <strong>Cancel Residence Application</strong><br>
+                                    {{ profile.get_naw_questions_answered_count }} / {{ profile.get_naw_questions_count }}
+                                </div>
+                            </div>
+                            <div class="col-md-3 mt-3">
+                                {% if profile.naw_complete %}
+                                    <a href="{% url "naw_overview" %}" class="btn btn-block btn-outline-success waves-effect waves-themed"><i class="fal fa-check mr-2"></i>Complete</a>
+                                {% elif profile.get_naw_questions_answered_count == 0 %}
+                                    <a href="{% url "naw_overview" %}" class="btn btn-block btn-outline-danger waves-effect waves-themed"><i class="fal fa-play mr-2"></i>Start</a>
+                                {% else %}
+                                    <a href="{% url "naw_overview" %}" class="btn btn-block btn-outline-info waves-effect waves-themed"><i class="fal fa-play mr-2"></i>Continue</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="progress bg-gray-400">
+                                    <div class="progress-bar bg-success-400" role="progressbar" style="width: {{ naw_progress_percentage }}%;" aria-valuenow="{{ profile.get_naw_questions_answered_count }}" aria-valuemin="0" aria-valuemax="{{ profile.get_naw_questions_count }}"><strong class="text-white">{{ naw_progress_percentage }}%</strong></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 {% endblock base_content %}
 
-{% block scripts %}
-	{% include "base-list-script.html" %}
-	<script type="text/javascript">
-        $(document).ready(function() {
-            $("#btn_reset").click(function() {
-                window.location.assign("{% url "core:dashboard" %}");
-            });
-        });
-	</script>
-{% endblock scripts %}
+{% block scripts %}{% endblock scripts %}
