@@ -94,9 +94,16 @@ class Room(models.Model):
 
 
 class Application(models.Model):
+    class Status(models.IntegerChoices):
+        SUBMITTED = 0, "Submitted"
+        IN_REVIEW = 1, "In Review"
+        APPROVED = 2, "Approved"
+        REJECTED = 3, "Rejected"
+
     student = models.ForeignKey(
         Personnel, verbose_name="Student", on_delete=models.CASCADE
     )
     date = models.DateField()
     room = models.ForeignKey("administration.Room", on_delete=models.CASCADE, blank=False)
     resolved = models.BooleanField(default=False)
+    status = models.PositiveIntegerField("Application Status",choices=Status.choices ,default=Status.SUBMITTED)
