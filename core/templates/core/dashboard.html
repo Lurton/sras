@@ -35,20 +35,12 @@
                         <div class="row">
                             <div class="col-md-9">
                                 <div class="my-2">
-                                    <strong>Apply</strong><br>
+                                    <strong>Application</strong><br>
                                     {{ profile.get_er_questions_answered_count }} / {{ profile.get_er_questions_count }}
                                 </div>
                             </div>
                             <div class="col-md-3 mt-3">
-                                {% if profile.er_complete and profile.er_answers_valid_check %}
-                                    <a href="{% url "er_overview" %}" class="btn btn-block btn-outline-success waves-effect waves-themed"><span class="fal fa-check mr-2"></span>Complete</a>
-                                {% elif profile.er_complete and not profile.er_answers_valid_check %}
-                                    <a href="{% url "er_overview" %}" class="btn btn-block btn-outline-danger waves-effect waves-themed"><span class="fal fa-play mr-2"></span>Review</a>
-                                {% elif profile.get_er_questions_answered_count == 0 %}
-                                    <a href="{% url "er_overview" %}" class="btn btn-block btn-outline-danger waves-effect waves-themed"><i class="fal fa-play mr-2"></i>Start</a>
-                                {% else %}
-                                    <a href="{% url "er_overview" %}" class="btn btn-block btn-outline-info waves-effect waves-themed"><i class="fal fa-play mr-2"></i>Continue</a>
-                                {% endif %}
+                                    <a href="#" class="btn btn-block btn-outline-danger waves-effect waves-themed"><i class="fal fa-play mr-2"></i>Apply</a>
                             </div>
                         </div>
                         <div class="row">
@@ -71,13 +63,7 @@
                                 </div>
                             </div>
                             <div class="col-md-3 mt-3">
-                                {% if profile.cp_complete %}
-                                    <span class="btn btn-block btn-outline-success waves-effect waves-themed"><span class="fal fa-check mr-2"></span>Complete</span>
-                                {% elif profile.get_cp_questions_answered_count == 0 %}
-                                    <a href="{% url "cp_questions_overview" %}" class="btn btn-block btn-outline-danger waves-effect waves-themed"><i class="fal fa-play mr-2"></i>Start</a>
-                                {% else %}
-                                    <a href="{% url "cp_questions_overview" %}" class="btn btn-block btn-outline-info waves-effect waves-themed"><i class="fal fa-play mr-2"></i>Continue</a>
-                                {% endif %}
+                                    <a href="#" class="btn btn-block btn-outline-info waves-effect waves-themed"><i class="fal fa-play mr-2"></i>Transfer</a>
                             </div>
                         </div>
                         <div class="row">
@@ -96,13 +82,7 @@
                                 </div>
                             </div>
                             <div class="col-md-3 mt-3">
-                                {% if profile.naw_complete %}
-                                    <a href="{% url "naw_overview" %}" class="btn btn-block btn-outline-success waves-effect waves-themed"><i class="fal fa-check mr-2"></i>Complete</a>
-                                {% elif profile.get_naw_questions_answered_count == 0 %}
-                                    <a href="{% url "naw_overview" %}" class="btn btn-block btn-outline-danger waves-effect waves-themed"><i class="fal fa-play mr-2"></i>Start</a>
-                                {% else %}
-                                    <a href="{% url "naw_overview" %}" class="btn btn-block btn-outline-info waves-effect waves-themed"><i class="fal fa-play mr-2"></i>Continue</a>
-                                {% endif %}
+                                <a href="#" class="btn btn-block btn-outline-success waves-effect waves-themed"><i class="fal fa-check mr-2"></i>Cancel</a>
                             </div>
                         </div>
                         <div class="row">
