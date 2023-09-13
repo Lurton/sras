@@ -229,6 +229,8 @@ def login(request, template_name="core/login.html"):
     safe_redirect_url = url_has_allowed_host_and_scheme(
         redirect_url, settings.ALLOWED_HOSTS, require_https=True
     )
+    print(safe_redirect_url, "safe_redirect_url")
+
     if not safe_redirect_url:
         redirect_url = default_redirect_url
 
@@ -245,6 +247,7 @@ def login(request, template_name="core/login.html"):
             # Validate the Google reCaptcha token.
             recaptcha = form.cleaned_data["recaptcha"]
             response = verify_recaptcha(recaptcha, requesting_ip)
+            print(response)
 
             if response.get("success"):
                 # Do the typical Django authentication.
