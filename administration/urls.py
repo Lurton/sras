@@ -6,7 +6,7 @@ app_name = "administration"
 
 urlpatterns = [
     path("application/", views.application, name="application"),
-    path("ajax", include([
+    path("ajax/", include([
         path(
             "residences/",
             views.ajax_residences,

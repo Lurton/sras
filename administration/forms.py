@@ -10,9 +10,11 @@ def get_campus_choices():
     queryset = Campus.objects.all()
     return queryset.values_list("pk", "name")
 
+
 def get_residence_choices(campus):
     queryset = Residence.objects.filter(campus=campus)
     return queryset.values_list("pk", "name")
+
 
 def get_room_choices(residence):
     queryset = Room.objects.filter(residence=residence)
@@ -61,6 +63,16 @@ class ApplicationForm(forms.ModelForm):
         self.fields["room"].choices = list(chain(
             get_room_choices(initial_res)
         ))
+
+        self.fields["campus"].widget.attrs.update({
+            "class": "select2",
+            "data-placeholder": "Select the campus..."
+        })
+
+        self.fields["residence"].widget.attrs.update({
+            "class": "select2",
+            "data-placeholder": "Select the residence..."
+        })
 
     def clean(self):
         cleaned_data = super().clean()

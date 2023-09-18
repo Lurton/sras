@@ -138,8 +138,9 @@
                     }
                 });
             }
+            console.log("IN THE TEMPLATE AGAIN")
             $("#id_campus").on("select2:select", function () {
-                console.log("I GOT CLICKED CAMPUS")
+                console.log("I GOT CLICKED CAMPUS");
                 let company_pk = $(this).val();
                 update_residence_options(company_pk);
             });
@@ -154,26 +155,15 @@
                 }
             });
             $("#btn_submit, .btn_submit").click(function(event) {
+                console.log("I GOT SUBMITTED");
                 event.preventDefault();
-                sweetalert.fire({
-                    "icon": "question",
-                    "title": "Are you sure?",
-                    "text": "You are about to submit an application...",
-                    "showCloseButton": true
-                }).then(
-                    result => {
-                        if (result.value) {
-                            sweetalert.fire({
-                                "text": "The application is submitting...",
-                                "icon": "info",
-                                "showConfirmButton": false,
-                                "showCancelButton": false
-                            });
-                            sweetalert.showLoading();
-                            $("#base_form").submit();
-                        }
-                    }
-                );
+                bootbox.dialog({
+                    "size": "extra-large",
+                    "centerVertical": true,
+                    "className": "modal-alert",
+                    "title": "Registering the account...",
+                    "message": '<p><div class="spinner-border" role="status"></div></p>'
+                });
             });
         });
     </script>

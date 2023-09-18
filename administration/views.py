@@ -42,7 +42,7 @@ def ajax_residences(request):
     campus_id = request.GET.get("campus_id", None)
 
     if campus_id:
-        campus = Campus.objects.get(campus__pk=campus_id)
+        campus = Campus.objects.get(pk=campus_id)
         response = get_residence_choices(campus=campus)
 
         return JsonResponse(response, safe=False)
@@ -52,7 +52,7 @@ def ajax_rooms(request):
     residence_id = request.GET.get("residence_id", None)
 
     if residence_id:
-        residence = Campus.objects.get(residence__pk=residence_id)
+        residence = Campus.objects.get(pk=residence_id)
         response = get_room_choices(residence=residence)
 
         return JsonResponse(response, safe=False)
