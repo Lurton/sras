@@ -93,6 +93,60 @@
 {% block scripts %}
     <script type="text/javascript">
         $(document).ready(function () {
+            function update_room_options(residence_pk) {
+                let residence_id = $("#id_residence").val();
+                let room_url = `{% url "administration:ajax_rooms" %}?residence_id=${residence_id}`;
+                $.ajax({
+                    "delay": 500,
+                    "url": room_url,
+                    "method": "GET",
+                    "dataType": "text",
+                    "data": {
+                        "residence_pk": residence_pk
+                    },
+                    success: function (response) {
+                        $("#id_room").children().remove().trigger("change");
+                        let parsed_results = JSON.parse(response).results;
+                        for(let i = 0; i < parsed_results.length; i++) {
+                            let newOption = new Option(parsed_results[i].text, parsed_results[i].id, false, false);
+                            $("#id_room").append(newOption).trigger("change");
+                        }
+                    }
+                });
+            }
+            function update_residence_options(campus_pk) {
+                let campus_id = $("#id_campus").val();
+                let residence = $("#id_residence");
+                let residence_url = `{% url "administration:ajax_residences" %}?campus_id=${campus_id}`;
+                $.ajax({
+                    "delay": 500,
+                    "url": residence_url,
+                    "method": "GET",
+                    "dataType": "text",
+                    "data": {
+                        "campus_pk": campus_pk
+                    },
+                    success: function (response) {
+                        residence.children().remove().trigger("change");
+                        let parsed_results = JSON.parse(response).results;
+                        for(let i = 0; i < parsed_results.length; i++) {
+                            let newOption = new Option(parsed_results[i].text, parsed_results[i].id, false, false);
+                            residence.append(newOption).trigger("change");
+                        }
+                        let residence_pk = residence.val();
+                        update_room_options(residence_pk);
+                    }
+                });
+            }
+            $("#id_campus").on("select2:select", function () {
+                console.log("I GOT CLICKED CAMPUS")
+                let company_pk = $(this).val();
+                update_residence_options(company_pk);
+            });
+            $("#id_residence").on("select2:select", function () {
+                let residence_pk = $(this).val();
+                update_room_options(residence_pk);
+            });
             $("#base_form").keydown(function(event) {
                 if ((event.keyCode === 13) && ($(event.target).attr("class") !== "select2") && ($(event.target)[0] !== $("textarea")[0])) {
                     $("#btn_submit, .btn_submit").trigger("click");
@@ -104,13 +158,13 @@
                 sweetalert.fire({
                     "icon": "question",
                     "title": "Are you sure?",
-                    "text": "You are about to edit a team...",
+                    "text": "You are about to submit an application...",
                     "showCloseButton": true
                 }).then(
                     result => {
                         if (result.value) {
                             sweetalert.fire({
-                                "text": "The team is busy being edited...",
+                                "text": "The application is submitting...",
                                 "icon": "info",
                                 "showConfirmButton": false,
                                 "showCancelButton": false

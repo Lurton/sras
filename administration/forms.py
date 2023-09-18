@@ -2,7 +2,7 @@ from itertools import chain
 
 from django import forms
 
-from administration.models import Application, Campus
+from administration.models import Application, Campus, Residence, Room
 from core.utilities import cleanup_string
 
 
@@ -10,25 +10,57 @@ def get_campus_choices():
     queryset = Campus.objects.all()
     return queryset.values_list("pk", "name")
 
+def get_residence_choices(campus):
+    queryset = Residence.objects.filter(campus=campus)
+    return queryset.values_list("pk", "name")
+
+def get_room_choices(residence):
+    queryset = Room.objects.filter(residence=residence)
+    return queryset.values_list("pk", "number")
+
 
 class ApplicationForm(forms.ModelForm):
     campus = forms.ChoiceField(
-        widget=forms.Select,
-        choices=get_campus_choices(),
-        # initial=REVIEWED_FALSE
+        label="Campus",
+        required=True,
+        widget=forms.Select
     )
-    residence = forms.CharField(widget=forms.PasswordInput, required=True)
+    residence = forms.ChoiceField(
+        label="Residence",
+        required=True,
+        widget=forms.Select
+    )
+    room = forms.ChoiceField(
+        label="Room",
+        required=True,
+        widget=forms.Select
+    )
 
     class Meta:
         model = Application
         fields = ["campus", "residence", "room"]
 
     def __init__(self, *args, **kwargs):
+        initial_data = kwargs.pop("initial_data", None)
         super().__init__(*args, **kwargs)
 
-        # self.fields["campus"].choices = list(chain(
-        #     get_campus_choices()
-        # ))
+        print(initial_data, "FORM")
+        print("IN THE FORM")
+
+        initial_campus = initial_data.get("campus")
+        initial_res = initial_data.get("residence")
+
+        self.fields["campus"].choices = list(chain(
+            get_campus_choices(),
+        ))
+
+        self.fields["residence"].choices = list(chain(
+            get_residence_choices(initial_campus)
+        ))
+
+        self.fields["room"].choices = list(chain(
+            get_room_choices(initial_res)
+        ))
 
     def clean(self):
         cleaned_data = super().clean()
