@@ -32,7 +32,7 @@ def create_campus_residence_rooms(campus_count: int, res_count: int, rooms_count
 
             for room in range(rooms_count):
                 room, created = Room.objects.get_or_create(
-                    number=f"R{res}-{room}",
+                    number=f"C{i}R{res}-{room}",
                     floor=res,
                     residence=residence
                 )

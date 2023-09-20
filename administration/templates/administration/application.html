@@ -94,15 +94,15 @@
     <script type="text/javascript">
         $(document).ready(function () {
             function update_room_options(residence_pk) {
-                let residence_id = $("#id_residence").val();
-                let room_url = `{% url "administration:ajax_rooms" %}?residence_id=${residence_id}`;
+                let residence_id = residence_pk
+                let room_url = `{% url "administration:ajax_rooms" %}`;
                 $.ajax({
                     "delay": 500,
                     "url": room_url,
                     "method": "GET",
                     "dataType": "text",
                     "data": {
-                        "residence_pk": residence_pk
+                        "residence_id": residence_id
                     },
                     success: function (response) {
                         $("#id_room").children().remove().trigger("change");
@@ -115,16 +115,16 @@
                 });
             }
             function update_residence_options(campus_pk) {
-                let campus_id = $("#id_campus").val();
+                let campus_id = campus_pk
                 let residence = $("#id_residence");
-                let residence_url = `{% url "administration:ajax_residences" %}?campus_id=${campus_id}`;
+                let residence_url = `{% url "administration:ajax_residences" %}`;
                 $.ajax({
                     "delay": 500,
                     "url": residence_url,
                     "method": "GET",
                     "dataType": "text",
                     "data": {
-                        "campus_pk": campus_pk
+                        "campus_id": campus_id
                     },
                     success: function (response) {
                         residence.children().remove().trigger("change");
@@ -161,9 +161,10 @@
                     "size": "extra-large",
                     "centerVertical": true,
                     "className": "modal-alert",
-                    "title": "Registering the account...",
+                    "title": "Submitting the application...",
                     "message": '<p><div class="spinner-border" role="status"></div></p>'
                 });
+                $("#base_form").submit();
             });
         });
     </script>

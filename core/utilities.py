@@ -4,7 +4,9 @@ import logging
 
 import pytz
 from django.conf import settings
+from django.core.exceptions import FieldError
 from django.core.mail import EmailMessage
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.template import loader
 
 from django.utils import timezone
@@ -169,3 +171,60 @@ def cleanup_string(value: str) -> str:
     as well as remove any non-ascii encoded values.
     """
     return value.encode("ascii", errors="ignore").decode().strip()
+
+
+def list_view(request, queryset):
+    """
+    List view is not called directly from core, it's used in other views to
+    handle the tables or lists of objects.
+    for key, value in request_variables.items():
+        print key, value
+    """
+    request_variables = request.GET
+
+    draw = int(request_variables.get("draw", 1))
+    sort_column_index = int(request_variables.get("order[0][column]", 0))
+    sort_column_placeholder = "columns[%i][name]" % sort_column_index
+    sort_column_name = str(request_variables.get(str(sort_column_placeholder), 0))
+    sort_direction = str(request_variables.get("order[0][dir]", "asc"))
+    page_size = int(request_variables.get("length", settings.PAGE_SIZE))
+    result_start = int(request_variables.get("start", 0))
+    result_end = result_start + page_size
+    page = result_end / page_size
+
+    # Sorting.
+    if not sort_column_name == "0":
+        try:
+            if sort_direction == "desc":
+                sort = "-" + sort_column_name
+            else:
+                sort = sort_column_name
+
+            # The updated queryset sorted accordingly.
+            if not queryset.count() == 0:
+                queryset = queryset.order_by(sort)
+
+        except FieldError:
+            LOGGER.warning(f"Could not sort on field: {sort_column_name}")
+
+    paginator = Paginator(queryset, page_size)
+
+    try:
+        # Get the appropriate slice of the queryset based on the page calculation.
+        queryset = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        queryset = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        queryset = paginator.page(paginator.num_pages)
+
+    # The actual and final result to return.
+    response = {
+        "queryset": queryset,
+        "draw": draw,
+        "recordsTotal": queryset.paginator.count,
+        "recordsFiltered": queryset.paginator.count
+    }
+
+    return response
