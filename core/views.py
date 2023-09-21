@@ -2,15 +2,18 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, get_user_model
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.tokens import default_token_generator
+from django.contrib.auth.views import PasswordResetConfirmView
 from django.shortcuts import redirect
 from django.template.response import TemplateResponse
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
+from django.utils.encoding import force_bytes
 from django.utils.formats import date_format
-from django.utils.http import url_has_allowed_host_and_scheme, urlencode
+from django.utils.http import url_has_allowed_host_and_scheme, urlencode, urlsafe_base64_encode
 
 from api_google.views import verify_recaptcha
-from core.forms import LoginForm, RegistrationForm, SearchForm
-from core.models import BaseUserAuthentication
+from core.forms import LoginForm, RegistrationForm, SearchForm, PasswordResetForm, CorePasswordResetSetForm
+from core.models import BaseUserAuthentication, USER_MODEL
 from core.utilities import get_client_ip, get_date_time_now, send_email
 from administration.apps import AdministrationConfig
 from administration.models import Personnel
@@ -306,3 +309,98 @@ def login(request, template_name="core/login.html"):
         form = LoginForm(initial={"next": redirect_url})
 
     return TemplateResponse(request, template_name, {"form": form})
+
+
+def password_reset(request, template_name="core/password-reset.html"):
+    """
+    This is the password reset  page of the application. An email address
+    (username) is required to send the email to.
+    """
+    if request.method == "POST":
+        form = PasswordResetForm(request.POST)
+
+        if form.is_valid():
+            requesting_ip = get_client_ip(request)
+
+            # Validate the Google reCaptcha token.
+            recaptcha = form.cleaned_data["recaptcha"]
+            response = verify_recaptcha(recaptcha, requesting_ip)
+
+            if response.get("success"):
+                username = form.cleaned_data["username"]
+                user = USER_MODEL.objects.get(email=username)
+
+                # Send an e-mail message to the user account about the
+                # successful login.
+                now = get_date_time_now()
+                timestamp = date_format(now, "DATETIME_FORMAT", use_l10n=False)
+                template = "email/password-reset-confirmation.html"
+                subject = f"{settings.SITE_TITLE} - Password Reset Confirmation"
+                email_data = {
+                    "subject": subject,
+                    "full_name": f"{user.first_name.title()}",
+                    "timestamp": f"{timestamp}",
+                    "uid": urlsafe_base64_encode(force_bytes(user.pk)),
+                    "token": default_token_generator.make_token(user)
+                }
+                recipient = user.email
+
+                # Sends the login confirmation email to the person.
+                send_email(recipient, subject, template, email_data)
+
+                messages.success(
+                    request,
+                    "You have successfully requested a password reset for your"
+                    f" user / profile on {settings.SITE_TITLE}. The details have"
+                    " been sent to your email address."
+                )
+
+                return redirect("core:core_index")
+
+            else:
+                messages.error(
+                    request,
+                    "The Google reCaptcha challenge was unsuccessful. Please try again."
+                )
+        else:
+            messages.error(
+                request,
+                "An error occurred while trying to reset your password. Please try again."
+            )
+    else:
+        form = PasswordResetForm()
+
+    return TemplateResponse(request, template_name, {"form": form})
+
+
+class CorePasswordResetConfirmView(PasswordResetConfirmView):
+    """
+    The page to display after the user has reset their password in the
+    `CorePasswordReset` class above.
+    # Part of the Class-based password reset views.
+    # - PasswordResetConfirmView checks the link the user clicked and prompts
+    for a new password.
+    This uses the built-in Django reset password setup, just override the
+    templates etc.
+    """
+    template_name = "core/password-reset-confirm.html"
+    form_class = CorePasswordResetSetForm
+    success_url = reverse_lazy("core:password_reset_complete")
+    title = None
+
+
+def password_reset_complete(request):
+    """
+    The page to display after the user has reset their password in the
+    `CorePasswordResetConfirmView` class above.
+    # Part of the Class-based password reset views.
+    # - PasswordResetCompleteView shows a success message for the above.
+    This uses the built-in Django reset password setup, just override the
+    templates etc.
+    """
+    messages.success(
+        request,
+        "Your password authentication details for your user / profile have"
+        " been reset successfully."
+    )
+    return redirect("core:index")

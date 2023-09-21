@@ -1,5 +1,7 @@
 from django import forms
+from django.contrib.auth.forms import SetPasswordForm
 from django.contrib.auth.hashers import check_password
+from django.contrib.auth.password_validation import password_validators_help_texts
 from django.db import models
 
 from core.models import USER_MODEL
@@ -191,3 +193,60 @@ class SearchForm(forms.Form):
             })
         else:
             self.fields.pop("search_status")
+
+
+class PasswordResetForm(forms.Form):
+    username = forms.EmailField(
+        label="Email Address", max_length=254, required=True
+    )
+    recaptcha = forms.CharField(widget=forms.HiddenInput, required=True)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields["username"].widget.attrs.update({"autofocus": True})
+        self.fields["username"].extras = {"input_group": "@"}
+
+    def clean(self):
+        cleaned_data = super().clean()
+
+        # This is to catch and display any individual field errors from the
+        # form during the default clean.
+        if self._errors:
+            return cleaned_data
+
+        # Ensure that fields across the system are neat and valid.
+        for field, value in cleaned_data.items():
+            if isinstance(value, str):
+                cleaned_data[field] = value.strip()
+
+        username = cleaned_data.get("username")
+
+        # Check if this is a valid and active user / profile on the platform.
+        try:
+            user = USER_MODEL.objects.get(email=username)
+            if not user.is_active:
+                error_message = "The user account has been disabled on the system."
+                self._errors["username"] = self.error_class([error_message])
+        except USER_MODEL.DoesNotExist:
+            error_message = (
+                "The user account (email address) does not exist on the"
+                " system."
+            )
+            self._errors["username"] = self.error_class([error_message])
+
+        return cleaned_data
+
+
+class CorePasswordResetSetForm(SetPasswordForm):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        validation_help_text = password_validators_help_texts()
+        help_text = "<br>&nbsp;&nbsp;".join(validation_help_text)
+
+        self.fields["new_password1"].widget.attrs.update({"autofocus": True})
+        self.fields["new_password1"].label = "New Password"
+        self.fields["new_password1"].help_text = help_text
+        self.fields["new_password2"].label = "New Password Confirmation"
