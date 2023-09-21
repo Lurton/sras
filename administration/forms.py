@@ -70,15 +70,15 @@ class ApplicationForm(forms.ModelForm):
         required=True,
         widget=forms.Select
     )
-    residence = forms.ChoiceField(
+    residence = forms.ModelChoiceField(
         label="Residence",
         required=True,
-        widget=forms.Select
+        queryset=Residence.objects.none()
     )
-    room = forms.ChoiceField(
+    room = forms.ModelChoiceField(
         label="Room",
         required=True,
-        widget=forms.Select
+        queryset=Room.objects.none()
     )
 
     class Meta:
@@ -94,18 +94,40 @@ class ApplicationForm(forms.ModelForm):
 
         initial_campus = initial_data.get("campus")
         initial_res = initial_data.get("residence")
+        initial_room = initial_data.get("room")
 
-        self.fields["campus"].choices = list(chain(
-            get_campus_choices(),
-        ))
+        self.fields["campus"].choices = get_campus_choices()
+        self.fields["campus"].initial = initial_campus
 
-        self.fields["residence"].choices = list(chain(
-            get_residence_choices(initial_campus)
-        ))
+        self.fields["residence"].choices = get_residence_choices(initial_campus)
+        self.fields["residence"].initial = initial_res
 
-        self.fields["room"].choices = list(chain(
-            get_room_choices(initial_res)
-        ))
+        self.fields["room"].choices = get_room_choices(initial_res)
+        self.fields["room"].initial = initial_room
+
+        if "campus" in self.data:
+            try:
+                campus_pk = int(self.data.get("campus"))
+                campus = Campus.objects.get(pk=campus_pk)
+                residence = Residence.objects.filter(campus__pk=campus_pk)
+                self.fields["residence"].queryset = residence
+                self.fields["residence"].choices = get_residence_choices(campus=campus)
+                self.fields["residence"].initial = residence.first()
+            except (ValueError, TypeError):
+                # If there is invalid input ignore.
+                pass
+
+        if "residence" in self.data:
+            try:
+                residence_pk = int(self.data.get("residence"))
+                residence = Residence.objects.get(pk=residence_pk)
+                room = Room.objects.filter(residence__pk=residence_pk)
+                self.fields["room"].queryset = room
+                self.fields["room"].choices = get_room_choices(residence=residence)
+                self.fields["room"].initial = room.first()
+            except (ValueError, TypeError):
+                # If there is invalid input ignore.
+                pass
 
         self.fields["campus"].widget.attrs.update({
             "class": "select2",
@@ -117,12 +139,20 @@ class ApplicationForm(forms.ModelForm):
             "data-placeholder": "Select the residence..."
         })
 
+        self.fields["room"].widget.attrs.update({
+            "class": "select2",
+            "data-placeholder": "Select the room..."
+        })
+
     def clean(self):
         cleaned_data = super().clean()
 
         # This is to catch and display any individual field errors from the
         # form during the default clean.
         if self._errors:
+            print(self.data["campus"])
+            print(self.data["residence"])
+            print(self.data["room"])
             print(self._errors)
             return cleaned_data
 

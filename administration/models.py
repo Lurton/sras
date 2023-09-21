@@ -61,6 +61,9 @@ class Campus(models.Model):
             name="campus_name"
         )]
 
+    def __str__(self):
+        return self.name
+
 
 class Residence(models.Model):
     name = models.CharField("Residence", max_length=64, unique=True)
@@ -75,6 +78,9 @@ class Residence(models.Model):
             fields=["name", "campus"],
             name="residence_name_campus"
         )]
+
+    def __str__(self):
+        return self.name
 
 
 class Room(models.Model):
@@ -92,6 +98,9 @@ class Room(models.Model):
             name="room_residence_number"
         )]
 
+    def __str__(self):
+        return self.number
+
 
 class Application(models.Model):
     class Status(models.IntegerChoices):
@@ -108,3 +117,15 @@ class Application(models.Model):
     room = models.ForeignKey("administration.Room", on_delete=models.CASCADE, blank=False)
     resolved = models.BooleanField(default=False)
     status = models.PositiveIntegerField("Application Status", choices=Status.choices, default=Status.SUBMITTED)
+
+    class Meta:
+        verbose_name = "Application"
+        verbose_name_plural = "Applications"
+        ordering = ["student"]
+        constraints = [models.UniqueConstraint(
+            fields=["student"],
+            name="application_student"
+        )]
+
+    def __str__(self):
+        return f"{self.student} - {self.room}"
