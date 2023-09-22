@@ -355,7 +355,7 @@ def password_reset(request, template_name="core/password-reset.html"):
                     " been sent to your email address."
                 )
 
-                return redirect("core:core_index")
+                return redirect("core:index")
 
             else:
                 messages.error(

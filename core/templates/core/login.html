@@ -3,9 +3,9 @@
 {% load static %}
 
 {% block top_bar_links %}
-{#	<a href="{% url "core:core_password_reset" %}" class="btn-link text-white ml-auto">#}
-{#		Password Reset<i class="fal fa-unlock ml-2"></i>#}
-{#	</a>#}
+	<a href="{% url "core:password_reset" %}" class="btn-link text-white ml-auto">
+		Password Reset<i class="fal fa-unlock ml-2"></i>
+	</a>
 {% endblock top_bar_links %}
 
 {% block base_content %}
