@@ -13,7 +13,7 @@ django.setup()
 
 
 def create_campus_residence_rooms(campus_count: int, res_count: int, rooms_count):
-    from administration.models import Campus, Residence, Room
+    from structure.models import Campus, Residence, Room
 
     for i in range(campus_count):
         campus, created = Campus.objects.get_or_create(
@@ -39,7 +39,7 @@ def create_campus_residence_rooms(campus_count: int, res_count: int, rooms_count
 
 
 def delete_all():
-    from administration.models import Campus, Residence, Room
+    from structure.models import Campus, Residence, Room
 
     campuses = Campus.objects.all()
     residences = Residence.objects.all()

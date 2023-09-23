@@ -3,7 +3,7 @@ from django.http import JsonResponse
 
 from rest_framework import serializers
 
-from administration.models import Residence, Campus, Room
+from structure.models import Residence, Campus, Room
 from core.utilities import list_view
 
 
@@ -35,11 +35,19 @@ class ResidenceListSerializer(serializers.ModelSerializer):
 
 
 class CampusListSerializer(serializers.ModelSerializer):
+    absolute_url = serializers.SerializerMethodField()
     name = serializers.StringRelatedField()
+    location = serializers.StringRelatedField()
+    address = serializers.StringRelatedField()
+    email_address = serializers.StringRelatedField()
 
     class Meta:
         model = Campus
-        fields = ["name"]
+        fields = ["id", "absolute_url", "name", "location", "address", "email_address"]
+
+    @staticmethod
+    def get_absolute_url(obj):
+        return obj.get_absolute_url()
 
 
 def get_campus_serialized_data(
@@ -61,7 +69,10 @@ def get_campus_serialized_data(
     # search input.
     if search_value:
         queryset = queryset.filter(
-            name__icontains=search_value
+            Q(name__icontains=search_value)
+            | Q(location__icontains=search_value)
+            | Q(address__icontains=search_value)
+            | Q(email_address__icontains=search_value)
         )
 
     # The pagination and object list preparations.

@@ -20,5 +20,6 @@ urlpatterns = [
     path("hijack/", include("hijack.urls")),
     path('administration/', admin.site.urls),
     path('', include("core.urls")),
-    path('administrations/', include("administration.urls"))
+    path('administrations/', include("administration.urls")),
+    path('structure/', include("structure.urls"))
 ]

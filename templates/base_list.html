@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block base_content %}
+	<div class="row">
+		<div class="col-12">
+			<div class="panel">
+				<div class="panel-hdr bg-faded">
+					<h2>{% block table_heading %}{% endblock table_heading %}</h2>
+					<div id="loader" class="panel-saving mr-2">
+						<i class="fal fa-spinner-third fa-spin-4x fs-xxl"></i>
+					</div>
+					<div class="panel-toolbar">
+						<a href="#" class="btn btn-panel hover-effect-dot js-panel-collapse waves-effect waves-themed" data-action="panel-collapse" data-toggle="tooltip" data-offset="0,10" data-original-title="Expand / Collapse"></a>
+						<a href="#" class="btn btn-panel hover-effect-dot js-panel-fullscreen waves-effect waves-themed" data-action="panel-fullscreen" data-toggle="tooltip" data-offset="0,10" data-original-title="Fullscreen"></a>
+						{% block table_tools %}{% endblock table_tools %}
+					</div>
+				</div>
+				<div class="panel-container collapse show">
+					<div class="panel-content">
+						<table id="datatable" class="table table-hover table-striped w-100 dataTable dtr-inline table-bordered"></table>
+					</div>
+					<div class="panel-content bg-faded rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted">
+						{% block table_footer %}{% endblock table_footer %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock base_content %}
+
+{% block scripts %}
+	<script type="text/javascript">
+        $(document).ready(function() {
+            let datatable = $("#datatable").DataTable({
+                "dom": "<'row mb-1'<'col-md-6'<'float-left mr-2'f>i><'col-md-6 text-right'p>><'row'<'col-12't>><'row'<'col-md-6'i><'col-md-6 text-right'p>>",
+                "serverSide": true,
+                "searchDelay": 500,
+                "deferRender": true,
+                "ajax": {
+                    "url": {% block table_data %}{% endblock table_data %}
+                },
+                "order": [{% block table_ordering %}{% endblock table_ordering %}],
+                "lengthChange": false,
+                "pageLength": 100,
+                "responsive": true,
+                "language": {
+                    "emptyTable": '<p class="text-danger small m-0">{% block empty_table %}There is currently no data to display.{% endblock empty_table %}</p>',
+                    "zeroRecords": '<p class="text-danger small m-0">{% block zero_records %}There is currently no data to display.{% endblock zero_records %}</p>',
+                    "searchPlaceholder": "Search entries..."
+                },
+                "initComplete": function() {
+                    $("#loader").hide();
+                },
+                "preDrawCallback": function() {
+                    $("#loader").show();
+                },
+                "drawCallback": function() {
+                    $("#loader").hide();
+                },
+                {% block table_options %}{% endblock table_options %}
+            });
+            $.fn.dataTable.Debounce = function(datatable) {
+                $('.dataTables_filter input[aria-controls="datatable"]')
+                .unbind()
+                .bind("input", (delay(function() {
+                    datatable.search($(this).val()).draw();
+                }, 1000)));
+            };
+            function delay(callback, ms) {
+                let timer = 0;
+                return function() {
+                    let context = this, args = arguments;
+                    clearTimeout(timer);
+                    timer = setTimeout(function() {
+                        callback.apply(context, args);
+                    }, ms || 0);
+                };
+            }
+            new $.fn.dataTable.Debounce(datatable);
+            {% block datatable_scripts %}{% endblock datatable_scripts %}
+        });
+	</script>
+{% endblock scripts %}

@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'core.apps.CoreConfig',
     "administration.apps.AdministrationConfig",
+    "structure.apps.StructureConfig",
     "widget_tweaks",
     "django.contrib.humanize",
     "hijack",
@@ -84,6 +85,35 @@ SITE_TITLE = "Student Residence Administration System"
 SITE_VERSION = "1.0"
 SITE_DESCRIPTION = "The Cape Peninsula University of Technology Student Residence Administration System"
 SITE_AUTHOR = "Argus Ndabashinze"
+
+# Authentication URL defaults.
+LOGIN_REDIRECT_URL = "/"
+LOGIN_URL = "/login/"
+
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend"
+]
+
+# Password validation
+# https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
+
+AUTH_PASSWORD_VALIDATORS = [
+    {
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    }
+]
+
+# Pagination - Defaults.
+PAGE_SIZE = 33
 
 ROOT_URLCONF = 'sras.urls'
 
@@ -127,25 +157,6 @@ DATABASES = {
         }
     }
 }
-
-
-# Password validation
-# https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
-
-AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
-]
 
 
 # Internationalization
