@@ -8,13 +8,18 @@ from core.utilities import list_view
 
 
 class RoomListSerializer(serializers.ModelSerializer):
+    absolute_url = serializers.SerializerMethodField()
     number = serializers.StringRelatedField()
     floor = serializers.StringRelatedField()
     residence = serializers.SerializerMethodField()
 
     class Meta:
         model = Room
-        fields = ["number", "floor", "residence"]
+        fields = ["id", "absolute_url", "number", "floor", "residence"]
+
+    @staticmethod
+    def get_absolute_url(obj):
+        return obj.get_absolute_url()
 
     @staticmethod
     def get_residence(obj):
@@ -22,12 +27,17 @@ class RoomListSerializer(serializers.ModelSerializer):
 
 
 class ResidenceListSerializer(serializers.ModelSerializer):
+    absolute_url = serializers.SerializerMethodField()
     name = serializers.StringRelatedField()
     campus = serializers.SerializerMethodField()
 
     class Meta:
         model = Residence
-        fields = ["name", "campus"]
+        fields = ["id", "absolute_url", "name", "campus"]
+
+    @staticmethod
+    def get_absolute_url(obj):
+        return obj.get_absolute_url()
 
     @staticmethod
     def get_campus(obj):
@@ -98,7 +108,6 @@ def get_campus_serialized_data(
 
 def get_residences_serialized_data(
     request,
-    campus,
     search_parameters=None,
     search_value=None
 ):
@@ -110,8 +119,6 @@ def get_residences_serialized_data(
     Essentially it provides a one-stop-shop and is called directly from the view
     which returns the appropriate JSON response.
     """
-    search_parameters["campus"] = campus
-
     # base queryset.
     queryset = Residence.objects.filter(**search_parameters)
 
@@ -146,7 +153,6 @@ def get_residences_serialized_data(
 
 def get_rooms_serialized_data(
     request,
-    residence,
     search_parameters=None,
     search_value=None
 ):
@@ -158,10 +164,8 @@ def get_rooms_serialized_data(
     Essentially it provides a one-stop-shop and is called directly from the view
     which returns the appropriate JSON response.
     """
-    search_parameters["residence"] = residence
-
     # base queryset.
-    queryset = Residence.objects.filter(**search_parameters)
+    queryset = Room.objects.filter(**search_parameters)
 
     # This is to further `filter / search` the above queryset based on the table
     # search input.

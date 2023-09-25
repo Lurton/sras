@@ -32,8 +32,7 @@ class Campus(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        # return reverse("structure:campus_view", args=[self.pk])
-        return ""
+        return reverse("structure:campus_view", args=[self.pk])
 
 
 class Residence(models.Model):
@@ -53,6 +52,9 @@ class Residence(models.Model):
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return reverse("structure:residence_view", args=[self.pk])
+
 
 class Room(models.Model):
     number = models.CharField("Residence", max_length=64)
@@ -71,3 +73,6 @@ class Room(models.Model):
 
     def __str__(self):
         return self.number
+
+    def get_absolute_url(self):
+        return reverse("structure:room_view", args=[self.pk])

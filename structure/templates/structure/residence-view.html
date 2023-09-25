@@ -1,0 +1,199 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block breadcrumbs %}
+    <li class="breadcrumb-item">
+        <a href="{%  url "structure:residence_list" %}">Residences</a>
+    </li>
+    <li class="breadcrumb-item active">{{ residence.name }}</li>
+{% endblock breadcrumbs %}
+
+{% block sub_heading %}Campuses | {{ residence.name }}{% endblock sub_heading %}
+
+{% block base_content %}
+    <div class="row">
+        <div{% if requesting_user.can_view_human_resources or requesting_user.can_view_all %} class="col-lg-9"{% else %} class="col-lg-12"{% endif %}>
+            <div class="panel">
+                <div class="panel-hdr bg-faded">
+                    <h2>Residence Information</h2>
+                    <div class="panel-toolbar">
+                        <a href="#" class="btn btn-panel hover-effect-dot js-panel-collapse waves-effect waves-themed" data-action="panel-collapse" data-toggle="tooltip" data-offset="0,10" data-original-title="Expand / Collapse"></a>
+                        <a href="#" class="btn btn-panel hover-effect-dot js-panel-fullscreen waves-effect waves-themed" data-action="panel-fullscreen" data-toggle="tooltip" data-offset="0,10" data-original-title="Fullscreen"></a>
+                    </div>
+                </div>
+                <div class="panel-container collapse show">
+                    <div class="panel-content">
+                        <h2 class="mb-0">
+                            {{ campus.name }}
+                            <small>
+                                <a href="{% url "core:dashboard" %}">dashboard</a>
+                            </small>
+                        </h2>
+                        <hr class="mb-4">
+                        <div class="form-group">
+                            <label class="form-label">Residence Email Address</label>
+                            <p class="form-control-plaintext">
+                                {% if team.email_address %}
+                                    <a href="mailto:{{ residence.email_address }}">{{ residence.email_address }}</a>
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </p>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Residence Location</label>
+                            <p class="form-control-plaintext">{{ residence.location|linebreaks|default:"-" }}</p>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Residence Address</label>
+                            <p class="form-control-plaintext">{{ residence.address|linebreaks|default:"-" }}</p>
+                        </div>
+                        <hr>
+                        <div class="d-flex flex-row">
+                            <div class="info-card-text flex-1">
+                                <span class="mt-1 d-block">
+                                    <i class="fal fa-user-friends text-muted mr-2" data-placement="top" data-toggle="tooltip" data-original-title="Number of Rooms"></i>
+                                    {{ residence.get_residence_count|default:"-" }}
+                                    &nbsp;&nbsp;|&nbsp;&nbsp;
+                                    <i class="fal fa-briefcase text-muted mr-2" data-placement="top" data-toggle="tooltip" data-original-title="Number of Occupants"></i>
+                                    {{ residence.get_people_count|default:"-" }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-content bg-faded rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel shadow collapse show">
+                <div class="panel-hdr bg-faded">
+                    <h2>Related Rooms</h2>
+                    <div id="loader_organization_structures" class="panel-saving mr-2" style="display: none;">
+                        <i class="fal fa-spinner-third fa-spin-4x fs-xxl"></i>
+                    </div>
+                    <div class="panel-toolbar">
+                        <a href="#" class="btn btn-panel hover-effect-dot js-panel-collapse waves-effect waves-themed" data-action="panel-collapse" data-toggle="tooltip" data-offset="0,10" data-original-title="Expand / Collapse"></a>
+                        <a href="#" class="btn btn-panel hover-effect-dot js-panel-fullscreen waves-effect waves-themed" data-action="panel-fullscreen" data-toggle="tooltip" data-offset="0,10" data-original-title="Fullscreen"></a>
+                    </div>
+                </div>
+                <div class="panel-container collapse">
+                    <div class="panel-content">
+                        <table id="datatable_organization_structures" class="table table-hover table-striped w-100 dataTable dtr-inline table-bordered"></table>
+                    </div>
+                    <div class="panel-content bg-faded rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-right text-muted">
+                        <div class="text-left">
+                            <strong>Status:</strong>
+                            <i class="fal fa-check-circle text-primary mr-1"></i>Active&nbsp;|&nbsp;
+                            <i class="fal fa-minus-circle text-danger mr-1"></i>Inactive
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock base_content %}
+
+{% block scripts %}
+    <script type="text/javascript">
+        $(document).ready(function() {
+            if ($.fn.dataTable.isDataTable("#datatable_organization_structures")) {
+                $("#datatable_organization_structures").DataTable();
+            } else {
+                $("#datatable_organization_structures").DataTable({
+                    "dom": "<'row mb-1'<'col-md-6'i><'col-md-6 text-right'p>><'row'<'col-12't>><'row'<'col-md-6'i><'col-md-6 text-right'p>>",
+                    "serverSide": true,
+                    "searching": false,
+                    "deferRender": true,
+                    "ajax": {
+                        "url": '{% url "structure:room_list" %}?json=true&search_parameters={"residence__pk":"{{ residence.pk }}"}'
+                    },
+                    "order": [[0, "desc"]],
+                    "orderable": true,
+                    "colReorder": true,
+                    "lengthChange": false,
+                    "pageLength": 100,
+                    "responsive": true,
+                    "fixedHeader": true,
+                    "language": {
+                        "emptyTable": '<p class="text-danger small m-0">There is currently no data to display.</p>',
+                        "zeroRecords": '<p class="text-danger small m-0">There is currently no data to display.</p>'
+                    },
+                    "initComplete": function () {
+                        $("#loader_organization_structures").hide();
+                    },
+                    "preDrawCallback": function () {
+                        $("#loader_organization_structures").show();
+                    },
+                    "drawCallback": function () {
+                        $("#loader_organization_structures").hide();
+                    },
+                    "columnDefs": [
+                        {
+                            "targets": 0,
+                            "title": "Room Number",
+                            "name": "number",
+                            "data": "number",
+                            "searchable": true
+                        },
+                        {
+                            "targets": 1,
+                            "title": "Room Floor",
+                            "name": "floor",
+                            "data": "floor",
+                            "className": "dataTables_right",
+                            "searchable": true,
+                            "orderable": true
+                        },
+                        {
+                            "targets": 2,
+                            "title": "Residence",
+                            "name": "residence",
+                            "data": "residence",
+                            "className": "dataTables_right",
+                            "searchable": true,
+                            "orderable": true
+                        },
+                        {
+                            "targets": 3,
+                            "title": "Actions",
+                            "orderable": false,
+                            "data": "absolute_url",
+                            "className": "dataTables_nowrap dataTables_center",
+                            "render": function (data) {
+                                let view_button = '<a href="' + data + '" class="btn btn-sm btn-icon btn-outline-primary mr-2"><i class="fal fa-clipboard"></i></a>';
+                                {% if requesting_user.can_view_human_resources or requesting_user.can_view_all %}
+                                let edit_button = '<a href="' + data + 'edit/" class="btn btn-sm btn-icon btn-outline-dark"><i class="fal fa-edit"></i></a>';
+                                return view_button + edit_button
+                                {% endif %}
+                                return view_button
+                            }
+                        }
+                    ]
+                })
+            }
+            let infinite = new Waypoint.Infinite({
+                element: $(".infinite-container")[0],
+                onBeforePageLoad: function() {
+                    $(".infinite-loader").show();
+                },
+                onAfterPageLoad: function($items) {
+                    $(".infinite-loader").hide();
+                }
+            });
+            function delay(callback, ms) {
+                let timer = 0;
+                return function() {
+                    let context = this, args = arguments;
+                    clearTimeout(timer);
+                    timer = setTimeout(function() {
+                        callback.apply(context, args);
+                    }, ms || 0);
+                };
+            }
+        });
+    </script>
+{% endblock scripts %}

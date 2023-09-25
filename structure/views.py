@@ -1,10 +1,11 @@
 import json
 
 from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
 from django.template.response import TemplateResponse
 
 from structure.forms import get_residence_choices, get_room_choices
-from structure.models import Campus, Residence
+from structure.models import Campus, Residence, Room
 from structure.serializers import get_campus_serialized_data, get_residences_serialized_data, get_rooms_serialized_data
 
 
@@ -22,6 +23,19 @@ def campus_list(request, template_name="structure/campus-list.html"):
         )
 
     return TemplateResponse(request, template_name)
+
+
+# Create your views here.
+def campus_view(request, campus_pk, template_name="structure/campus-view.html"):
+    """
+    This function returns a view of all Campuses loaded into the system.
+    """
+    campus = get_object_or_404(Campus, pk=campus_pk)
+    template_context = {
+        "campus": campus
+    }
+
+    return TemplateResponse(request, template_name, template_context)
 
 
 # Create your views here.
@@ -45,6 +59,19 @@ def residence_list(request, template_name="structure/residence-list.html"):
 
 
 # Create your views here.
+def residence_view(request, residence_pk, template_name="structure/residence-view.html"):
+    """
+    This function returns a view of all Campuses loaded into the system.
+    """
+    residence = get_object_or_404(Residence, pk=residence_pk)
+    template_context = {
+        "residence": residence
+    }
+
+    return TemplateResponse(request, template_name, template_context)
+
+
+# Create your views here.
 def room_list(request, template_name="structure/room-list.html"):
     """
     This function returns a list of all Campuses loaded into the system.
@@ -62,6 +89,19 @@ def room_list(request, template_name="structure/room-list.html"):
         )
 
     return TemplateResponse(request, template_name)
+
+
+# Create your views here.
+def room_view(request, room_pk, template_name="structure/room-view.html"):
+    """
+    This function returns a view of all Campuses loaded into the system.
+    """
+    room = get_object_or_404(Room, pk=room_pk)
+    template_context = {
+        "room": room
+    }
+
+    return TemplateResponse(request, template_name, template_context)
 
 
 def ajax_residences(request):

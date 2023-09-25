@@ -95,7 +95,7 @@
         $(document).ready(function () {
             function update_room_options(residence_pk) {
                 let residence_id = residence_pk
-                let room_url = `{% url "administration:ajax_rooms" %}`;
+                let room_url = `{% url "structure:ajax_rooms" %}`;
                 $.ajax({
                     "delay": 500,
                     "url": room_url,
@@ -117,7 +117,7 @@
             function update_residence_options(campus_pk) {
                 let campus_id = campus_pk
                 let residence = $("#id_residence");
-                let residence_url = `{% url "administration:ajax_residences" %}`;
+                let residence_url = `{% url "structure:ajax_residences" %}`;
                 $.ajax({
                     "delay": 500,
                     "url": residence_url,

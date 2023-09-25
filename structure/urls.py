@@ -28,31 +28,45 @@ urlpatterns = [
         #     views.campus_add,
         #     name="campus_add"
         # ),
-        # path("<int:campus_pk>/", include([
-        #     path(
-        #         "view/",
-        #         views.campus_view,
-        #         name="campus_view"
-        #     ),
-        #     path(
-        #         "edit/",
-        #         views.campus_edit,
-        #         name="campus_edit"
-        #     )
-        # ]))
+        path("<int:campus_pk>/", include([
+            path(
+                "view/",
+                views.campus_view,
+                name="campus_view"
+            ),
+            # path(
+            #     "edit/",
+            #     views.campus_edit,
+            #     name="campus_edit"
+            # )
+        ]))
     ])),
     path("residence/", include([
         path(
             "",
             views.residence_list,
             name="residence_list"
-        )
+        ),
+        path("<int:residence_pk>/", include([
+            path(
+                "view/",
+                views.residence_view,
+                name="residence_view"
+            )
+        ]))
     ])),
     path("room/", include([
         path(
             "",
             views.room_list,
             name="room_list"
-        )
-    ])),
+        ),
+        path("<int:room_pk>/", include([
+            path(
+                "view/",
+                views.room_view,
+                name="room_view"
+            )
+        ]))
+    ]))
 ]
