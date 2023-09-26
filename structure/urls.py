@@ -34,11 +34,11 @@ urlpatterns = [
                 views.campus_view,
                 name="campus_view"
             ),
-            # path(
-            #     "edit/",
-            #     views.campus_edit,
-            #     name="campus_edit"
-            # )
+            path(
+                "edit/",
+                views.campus_edit,
+                name="campus_edit"
+            )
         ]))
     ])),
     path("residence/", include([
@@ -52,6 +52,11 @@ urlpatterns = [
                 "view/",
                 views.residence_view,
                 name="residence_view"
+            ),
+            path(
+                "edit/",
+                views.residence_edit,
+                name="residence_edit"
             )
         ]))
     ])),
@@ -66,6 +71,11 @@ urlpatterns = [
                 "view/",
                 views.room_view,
                 name="room_view"
+            ),
+            path(
+                "edit/",
+                views.room_edit,
+                name="room_edit"
             )
         ]))
     ]))

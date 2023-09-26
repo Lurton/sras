@@ -39,6 +39,20 @@ def campus_view(request, campus_pk, template_name="structure/campus-view.html"):
 
 
 # Create your views here.
+def campus_edit(request, campus_pk, template_name="structure/campus-view.html"):
+    """
+    This function returns a view of all Campuses loaded into the system.
+    """
+    # campus = get_object_or_404(Campus, pk=campus_pk)
+    # template_context = {
+    #     "campus": campus
+    # }
+    #
+    # return TemplateResponse(request, template_name, template_context)
+    return ""
+
+
+# Create your views here.
 def residence_list(request, template_name="structure/residence-list.html"):
     """
     This function returns a list of all Campuses loaded into the system.
@@ -72,6 +86,20 @@ def residence_view(request, residence_pk, template_name="structure/residence-vie
 
 
 # Create your views here.
+def residence_edit(request, residence_pk, template_name="structure/residence-edit.html"):
+    """
+    This function returns a view of all Campuses loaded into the system.
+    """
+    # residence = get_object_or_404(Residence, pk=residence_pk)
+    # template_context = {
+    #     "residence": residence
+    # }
+    #
+    # return TemplateResponse(request, template_name, template_context)
+    return ""
+
+
+# Create your views here.
 def room_list(request, template_name="structure/room-list.html"):
     """
     This function returns a list of all Campuses loaded into the system.
@@ -102,6 +130,20 @@ def room_view(request, room_pk, template_name="structure/room-view.html"):
     }
 
     return TemplateResponse(request, template_name, template_context)
+
+
+# Create your views here.
+def room_edit(request, room_pk, template_name="structure/room-edit.html"):
+    """
+    This function returns a view of all Campuses loaded into the system.
+    """
+    # room = get_object_or_404(Room, pk=room_pk)
+    # template_context = {
+    #     "room": room
+    # }
+    #
+    # return TemplateResponse(request, template_name, template_context)
+    return ""
 
 
 def ajax_residences(request):

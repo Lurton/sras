@@ -13,7 +13,7 @@
 
 {% block base_content %}
     <div class="row">
-        <div{% if requesting_user.can_view_human_resources or requesting_user.can_view_all %} class="col-lg-9"{% else %} class="col-lg-12"{% endif %}>
+        <div{% if requesting_user.can_view_human_resources or requesting_user.can_view_all %} class="col-lg-9"{% else %} class="col-lg-9"{% endif %}>
             <div class="panel">
                 <div class="panel-hdr bg-faded">
                     <h2>Campus Information</h2>
@@ -34,7 +34,7 @@
                         <div class="form-group">
                             <label class="form-label">Campus Email Address</label>
                             <p class="form-control-plaintext">
-                                {% if team.email_address %}
+                                {% if campus.email_address %}
                                     <a href="mailto:{{ campus.email_address }}">{{ campus.email_address }}</a>
                                 {% else %}
                                     -
@@ -65,6 +65,24 @@
                 </div>
             </div>
         </div>
+        <div class="col-lg-3">
+            <div class="card mb-4">
+                <div class="card-body shadow-hover-5">
+                    <a href="{% url "structure:campus_edit" campus.pk %}" class="d-flex flex-row align-items-center">
+                        <div class="icon-stack display-4 flex-shrink-0">
+                            <i class="fal fa-circle icon-stack-3x opacity-100 color-primary-400"></i>
+                            <i class="fal fa-edit icon-stack-1x opacity-100 color-primary-500"></i>
+                        </div>
+                        <div class="ml-3">
+                            <strong>Edit Campus Information</strong>
+                            <span class="d-lg-none d-xl-block">
+                                Campus name, campus address, campus email address and campus location.
+                            </span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="row">
         <div class="col-lg-12">
@@ -79,7 +97,7 @@
                         <a href="#" class="btn btn-panel hover-effect-dot js-panel-fullscreen waves-effect waves-themed" data-action="panel-fullscreen" data-toggle="tooltip" data-offset="0,10" data-original-title="Fullscreen"></a>
                     </div>
                 </div>
-                <div class="panel-container collapse">
+                <div class="panel-container show">
                     <div class="panel-content">
                         <table id="datatable_organization_structures" class="table table-hover table-striped w-100 dataTable dtr-inline table-bordered"></table>
                     </div>
