@@ -68,6 +68,39 @@ def get_room_choices(residence, json_response=None):
     return response
 
 
+class ResidenceEditForm(forms.ModelForm):
+
+    class Meta:
+        model = Residence
+        fields = ["name", "campus", "image"]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        try:
+            residence = kwargs["instance"]
+        except KeyError:
+            pass
+
+        self.fields["campus"].choices = list(chain(
+            get_campus_choices()
+        ))
+
+    def clean(self):
+        cleaned_data = super().clean()
+
+        # This is to catch and display any individual field errors from the
+        # form during the default clean.
+        if self._errors:
+            return cleaned_data
+
+        # Ensure that fields across the system are neat and valid.
+        for field, value in cleaned_data.items():
+            if isinstance(value, str):
+                cleaned_data[field] = value.strip()
+
+        return cleaned_data
+
+
 class RoomEditForm(forms.ModelForm):
 
     class Meta:

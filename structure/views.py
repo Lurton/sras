@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.template.response import TemplateResponse
 
-from structure.forms import get_residence_choices, get_room_choices, RoomEditForm, CampusEditForm
+from structure.forms import get_residence_choices, get_room_choices, RoomEditForm, CampusEditForm, ResidenceEditForm
 from structure.models import Campus, Residence, Room
 from structure.serializers import (
     get_campus_serialized_data, get_residences_serialized_data, get_rooms_serialized_data
@@ -49,7 +49,7 @@ def campus_edit(request, campus_pk, template_name="structure/campus-edit.html"):
     campus = get_object_or_404(Campus, pk=campus_pk)
 
     if request.method == "POST":
-        form = RoomEditForm(request.POST, instance=campus)
+        form = CampusEditForm(request.POST, instance=campus)
 
         if form.is_valid():
             updated_campus = form.save()
@@ -110,13 +110,30 @@ def residence_edit(request, residence_pk, template_name="structure/residence-edi
     """
     This function returns a view of all Campuses loaded into the system.
     """
-    # residence = get_object_or_404(Residence, pk=residence_pk)
-    # template_context = {
-    #     "residence": residence
-    # }
-    #
-    # return TemplateResponse(request, template_name, template_context)
-    return ""
+    residence = get_object_or_404(Residence, pk=residence_pk)
+
+    if request.method == "POST":
+        form = ResidenceEditForm(request.POST, instance=residence)
+
+        if form.is_valid():
+            updated_campus = form.save()
+            messages.success(request, "The room was edited successfully")
+            return redirect(updated_campus)
+        else:
+            messages.error(
+                request,
+                "There was an error while trying to edit the room."
+            )
+
+    else:
+        form = ResidenceEditForm(instance=residence)
+
+    template_context = {
+        "form": form,
+        "residence": residence
+    }
+
+    return TemplateResponse(request, template_name, template_context)
 
 
 # Create your views here.
