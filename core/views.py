@@ -30,7 +30,6 @@ def index(request, template_name="core/index.html"):
     return TemplateResponse(request, template_name)
 
 
-
 @login_required
 def dashboard(request, template_name="core/dashboard.html"):
     """
@@ -77,38 +76,6 @@ def dashboard(request, template_name="core/dashboard.html"):
                 extra_tags="Search Parameters"
             )
 
-    # Fetch all the respective searches from the individual applications.
-    # company_queryset = company_search(
-    #     request, search_parameters=search_parameters
-    # )
-    # company_document_queryset = company_document_search(
-    #     request, search_parameters=search_parameters
-    # )
-    # people_queryset = person_search(
-    #     request, search_parameters=search_parameters
-    # )
-    # people_document_queryset = person_document_search(
-    #     request, search_parameters=search_parameters
-    # )
-    # asset_queryset = asset_search(
-    #     request, search_parameters=search_parameters
-    # )
-    # asset_document_queryset = asset_document_search(
-    #     request, search_parameters=search_parameters
-    # )
-    # bank_account_queryset = bank_account_search(
-    #     request, search_parameters=search_parameters
-    # )
-    # customer_queryset = customer_search(
-    #     request, search_parameters=search_parameters
-    # )
-    # contact_queryset = contact_search(
-    #     request, search_parameters=search_parameters
-    # )
-    # location_queryset = location_search(
-    #     request, search_parameters=search_parameters
-    # )
-
     dashboard_values = {
         # "companies": {
         #     "company_count": company_queryset.count(),
@@ -130,10 +97,16 @@ def dashboard(request, template_name="core/dashboard.html"):
         # }
     }
 
+    print(request.user)
+    print(request.user)
+    print(request.user.first_name)
+    user = Personnel.objects.get(student_email=request.user)
+    print(user)
+
     template_context = {
         "form": form,
         "dashboard_values": dashboard_values,
-        # "search_parameters": urlencode(search_parameters)
+        "name": user.get_full_name
     }
 
     return TemplateResponse(request, template_name, template_context)

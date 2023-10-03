@@ -11,16 +11,14 @@
         <div class="col-md-6">
             <div class="panel shadow">
                 <div class="panel-hdr bg-faded">
-                    <h2>Welcome to the CPUT Student Residence Administration System</h2>
+                    <h2>Welcome to the Student Residence Administration System</h2>
                 </div>
                 <div class="panel-container">
                     <div class="panel-content">
-                        <h3 class="mb-g">Hi {{ profile.first_name }},</h3>
-                        <p>Welcome to RDX and congratulations on taking the best step in your relationship adventure.</p>
-                        <p>Welcome to RDX and congratulations on taking the best step in your relationship adventure.</p>
-                        <p>Welcome to RDX and congratulations on taking the best step in your relationship adventure.</p>
-                        <p>In order to get started you need to complete your profile by working through the following RDX Sections. This is an extensive process and will require some time to complete. Please ensure that you have some quiet time as your progress.</p>
-                        <p>There are 3 sections that need to be completed in order to have a full profile.</p>
+                        <h3 class="mb-g">Hi {{ name }},</h3>
+                        <p>On this platform you will be able to apply for residence,</p>
+                        <p>You will be able to transfer to a difference residence</p>
+                        <p>Or cancel you application</p>
                     </div>
                 </div>
             </div>
@@ -36,21 +34,9 @@
                             <div class="col-md-9">
                                 <div class="my-2">
                                     <strong>Application</strong><br>
-                                    {{ profile.get_er_questions_answered_count }} / {{ profile.get_er_questions_count }}
-                                </div>
-                            </div>
-                            <div class="col-md-3 mt-3">
-                                    <a href="{% url "administration:application" %}" class="btn btn-block btn-outline-danger waves-effect waves-themed"><i class="fal fa-play mr-2"></i>Apply</a>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-8">
-                                <div class="progress bg-gray-400">
-                                    {% if profile.er_complete and not profile.er_answers_valid_check %}
-                                        <div class="progress-bar bg-success-400" role="progressbar" style="width: {{ er_progress_percentage }}%;" aria-valuenow="{{ profile.get_er_questions_answered_count }}" aria-valuemin="0" aria-valuemax="{{ profile.get_er_questions_count }}"><strong class="text-white">Review Categories</strong></div>
-                                    {% else %}
-                                        <div class="progress-bar bg-success-400" role="progressbar" style="width: {{ er_progress_percentage }}%;" aria-valuenow="{{ profile.get_er_questions_answered_count }}" aria-valuemin="0" aria-valuemax="{{ profile.get_er_questions_count }}"><strong class="text-white">{{ er_progress_percentage }}%</strong></div>
-                                    {% endif %}
+                                    <div class="col-md-3 mt-3">
+                                            <a href="{% url "administration:application" %}" class="btn btn-block btn-outline-danger waves-effect waves-themed"><i class="fal fa-play mr-2"></i>Apply</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -59,17 +45,9 @@
                             <div class="col-md-9">
                                 <div class="my-2">
                                     <strong>Transfer to different residence</strong><br>
-                                    {{ profile.get_cp_questions_answered_count }} / {{ profile.get_cp_questions_count }}
-                                </div>
-                            </div>
-                            <div class="col-md-3 mt-3">
-                                    <a href="#" class="btn btn-block btn-outline-info waves-effect waves-themed"><i class="fal fa-play mr-2"></i>Transfer</a>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-8">
-                                <div class="progress bg-gray-400">
-                                    <div class="progress-bar bg-success-400" role="progressbar" style="width: {{ cp_progress_percentage }}%;" aria-valuenow="{{ profile.get_cp_questions_answered_count }}" aria-valuemin="0" aria-valuemax="{{ profile.get_cp_questions_count }}"><strong class="text-white">{{ cp_progress_percentage }}%</strong></div>
+                                    <div class="col-md-3 mt-3">
+                                            <a href="#" class="btn btn-block btn-outline-info waves-effect waves-themed"><i class="fal fa-play mr-2"></i>Transfer</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -78,17 +56,9 @@
                             <div class="col-md-9">
                                 <div class="my-2">
                                     <strong>Cancel Residence Application</strong><br>
-                                    {{ profile.get_naw_questions_answered_count }} / {{ profile.get_naw_questions_count }}
-                                </div>
-                            </div>
-                            <div class="col-md-3 mt-3">
-                                <a href="#" class="btn btn-block btn-outline-success waves-effect waves-themed"><i class="fal fa-check mr-2"></i>Cancel</a>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-8">
-                                <div class="progress bg-gray-400">
-                                    <div class="progress-bar bg-success-400" role="progressbar" style="width: {{ naw_progress_percentage }}%;" aria-valuenow="{{ profile.get_naw_questions_answered_count }}" aria-valuemin="0" aria-valuemax="{{ profile.get_naw_questions_count }}"><strong class="text-white">{{ naw_progress_percentage }}%</strong></div>
+                                    <div class="col-md-3 mt-3">
+                                        <a href="#" class="btn btn-block btn-outline-success waves-effect waves-themed"><i class="fal fa-check mr-2"></i>Cancel</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
