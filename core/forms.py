@@ -68,7 +68,8 @@ class LoginForm(forms.Form):
                 return cleaned_data
 
             # Update the `username` to match the `auth_user` model username.
-            cleaned_data["username"] = user
+            cleaned_data["username"] = username
+            cleaned_data["password"] = password
         except USER_MODEL.DoesNotExist:
             error_message = (
                 "The user account (email address) does not exist on the"
