@@ -1,0 +1,171 @@
+{% extends "main/base.html" %}
+
+{% load static humanize %}
+
+{% block styles %}
+    <link href="{% static "css/colors.css" %}" rel="stylesheet">
+{% endblock styles %}
+
+{% block breadcrumbs %}
+    <li class="breadcrumb-item">
+        <a href="#">Person View</a>
+    </li>
+    <li class="breadcrumb-item active">{{ person }}</li>
+{% endblock breadcrumbs %}
+
+{% block sub_heading %}People | {{ person }}{% endblock sub_heading %}
+
+{% block sub_header_block %}
+    <div class="subheader-block d-lg-flex align-items-center border-faded border-right-0 border-top-0 border-bottom-0 ml-3 pl-3">
+        <a href="#" class="btn btn-outline-danger waves-effect waves-themed">
+            <i class="fal fa-user-minus mr-2"></i>Button for Anything
+        </a>
+    </div>
+{% endblock sub_header_block %}
+
+{% block base_content %}
+    <div class="row">
+        <div
+            {% if not person.is_terminated and not person.is_non_transfer_termination_resolved %}
+                {% if requesting_user.can_view_human_resources or requesting_user.can_view_all %}
+                    class="col-lg-9"
+                {% else %}
+                    class="col-lg-12"
+                {% endif %}
+            {% else %}
+                class="col-lg-12"
+            {% endif %}>
+            <div class="panel">
+                <div class="panel-hdr bg-faded">
+                    <h2>{{ person }}</h2>
+                    <div class="panel-toolbar">
+                        <a href="#" class="btn btn-panel hover-effect-dot js-panel-collapse waves-effect waves-themed" data-action="panel-collapse" data-toggle="tooltip" data-offset="0,10" data-original-title="Expand / Collapse"></a>
+                        <a href="#" class="btn btn-panel hover- effect-dot js-panel-fullscreen waves-effect waves-themed" data-action="panel-fullscreen" data-toggle="tooltip" data-offset="0,10" data-original-title="Fullscreen"></a>
+                    </div>
+                </div>
+                <div class="panel-container show">
+                    <div class="panel-content">
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="text-center p-2 pt-4">
+                                    {% if person.image %}
+                                        <img src="{{ person.image.url }}" style="width:100%; max-width: 250px;" class="rounded-circle shadow-2 img-thumbnail" alt="{{ person }}">
+                                    {% else %}
+                                        <img src="{% static "images/male_silhouette.png" %}" style="width:100%; max-width: 250px;" class="rounded-circle shadow-2 img-thumbnail" alt="{{ person }}">
+                                    {% endif %}
+                                </div>
+                                <div class="text-center mt-2 pb-2">
+                                    <span id="in_office_icon" class="badge badge-primary" data-toggle="tooltip" data-original-title="In Office" style="display: {% if person.in_office %}inline-block{% else %}none;{% endif %}"><i class="fal fa-briefcase fa-2x"></i></span>
+                                    <span id="at_home_icon" class="badge badge-dark" data-toggle="tooltip" data-original-title="At Home" style="display: {% if not person.in_office %}inline-block{% else %}none;{% endif %}"><i class="fal fa-home fa-2x"></i></span>
+                                    {% if requesting_user.can_view_human_resources or requesting_user.can_view_all %}
+                                        {% if person.has_payspace %}
+                                            <span class="badge badge-success" data-toggle="tooltip" data-original-title="In Payspace">
+                                                <i class="fal fa-user-check fa-2x"></i>
+                                            </span>
+                                        {% else %}
+                                            <span class="badge badge-danger" data-toggle="tooltip" data-original-title="Not In Payspace">
+                                                <i class="fal fa-user-times fa-2x"></i>
+                                            </span>
+                                        {% endif %}
+                                        <a href="{% url "human_resources_people_edit_image" person.company.path person.pk %}">
+                                            <span class="badge badge-info" data-toggle="tooltip" data-original-title="Edit Image">
+                                                <i class="fal fa-user-circle fa-2x"></i>
+                                            </span>
+                                        </a>
+                                    {% endif %}
+                                </div>
+{#                                <div class="text-center p-2">#}
+{#                                    {% for badge in covid_badges %}#}
+{#                                        <div id="badge_pk_{{ badge.pk }}" class="icon-stack fa-4x mr-1" data-toggle="tooltip" title="{{ badge.name }}: {{ badge.description }}" style="display: none;">#}
+{#                                            <i class="base {{ badge.layer_three_base.name }} icon-stack-3x mr-1" style="color: {{ layer_three_colour.hex_code }};"></i>#}
+{#                                            <i class="base {{ badge.layer_two_base.name }} icon-stack-2x mr-1" style="color: {{ badge.layer_two_colour.hex_code }};"></i>#}
+{#                                            <i class="fal {{ badge.layer_one_icon.fa_code }} icon-stack-2x" style="color: {{ badge.layer_one_colour.hex_code }}; font-size: 1.2rem;"></i>#}
+{#                                        </div>#}
+{#                                    {% endfor %}#}
+{#                                    {% for achievement in person.get_non_covid_achievements %}#}
+{#                                        <div id="achievement_pk_{{ achievement.pk }}" class="icon-stack fa-4x mr-1" data-toggle="tooltip" title="{{ achievement.badge.name }}: {{ achievement.badge.description }}">#}
+{#                                            <i class="base {{ achievement.badge.layer_three_base.name }} icon-stack-3x mr-1" style="color: {{ achievement.badge.layer_three_colour.hex_code }};"></i>#}
+{#                                            <i class="base {{ achievement.badge.layer_two_base.name }} icon-stack-2x mr-1" style="color: {{ achievement.badge.layer_two_colour.hex_code }};"></i>#}
+{#                                            <i class="fal {{ achievement.badge.layer_one_icon.fa_code }} icon-stack-2x" style="color: {{ achievement.badge.layer_one_colour.hex_code }}; font-size: 1.2rem;"></i>#}
+{#                                        </div>#}
+{#                                    {% endfor %}#}
+{#                                </div>#}
+                            </div>
+                            <div class="col-8 pt-4">
+                                <h2>{{ person }}<small class="mb-0">{{ person.personnel_type }}</small></h2>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-md-6 px-3">
+                                        <div class="form-group">
+                                            <label class="form-label">Name</label>
+                                            <p class="form-control-plaintext">
+                                                {{ person.first_name }}
+                                            </p>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label">Address</label>
+                                            <p class="form-control-plaintext">
+                                                {% if person.address %}
+                                            </p>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label">Location</label>
+                                            <p class="form-control-plaintext">
+                                                {% if person.location %}
+                                                    <a href="{% url "human_resources_location_view" company.path person.location.pk %}">{{ person.location }}</a>
+                                                {% else %}
+                                                    -
+                                                {% endif %}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 px-3">
+                                        <div class="form-group">
+                                            <label class="form-label">Surname</label>
+                                            <p class="form-control-plaintext">
+                                                {{ person.last_name }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr class="mt-0">
+                                <div class="row">
+                                    <div class="col-md-6 px-3">
+                                        <div class="form-group">
+                                            <label class="form-label">Email Address</label>
+                                            <p class="form-control-plaintext">
+                                                 {% if person.student_email %}
+                                                    <a href="mailto:{{ person.student_email }}">
+                                                        {{ person.student_email }}
+                                                    </a>
+                                                {% else %}
+                                                    -
+                                                {% endif %}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 px-3">
+                                        {% if person.show_contact_details %}
+                                            <div class="form-group">
+                                                <label class="form-label">Mobile Number</label>
+                                                <p class="form-control-plaintext">
+                                                     {% if person.mobile_number %}
+                                                        <a href="tel:{{ person.mobile_number }}">{{ person.mobile_number }}</a>
+                                                    {% else %}
+                                                        -
+                                                    {% endif %}
+                                                </p>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-content bg-faded rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-muted"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock base_content %}

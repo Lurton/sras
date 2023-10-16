@@ -21,5 +21,12 @@ urlpatterns = [
             views.password_reset_complete,
             name="password_reset_complete"
         )
-    ]))
+    ])),
+    path("<int:profile_pk>/", include([
+        path(
+            "", views.profile_view, name="profile_view"
+        ),
+        path("edit/", views.profile_edit, name="profile_edit")
+    ])
+    )
 ]

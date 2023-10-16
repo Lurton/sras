@@ -1,12 +1,14 @@
 from django.contrib.auth import get_user_model
-from django.core.validators import MaxLengthValidator
+from django.core.validators import MaxLengthValidator, EMPTY_VALUES
 from django.db import models
 
 from django_extensions.db.models import TimeStampedModel
 
+from administration.models import Personnel
 from core.validators import telephone_number_validator
 
 USER_MODEL = get_user_model()
+
 
 class BasePhysicalAddress(models.Model):
     class ProvinceChoices(models.IntegerChoices):
@@ -62,15 +64,8 @@ class BaseUserAuthentication(TimeStampedModel):
     user = models.OneToOneField(
         USER_MODEL, null=True, blank=True, on_delete=models.CASCADE
     )
-    # campus = models.ForeignKey(
-    #     "companies.Company", null=True, blank=True, on_delete=models.SET_NULL
-    # )
-    in_office = models.BooleanField("In Office", default=False)
     first_name = models.CharField("First Name", max_length=30)
-    middle_name = models.CharField("Middle Name", max_length=30, blank=True)
-    maiden_name = models.CharField("Maiden Name", max_length=150, blank=True)
     last_name = models.CharField("Last Name", max_length=150)
-    preferred_name = models.CharField("Preferred Name", max_length=30, blank=True)
     birth_date = models.DateField(
         "Date of Birth", null=True, blank=True,
         help_text="The date of birth is in the following format e.g.: yyyy-mm-dd."
@@ -83,11 +78,6 @@ class BaseUserAuthentication(TimeStampedModel):
         validators=telephone_number_validator
     )
     student_email = models.EmailField("Student Email")
-    show_contact_details = models.BooleanField(
-        "Show Contact Details",
-        default=True
-    )
-    notes = models.TextField(blank=True, validators=[MaxLengthValidator(500)])
 
     class Meta:
         ordering = ["first_name", "last_name"]
@@ -138,3 +128,47 @@ class AuthenticationAudit(models.Model):
 
     def __str__(self):
         return f"{self.timestamp} [{self.ip_address}]"
+
+
+class PhysicalAddress(BasePhysicalAddress):
+    person = models.ForeignKey(
+        Personnel,
+        blank=False,
+        null=True,
+        on_delete=models.CASCADE
+    )
+    unit_number = models.CharField("Unit Number", max_length=16, blank=True)
+    complex_name = models.CharField("Complex Name", max_length=128, blank=True)
+    street_number = models.CharField("Street Number", max_length=16, blank=True)
+    street_name = models.CharField("Street Name", max_length=128, blank=True)
+    suburb = models.CharField(max_length=128, blank=True)
+
+    class Meta:
+        verbose_name = "Physical Address"
+        verbose_name_plural = "Physical Addresses"
+        ordering = ["person"]
+
+    @property
+    def full_physical_address(self):
+        address_list = []
+        if self.unit_number and self.complex_name:
+            address_list.append(f"{self.unit_number} {self.complex_name}")
+        elif self.complex_name and not self.unit_number:
+            address_list.append(f"{self.complex_name}")
+        elif self.unit_number and not self.complex_name:
+            address_list.append(f"{self.unit_number}")
+        if self.street_number and self.street_name:
+            address_list.append(f"{self.street_number} {self.street_name}")
+        elif self.street_name and not self.street_number:
+            address_list.append(f"{self.street_name}")
+        if self.suburb:
+            address_list.append(self.suburb)
+        initial_address = ", ".join(address_list)
+        if address_list not in EMPTY_VALUES:
+            address = f"{initial_address}, {self.get_full_address}"
+        else:
+            address = f"{self.get_full_address}"
+        return address
+
+    def __str__(self):
+        return f"{self.full_physical_address}"

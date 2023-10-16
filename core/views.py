@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate, login, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.views import PasswordResetConfirmView
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
 from django.template.response import TemplateResponse
 from django.urls import reverse, reverse_lazy
 from django.utils.encoding import force_bytes
@@ -377,3 +377,14 @@ def password_reset_complete(request):
         " been reset successfully."
     )
     return redirect("core:index")
+
+
+def profile_view(request, profile_pk, template_name="core/person-view.html"):
+    person = get_object_or_404(Personnel, pk=profile_pk)
+
+    template_context = {
+        "person": person
+    }
+
+    return TemplateResponse(request, template_name, template_context)
+
