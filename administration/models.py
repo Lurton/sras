@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 from core.utilities import get_document_upload_path
 from core.models import BaseUserAuthentication
@@ -29,10 +30,10 @@ class Personnel(BaseUserAuthentication):
         return self.student_number
 
     def get_absolute_url(self):
-        # return reverse(
-        #     "students_student_view",
-        #     args=[self.campus.path, self.pk]
-        # )
+        return reverse(
+            "core:profile_view",
+            args=[self.pk]
+        )
         pass
 
     def __str__(self):

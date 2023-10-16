@@ -1,0 +1,21 @@
+{% load static %}
+
+<script src="{% static "js/bootstrap-datepicker.min.js" %}"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        let date_controls = {
+            leftArrow: '<i class="fal fa-angle-left" style="font-size: 1.25rem;"></i>',
+            rightArrow: '<i class="fal fa-angle-right" style="font-size: 1.25rem;"></i>'
+        };
+        $(".date-picker").datepicker({
+            "todayBtn": "linked",
+            "clearBtn": true,
+            "calendarWeeks": true,
+            "autoclose": true,
+            "todayHighlight": true,
+            "format": "yyyy-mm-dd",
+            "templates": date_controls,
+            {{ datepicker_extras }}
+        });
+    });
+</script>

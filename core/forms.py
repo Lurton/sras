@@ -251,3 +251,43 @@ class CorePasswordResetSetForm(SetPasswordForm):
         self.fields["new_password1"].label = "New Password"
         self.fields["new_password1"].help_text = help_text
         self.fields["new_password2"].label = "New Password Confirmation"
+
+
+class ProfileForm(forms.ModelForm):
+
+    class Meta:
+        model = Personnel
+        fields = [
+            "first_name", "last_name", "birth_date", "mobile_number", "home_number"
+        ]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.profile = None
+        try:
+            self.profile = kwargs["instance"]
+        except KeyError:
+            pass
+
+        self.fields["mobile_number"].extras = {"hr_below": True}
+        self.fields["birth_date"].extras = {
+            "input_group": "<i class='fal fa-calendar-alt'></i>",
+            "hr_above": True
+        }
+        self.fields["birth_date"].widget.attrs.update({"class": "date-picker"})
+
+    def clean(self):
+        cleaned_data = super().clean()
+
+        # This is to catch and display any individual field errors from the form
+        # during the default clean.
+        if self._errors:
+            return cleaned_data
+
+        # Ensure that fields across the system are neat and valid.
+        for field, value in cleaned_data.items():
+            if isinstance(value, str):
+                cleaned_data[field] = value.strip()
+
+        return cleaned_data

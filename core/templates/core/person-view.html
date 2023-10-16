@@ -1,4 +1,4 @@
-{% extends "main/base.html" %}
+{% extends "base.html" %}
 
 {% load static humanize %}
 
@@ -17,8 +17,8 @@
 
 {% block sub_header_block %}
     <div class="subheader-block d-lg-flex align-items-center border-faded border-right-0 border-top-0 border-bottom-0 ml-3 pl-3">
-        <a href="#" class="btn btn-outline-danger waves-effect waves-themed">
-            <i class="fal fa-user-minus mr-2"></i>Button for Anything
+        <a href="{% url "core:profile_edit" person.pk %}" class="btn btn-outline-danger waves-effect waves-themed">
+            <i class="fal fa-user mr-2"></i>Edit Profile
         </a>
     </div>
 {% endblock sub_header_block %}
@@ -57,42 +57,10 @@
                                 <div class="text-center mt-2 pb-2">
                                     <span id="in_office_icon" class="badge badge-primary" data-toggle="tooltip" data-original-title="In Office" style="display: {% if person.in_office %}inline-block{% else %}none;{% endif %}"><i class="fal fa-briefcase fa-2x"></i></span>
                                     <span id="at_home_icon" class="badge badge-dark" data-toggle="tooltip" data-original-title="At Home" style="display: {% if not person.in_office %}inline-block{% else %}none;{% endif %}"><i class="fal fa-home fa-2x"></i></span>
-                                    {% if requesting_user.can_view_human_resources or requesting_user.can_view_all %}
-                                        {% if person.has_payspace %}
-                                            <span class="badge badge-success" data-toggle="tooltip" data-original-title="In Payspace">
-                                                <i class="fal fa-user-check fa-2x"></i>
-                                            </span>
-                                        {% else %}
-                                            <span class="badge badge-danger" data-toggle="tooltip" data-original-title="Not In Payspace">
-                                                <i class="fal fa-user-times fa-2x"></i>
-                                            </span>
-                                        {% endif %}
-                                        <a href="{% url "human_resources_people_edit_image" person.company.path person.pk %}">
-                                            <span class="badge badge-info" data-toggle="tooltip" data-original-title="Edit Image">
-                                                <i class="fal fa-user-circle fa-2x"></i>
-                                            </span>
-                                        </a>
-                                    {% endif %}
                                 </div>
-{#                                <div class="text-center p-2">#}
-{#                                    {% for badge in covid_badges %}#}
-{#                                        <div id="badge_pk_{{ badge.pk }}" class="icon-stack fa-4x mr-1" data-toggle="tooltip" title="{{ badge.name }}: {{ badge.description }}" style="display: none;">#}
-{#                                            <i class="base {{ badge.layer_three_base.name }} icon-stack-3x mr-1" style="color: {{ layer_three_colour.hex_code }};"></i>#}
-{#                                            <i class="base {{ badge.layer_two_base.name }} icon-stack-2x mr-1" style="color: {{ badge.layer_two_colour.hex_code }};"></i>#}
-{#                                            <i class="fal {{ badge.layer_one_icon.fa_code }} icon-stack-2x" style="color: {{ badge.layer_one_colour.hex_code }}; font-size: 1.2rem;"></i>#}
-{#                                        </div>#}
-{#                                    {% endfor %}#}
-{#                                    {% for achievement in person.get_non_covid_achievements %}#}
-{#                                        <div id="achievement_pk_{{ achievement.pk }}" class="icon-stack fa-4x mr-1" data-toggle="tooltip" title="{{ achievement.badge.name }}: {{ achievement.badge.description }}">#}
-{#                                            <i class="base {{ achievement.badge.layer_three_base.name }} icon-stack-3x mr-1" style="color: {{ achievement.badge.layer_three_colour.hex_code }};"></i>#}
-{#                                            <i class="base {{ achievement.badge.layer_two_base.name }} icon-stack-2x mr-1" style="color: {{ achievement.badge.layer_two_colour.hex_code }};"></i>#}
-{#                                            <i class="fal {{ achievement.badge.layer_one_icon.fa_code }} icon-stack-2x" style="color: {{ achievement.badge.layer_one_colour.hex_code }}; font-size: 1.2rem;"></i>#}
-{#                                        </div>#}
-{#                                    {% endfor %}#}
-{#                                </div>#}
                             </div>
                             <div class="col-8 pt-4">
-                                <h2>{{ person }}<small class="mb-0">{{ person.personnel_type }}</small></h2>
+                                <h2>{{ person }}<small class="mb-0">{{ person.get_personnel_type_display }}</small></h2>
                                 <hr>
                                 <div class="row">
                                     <div class="col-md-6 px-3">
@@ -105,14 +73,13 @@
                                         <div class="form-group">
                                             <label class="form-label">Address</label>
                                             <p class="form-control-plaintext">
-                                                {% if person.address %}
-                                            </p>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="form-label">Location</label>
-                                            <p class="form-control-plaintext">
-                                                {% if person.location %}
-                                                    <a href="{% url "human_resources_location_view" company.path person.location.pk %}">{{ person.location }}</a>
+                                                {% if address %}
+                                                    address.line_1<br>
+                                                    address.line_2<br>
+                                                    address.line_3<br>
+                                                    address.city<br>
+                                                    address.country<br>
+                                                    address.code<br>
                                                 {% else %}
                                                     -
                                                 {% endif %}
@@ -124,6 +91,16 @@
                                             <label class="form-label">Surname</label>
                                             <p class="form-control-plaintext">
                                                 {{ person.last_name }}
+                                            </p>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label">Home Number</label>
+                                            <p class="form-control-plaintext">
+                                                 {% if person.mobile_number %}
+                                                    <a href="tel:{{ person.home_number }}">{{ person.home_number }}</a>
+                                                {% else %}
+                                                    -
+                                                {% endif %}
                                             </p>
                                         </div>
                                     </div>
@@ -145,18 +122,16 @@
                                         </div>
                                     </div>
                                     <div class="col-md-6 px-3">
-                                        {% if person.show_contact_details %}
-                                            <div class="form-group">
-                                                <label class="form-label">Mobile Number</label>
-                                                <p class="form-control-plaintext">
-                                                     {% if person.mobile_number %}
-                                                        <a href="tel:{{ person.mobile_number }}">{{ person.mobile_number }}</a>
-                                                    {% else %}
-                                                        -
-                                                    {% endif %}
-                                                </p>
-                                            </div>
-                                        {% endif %}
+                                        <div class="form-group">
+                                            <label class="form-label">Mobile Number</label>
+                                            <p class="form-control-plaintext">
+                                                 {% if person.mobile_number %}
+                                                    <a href="tel:{{ person.mobile_number }}">{{ person.mobile_number }}</a>
+                                                {% else %}
+                                                    -
+                                                {% endif %}
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

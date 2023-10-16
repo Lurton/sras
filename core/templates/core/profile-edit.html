@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block breadcrumbs %}
+    <li class="breadcrumb-item">
+        <a href="{% url "core:profile_view" profile.pk %}">{{ profile }}</a>
+    </li>
+    <li class="breadcrumb-item active">Edit</li>
+{% endblock breadcrumbs %}
+
+{% block sub_heading %}{{ profile }} | Edit{% endblock sub_heading %}
+
+{% block base_content %}
+    <div class="row">
+        <div class="col-md-9">
+            <div class="panel shadow">
+                <div class="panel-hdr bg-faded">
+                    <h2>
+                        <i class="fal width-1 fs-xl"></i>Profile Information | Edit
+                    </h2>
+                </div>
+                <div class="panel-container">
+                    <div class="panel-content">
+                        {% include "base-form.html" with form=form %}
+                    </div>
+                    <div class="panel-content rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-right">
+                        <a href="{% url "core:profile_view" profile.pk %}" class="btn btn-outline-danger waves-effect waves-themed">
+                            <i class="fal fa-times mr-2"></i>Cancel
+                        </a>
+                        <button type="button" id="btn_submit" class="btn btn-outline-success waves-effect waves-themed ml-2">
+                            <i class="fal fa-check mr-2"></i>Submit
+                        </button>
+                    </div>
+                </div>
+            </div>
+            {% include "base-form-footer.html" %}
+        </div>
+        <div class="col-md-3">
+            <div class="panel m-0 shadow">
+                <div class="panel-container">
+                    <div class="panel-content p-1">
+                        <div class="panel-tag" style="border-left: 3px solid #ffc241; background: #ffffff;">
+                            <a href="{% url "core:profile_view" profile.pk %}" class="btn btn-lg btn-block btn-outline-danger waves-effect waves-themed" style="padding-left: 20px; padding-right: 20px;">
+                                <i class="fal fa-times mr-2"></i>Cancel
+                            </a>
+                            <button type="button" id="btn_submit" class="btn btn-lg btn-block btn-outline-success waves-effect waves-themed" style="padding-left: 20px; padding-right: 20px;">
+                                <i class="fal fa-check mr-2"></i>Submit
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr>
+        </div>
+    </div>
+{% endblock base_content %}
+
+{% block scripts %}
+    {% include "base-datepicker.html" %}
+    {% include "base-form-script.html" with action="edit" object=profile object_type="Personnel" %}
+{% endblock scripts %}

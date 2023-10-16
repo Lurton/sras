@@ -1,0 +1,56 @@
+<script type="text/javascript">
+    $(document).ready(function() {
+        {% if action == "add" or action == "edit" %}
+            $("#base_form").keydown(function(event) {
+                if (
+                    (event.keyCode === 13)
+                    && ($(event.target).attr("class").includes("select2") === false)
+                    && ($(event.target)[0] !== $("textarea")[0])
+                ) {
+                    $("#btn_submit, .btn_submit").trigger("click");
+                    return false;
+                }
+            });
+            $("#btn_submit, .btn_submit").click(function(event) {
+                event.preventDefault();
+                bootbox.confirm({
+                    "size": "extra-large",
+                    "centerVertical": true,
+                    "className": "modal-alert",
+                    "title": "Are you sure?",
+                    "message": "You are about to {% if action == "add" %}add a{% else %}edit the{% endif %} {{ object_type }}.",
+                    "buttons": {
+                        "cancel": {
+                            "className": "btn-outline-danger",
+                            "label": '<i class="fal fa-times mr-2"></i>No'
+                        },
+                        "confirm": {
+                            "className": "btn-outline-success",
+                            "label": '<i class="fal fa-check mr-2"></i>Yes'
+                        }
+                    },
+                    "callback": function(result) {
+                        if (result) {
+                            bootbox.dialog({
+                                "size": "extra-large",
+                                "centerVertical": true,
+                                "className": "modal-alert",
+                                "title": "{% if action == "add" %}Adding{% else %}Editing{% endif %} the {{ object_type }}...",
+                                "message": '<p><div class="spinner-border" role="status"></div></p>'
+                            });
+                            $("#base_form").submit();
+                        }
+                    }
+                });
+            });
+        {% endif %}
+        $(".select2").select2({
+            "allowClear": true,
+            "language": {
+                "noResults": function() {
+                    return "No results found.";
+                }
+            }
+        });
+    });
+</script>

@@ -12,8 +12,8 @@ from django.utils.formats import date_format
 from django.utils.http import url_has_allowed_host_and_scheme, urlencode, urlsafe_base64_encode
 
 from api_google.views import verify_recaptcha
-from core.forms import LoginForm, RegistrationForm, SearchForm, PasswordResetForm, CorePasswordResetSetForm
-from core.models import BaseUserAuthentication, USER_MODEL
+from core.forms import LoginForm, RegistrationForm, SearchForm, PasswordResetForm, CorePasswordResetSetForm, ProfileForm
+from core.models import BaseUserAuthentication, USER_MODEL, BasePhysicalAddress
 from core.utilities import get_client_ip, get_date_time_now, send_email
 from administration.apps import AdministrationConfig
 from administration.models import Personnel
@@ -381,9 +381,51 @@ def password_reset_complete(request):
 
 def profile_view(request, profile_pk, template_name="core/person-view.html"):
     person = get_object_or_404(Personnel, pk=profile_pk)
+    address = None
+    try:
+        address = BasePhysicalAddress.objects.get(profile=person)
+    except:
+        pass
 
     template_context = {
-        "person": person
+        "person": person,
+        "address": address
+    }
+
+    return TemplateResponse(request, template_name, template_context)
+
+
+@login_required
+def profile_edit(request, profile_pk, template_name="core/profile-edit.html"):
+    """
+    This is the profile edit page that returns a template that displays a form
+    for the editing of a particular person's information on the system.
+    """
+    profile = get_object_or_404(Personnel, pk=profile_pk)
+
+    if request.method == "POST":
+        form = ProfileForm(request.POST, instance=profile)
+
+        if form.is_valid():
+            form.save()
+
+            messages.success(
+                request, "The profile has been edited successfully."
+            )
+
+            return redirect(profile)
+
+        else:
+            messages.error(
+                request, "There was an error while trying to edit the profile."
+            )
+
+    else:
+        form = ProfileForm(instance=profile)
+
+    template_context = {
+        "profile": profile,
+        "form": form
     }
 
     return TemplateResponse(request, template_name, template_context)
