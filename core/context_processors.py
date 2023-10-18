@@ -12,7 +12,11 @@ def template_variables(request):
     """
     request_path = request.get_full_path()
     date_display = get_date_time_now(formatting="%A, %e %B, %Y")
-    person = Personnel.objects.get(student_email=request.user.username)
+    person = None
+    try:
+        person = Personnel.objects.get(student_email=request.user.username)
+    except:
+        pass
 
     variables = {
         "site_title": settings.SITE_TITLE,

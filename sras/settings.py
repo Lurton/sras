@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 
+from sras import CONFIG
+
 DOMAIN_NAME = "cput.ac.za"
 HasHish = "#19GHOSTprinceLURTON95#"
 
@@ -65,18 +67,34 @@ MIDDLEWARE = [
 ]
 
 # ============================================================= [EMAIL SETTINGS]
+# ============================================================= [EMAIL SETTINGS]
 EMAIL_ENABLED = True
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
+EMAIL_AWS_REGION = CONFIG.get("aws_region")
+EMAIL_AWS_CHARSET = "UTF-8"
+EMAIL_AWS_IAM_USER = CONFIG.get("setup").get("aws").get("ses").get("access_key_id")
+EMAIL_AWS_SES_ARN = CONFIG.get("setup").get("aws").get("ses").get("identity")
+EMAIL_HOST = CONFIG.get("setup").get("aws").get("ses").get("smtp_host")
+EMAIL_HOST_USER = EMAIL_AWS_IAM_USER
+EMAIL_HOST_PASSWORD = CONFIG.get("setup").get("aws").get("ses").get("access_key_secret")
+SERVER_EMAIL = "Student Residence <administrator@takealotgroup.team>"
+DEFAULT_FROM_EMAIL = "Student Residence <administrator@takealotgroup.team>"
+
+
+
+# EMAIL_ENABLED = True
+# EMAIL_USE_TLS = True
+# EMAIL_PORT = 587
 # # EMAIL_AWS_REGION = CONFIG.get("aws_region")
 # EMAIL_AWS_CHARSET = "UTF-8"
 # # EMAIL_AWS_IAM_USER = CONFIG.get("setup").get("aws").get("ses").get("access_key_id")
 # # EMAIL_AWS_SES_ARN = CONFIG.get("setup").get("aws").get("ses").get("identity")
 # # EMAIL_HOST = CONFIG.get("setup").get("aws").get("ses").get("smtp_host")
-EMAIL_HOST_USER = "argusshinze@outlook.com"
-EMAIL_HOST_PASSWORD = HasHish
-SERVER_EMAIL = f"CPUT Residence <no-reply@{DOMAIN_NAME}>"
-DEFAULT_FROM_EMAIL = f"CPUT Residence <no-reply@{DOMAIN_NAME}>"
+# EMAIL_HOST_USER = "argusshinze@outlook.com"
+# EMAIL_HOST_PASSWORD = HasHish
+# SERVER_EMAIL = f"CPUT Residence <no-reply@{DOMAIN_NAME}>"
+# DEFAULT_FROM_EMAIL = f"CPUT Residence <no-reply@{DOMAIN_NAME}>"
 
 # EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 # ============================================================= [OTHER SETTINGS]

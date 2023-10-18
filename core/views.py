@@ -2,6 +2,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, get_user_model
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.hashers import make_password
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.views import PasswordResetConfirmView
 from django.shortcuts import redirect, get_object_or_404
@@ -31,7 +32,7 @@ def index(request, template_name="core/index.html"):
 
 
 @login_required
-def dashboard(request, template_name="core/dashboard.html"):
+def dashboard(request, template_name="email/password-reset-confirmation.html"):
     """
     This is the dashboard page of the system after a successful authentication
     attempt.
@@ -76,36 +77,10 @@ def dashboard(request, template_name="core/dashboard.html"):
                 extra_tags="Search Parameters"
             )
 
-    dashboard_values = {
-        # "companies": {
-        #     "company_count": company_queryset.count(),
-        #     "document_count": company_document_queryset.count()
-        # },
-        # "people": {
-        #     "people_count": people_queryset.count(),
-        #     "document_count": people_document_queryset.count()
-        # },
-        # "assets": {
-        #     "asset_count": asset_queryset.count(),
-        #     "document_count": asset_document_queryset.count()
-        # },
-        # "bank_account_count": bank_account_queryset.count(),
-        # "customers": {
-        #     "customer_count": customer_queryset.count(),
-        #     "contact_count": contact_queryset.count(),
-        #     "location_count": location_queryset.count()
-        # }
-    }
-
-    print(request.user)
-    print(request.user)
-    print(request.user.first_name)
     user = Personnel.objects.get(student_email=request.user)
-    print(user)
 
     template_context = {
         "form": form,
-        "dashboard_values": dashboard_values,
         "name": user.get_full_name
     }
 
@@ -137,6 +112,7 @@ def register(request, template_name="core/register.html"):
                 password = form.cleaned_data["password"]
 
                 user_model = get_user_model()
+                password = make_password(password)
                 user_account = user_model.objects.create(
                     first_name=first_name,
                     last_name=last_name,
@@ -150,27 +126,10 @@ def register(request, template_name="core/register.html"):
                 new_student.personnel_type = Personnel.Type.STUDENT
                 new_student.save()
 
-                # Send a welcome email message to the user.
-                subject = f"{settings.SITE_TITLE} | Account Information and Profile Sign-Up"
-                template = "email/signup-confirmation.html"
-                email_data = {
-                    "subject": f"{subject}",
-                    "full_name": f"{str(first_name).title()} {str(last_name).title()}",
-                    "password": f"{password}"
-                }
-                recipient = email_address
-
-                # send_email(recipient, subject, template, email_data)
-
                 messages.success(
                     request,
                     "Your account and profile information have been created"
                     " successfully!"
-                )
-                messages.warning(
-                    request,
-                    "The authentication details for your login have been emailed"
-                    " to you!"
                 )
 
                 return redirect("core:index")

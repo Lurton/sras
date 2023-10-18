@@ -9,10 +9,12 @@ django-widget-tweaks = "*"
 django-hijack = "*"
 django-countries = "*"
 djangorestframework = "*"
+aws-secretsmanager-caching = "*"
 mysqlclient = "*"
 django-extensions = "*"
 pytz = "*"
 requests = "*"
+boto3 = "*"
 
 [dev-packages]
 

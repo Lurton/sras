@@ -66,7 +66,7 @@ def transfer(request, template_name="administration/transfer.html"):
         "room": first_campus_res_room
     }
 
-    application = get_object_or_404(Application, student__student_email=request.user, status=Application.Status.APPROVED)
+    application = get_object_or_404(Application, student__student_email=request.user)
 
     if request.method == "POST":
         form = TransferForm(request.POST, initial_data=initial_data, application=application)
