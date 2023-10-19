@@ -26,6 +26,7 @@ class BaseUserAuthentication(TimeStampedModel):
         validators=telephone_number_validator
     )
     student_email = models.EmailField("Student Email")
+    personal_email = models.EmailField("Personal Email")
 
     class Meta:
         ordering = ["first_name", "last_name"]

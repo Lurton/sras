@@ -87,7 +87,7 @@ class RegistrationForm(forms.ModelForm):
 
     class Meta:
         model = Personnel
-        fields = ["first_name", "last_name", "mobile_number", "student_email", "password", "password_repeat"]
+        fields = ["first_name", "last_name", "mobile_number", "student_email", "personal_email", "password", "password_repeat"]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -198,7 +198,7 @@ class SearchForm(forms.Form):
 
 class PasswordResetForm(forms.Form):
     username = forms.EmailField(
-        label="Email Address", max_length=254, required=True
+        label="Personal Email Address", max_length=254, required=True
     )
     recaptcha = forms.CharField(widget=forms.HiddenInput, required=True)
 
