@@ -32,7 +32,7 @@ def index(request, template_name="core/index.html"):
 
 
 @login_required
-def dashboard(request, template_name="email/password-reset-confirmation.html"):
+def dashboard(request, template_name="core/dashboard.html"):
     """
     This is the dashboard page of the system after a successful authentication
     attempt.

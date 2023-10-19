@@ -31,6 +31,7 @@ def application(request, template_name="administration/application.html"):
             student_email = request.user
             student = get_object_or_404(Personnel, student_email=student_email)
             application.student = student
+            application.status = Application.Status.IN_REVIEW
             application.date = date
             application.room = form.cleaned_data["room"]
             application.save()

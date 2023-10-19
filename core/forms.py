@@ -108,6 +108,10 @@ class RegistrationForm(forms.ModelForm):
             "prepended": '<i class="fal fa-at"></i>'
         }
 
+        self.fields["personal_email"].extras = {
+            "prepended": '<i class="fal fa-at"></i>'
+        }
+
         self.fields["password_repeat"].label = "Repeat Password"
 
     def clean(self):
