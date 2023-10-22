@@ -1,0 +1,90 @@
+{% extends "base_list.html" %}
+
+{% load humanize %}
+
+{% block breadcrumbs %}
+    <li class="breadcrumb-item active">Applications</li>
+{% endblock breadcrumbs %}
+
+{% block sub_header_block %}
+    <div class="subheader-block d-lg-flex align-items-center border-faded border-top-0 border-bottom-0 pl-3 pr-3">
+        <div class="d-inline-flex flex-column justify-content-center">
+{#            <a href="{% url "structure:campus_add" %}" class="btn btn-sm btn-outline-secondary waves-effect waves-themed">#}
+{#                <i class="fal fa-business-time mr-2"></i>Add a Campus#}
+{#            </a>#}
+        </div>
+    </div>
+{% endblock sub_header_block %}
+
+{% block sub_heading %}Campuses{% endblock sub_heading %}
+
+{% block table_heading %}Campuses{% endblock table_heading %}
+
+{% block table_data %}
+    "{% url "administration:applications_list" %}?json=true"
+{% endblock table_data %}
+
+{% block table_ordering %}[0, "asc"]{% endblock table_ordering %}
+
+{% block table_options %}
+    "columnDefs": [
+        {
+            "targets": 0,
+            "title": "Applicant Name",
+            "name": "name",
+            "data": "name",
+            "searchable": true
+        },
+        {
+            "targets": 1,
+            "title": "Campus",
+            "name": "location",
+            "data": "location",
+            "className": "dataTables_right",
+            "searchable": true,
+            "orderable": true
+        },
+        {
+            "targets": 2,
+            "title": "Residence",
+            "name": "address",
+            "data": "address",
+            "className": "dataTables_right",
+            "searchable": true,
+            "orderable": true
+        },
+        {
+            "targets": 3,
+            "title": "Room",
+            "name": "email_address",
+            "data": "email_address",
+            "className": "dataTables_right",
+            "searchable": true,
+            "orderable": true
+        },
+        {
+            "targets": 4,
+            "title": "Date",
+            "name": "email_address",
+            "data": "email_address",
+            "className": "dataTables_right",
+            "searchable": true,
+            "orderable": true
+        },
+        {
+            "targets": 5,
+            "title": "Actions",
+            "orderable": false,
+            "data": "absolute_url",
+            "className": "dataTables_nowrap dataTables_center",
+            "render": function (data) {
+                let view_button = '<a href="' + data + '" class="btn btn-sm btn-icon btn-outline-primary mr-2"><i class="fal fa-clipboard"></i></a>';
+{#                {% if requesting_user.can_view_human_resources or requesting_user.can_view_all %}#}
+                let edit_button = '<a href="' + data + 'edit/" class="btn btn-sm btn-icon btn-outline-dark"><i class="fal fa-edit"></i></a>';
+                return view_button + edit_button
+{#                {% endif %}#}
+                return view_button
+            }
+        }
+    ]
+{% endblock table_options %}

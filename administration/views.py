@@ -6,6 +6,7 @@ from django.utils import timezone
 
 from administration.forms import ApplicationForm, TransferForm
 from administration.models import Application
+from administration.serializers import get_applications_serialized_data
 from structure.models import Campus, Residence, Room, Personnel
 
 
@@ -31,7 +32,7 @@ def application(request, template_name="administration/application.html"):
             student_email = request.user
             student = get_object_or_404(Personnel, student_email=student_email)
             application.student = student
-            application.status = Application.Status.IN_REVIEW
+            application.status = Application.Status.SUBMITTED
             application.date = date
             application.room = form.cleaned_data["room"]
             application.save()
@@ -105,7 +106,7 @@ def transfer(request, template_name="administration/transfer.html"):
 
 # Create your views here.
 def terminate(request):
-    application = get_object_or_404(Application, student__student_email=request.user)
+    application = get_object_or_404(Application, student__student_email=request.user, status=Application.Status.APPROVED)
     application.status = Application.Status.TERMINATED
     application.save()
 
@@ -113,3 +114,19 @@ def terminate(request):
         request,
         "Your residency has been terminated successfully"
     )
+
+
+# Create your views here.
+def applications_list(request, template_name="structure/applications-list.html"):
+    """
+    This function returns a list of all Applications loaded into the system.
+    """
+    json_ = request.GET.get("json", None)
+    search_value = request.GET.get("search[value]", None)
+
+    if json_:
+        return get_applications_serialized_data(
+            request, search_value=search_value
+        )
+
+    return TemplateResponse(request, template_name)

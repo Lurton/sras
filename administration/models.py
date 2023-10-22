@@ -43,10 +43,9 @@ class Personnel(BaseUserAuthentication):
 class Application(models.Model):
     class Status(models.IntegerChoices):
         SUBMITTED = 1, "Submitted"
-        IN_REVIEW = 2, "In Review"
-        APPROVED = 3, "Approved"
-        REJECTED = 4, "Rejected"
-        TERMINATED = 5, "Terminated"
+        APPROVED = 2, "Approved"
+        REJECTED = 3, "Rejected"
+        TERMINATED = 4, "Terminated"
 
     student = models.ForeignKey(
         Personnel, verbose_name="Student", on_delete=models.CASCADE

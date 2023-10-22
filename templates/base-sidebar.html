@@ -37,6 +37,12 @@
 					<span class="nav-link-text">Profile</span>
 				</a>
 			</li>
+			<li{% if application == "Profile" %} class="active"{% endif %}>
+				<a href="{% url "core:profile_view" person.pk %}" data-filter-tags="dashboard" class="waves-effect waves-themed">
+					<i class="fal fa-th-large"></i>
+					<span class="nav-link-text">Applications</span>
+				</a>
+			</li>
 			<li{% if application == "Dashboard" %} class="active"{% endif %}>
 				<a href="{% url "core:dashboard" %}" data-filter-tags="dashboard" class="waves-effect waves-themed">
 					<i class="fal fa-th-large"></i>
