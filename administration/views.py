@@ -117,7 +117,7 @@ def terminate(request):
 
 
 # Create your views here.
-def applications_list(request, template_name="structure/applications-list.html"):
+def applications_list(request, template_name="administration/applications-list.html"):
     """
     This function returns a list of all Applications loaded into the system.
     """
@@ -129,4 +129,9 @@ def applications_list(request, template_name="structure/applications-list.html")
             request, search_value=search_value
         )
 
-    return TemplateResponse(request, template_name)
+    return TemplateResponse(request, template_name="administration/applications-view.html")
+
+
+def application_view(request, application_pk, template=""):
+    pass
+

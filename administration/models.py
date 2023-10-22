@@ -63,6 +63,9 @@ class Application(models.Model):
     def __str__(self):
         return f"{self.student} - {self.room}"
 
+    def get_absolute_url(self):
+        return reverse("administration:application_view", args=[self.pk])
+
 
 class Transfer(models.Model):
     student = models.ForeignKey(
