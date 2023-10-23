@@ -8,20 +8,12 @@
 
 {% block breadcrumbs %}
     <li class="breadcrumb-item">
-        <a href="#">Person View</a>
+        <a href="#">Application View</a>
     </li>
     <li class="breadcrumb-item active">{{ person }}</li>
 {% endblock breadcrumbs %}
 
-{% block sub_heading %}People | {{ person }}{% endblock sub_heading %}
-
-{% block sub_header_block %}
-    <div class="subheader-block d-lg-flex align-items-center border-faded border-right-0 border-top-0 border-bottom-0 ml-3 pl-3">
-        <a href="{% url "core:profile_edit" person.pk %}" class="btn btn-outline-danger waves-effect waves-themed">
-            <i class="fal fa-user mr-2"></i>Edit Profile
-        </a>
-    </div>
-{% endblock sub_header_block %}
+{% block sub_heading %}People | {{ application.student }}{% endblock sub_heading %}
 
 {% block base_content %}
     <div class="row">
@@ -43,8 +35,8 @@
                         <a href="#" class="btn btn-panel hover- effect-dot js-panel-fullscreen waves-effect waves-themed" data-action="panel-fullscreen" data-toggle="tooltip" data-offset="0,10" data-original-title="Fullscreen"></a>
                     </div>
                 </div>
-                <div class="panel-container show">
-                    <div class="panel-content">
+                <div class="row">
+                    <div class="col-9">
                         <div class="row">
                             <div class="col-4">
                                 <div class="text-center p-2 pt-4">
@@ -134,6 +126,56 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="card mb-4">
+                            <div class="card-body shadow-hover-5">
+                                <a href="{% url "core:dashboard" %}" class="d-flex flex-row align-items-center">
+                                    <div class="icon-stack display-4 flex-shrink-0">
+                                        <i class="fal fa-circle icon-stack-3x color-danger-600"></i>
+                                        <i class="fal fa-times icon-stack-1x color-danger-600"></i>
+                                    </div>
+                                    <div class="ml-3">
+                                        <strong>Decline</strong>
+                                        <span class="d-lg-none d-xl-block">
+                                            Decline the application.
+                                        </span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="card mb-4">
+                            <div class="card-body shadow-hover-5">
+                                <a type="submit" href="#" class="d-flex flex-row align-items-center btn_submit">
+                                    <div class="icon-stack display-4 flex-shrink-0">
+                                        <i class="fal fa-circle icon-stack-3x color-info-600"></i>
+                                        <i class="fal fa-check icon-stack-1x color-info-600"></i>
+                                    </div>
+                                    <div class="ml-3">
+                                        <strong>Approve</strong>
+                                        <span class="d-lg-none d-xl-block">
+                                            Approve the application.
+                                        </span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="card mb-4">
+                            <div class="card-body shadow-hover-5">
+                                <a href="{% url "core:dashboard" %}" class="d-flex flex-row align-items-center">
+                                    <div class="icon-stack display-4 flex-shrink-0">
+                                        <i class="fal fa-circle icon-stack-3x color-danger-600"></i>
+                                        <i class="fal fa-times icon-stack-1x color-danger-600"></i>
+                                    </div>
+                                    <div class="ml-3">
+                                        <strong>Back</strong>
+                                        <span class="d-lg-none d-xl-block">
+                                            Go back.
+                                        </span>
+                                    </div>
+                                </a>
                             </div>
                         </div>
                     </div>

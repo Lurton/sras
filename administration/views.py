@@ -1,12 +1,18 @@
+from django.conf import settings
 from django.contrib import messages
+from django.contrib.auth.tokens import default_token_generator
 from django.shortcuts import get_object_or_404, redirect
 from django.template.response import TemplateResponse
 from django.urls import reverse
 from django.utils import timezone
+from django.utils.encoding import force_bytes
+from django.utils.formats import date_format
+from django.utils.http import urlsafe_base64_encode
 
 from administration.forms import ApplicationForm, TransferForm
 from administration.models import Application
 from administration.serializers import get_applications_serialized_data
+from core.utilities import get_date_time_now, send_email
 from structure.models import Campus, Residence, Room, Personnel
 
 
@@ -138,4 +144,43 @@ def application_view(request, application_pk, template_name="administration/appl
     template_context = {"application": application}
 
     return TemplateResponse(request, template_name, template_context)
+
+
+def application_approve(request, application_pk):
+    application = Application.objects.get(pk=application_pk)
+    application.status = Application.Status.APPROVED
+    application.save()
+
+    # Send an e-mail message to the user account about the
+    # successful application.
+    now = get_date_time_now()
+    timestamp = date_format(now, "DATETIME_FORMAT", use_l10n=False)
+    template = "email/password-reset-confirmation.html"
+    subject = f"{settings.SITE_TITLE} - Application Approved"
+    email_data = {
+        "subject": subject,
+        "full_name": f"{application.student.first_name.title()}",
+        "timestamp": f"{timestamp}",
+        "uid": urlsafe_base64_encode(force_bytes(application.student.pk)),
+        "token": default_token_generator.make_token(application.student)
+    }
+    recipient = application.student.personal_email
+
+    # Sends the login confirmation email to the person.
+    send_email(recipient, subject, template, email_data)
+
+    messages.success(
+        request,
+        "The appplication has been approved"
+    )
+
+    redirect(reverse("administration:applications_list"))
+
+
+def application_decline(request, application_pk):
+    application = Application.objects.get(pk=application_pk)
+    application.status = Application.Status.REJECTED
+    application.save()
+
+    redirect(reverse("administration:applications_list"))
 
