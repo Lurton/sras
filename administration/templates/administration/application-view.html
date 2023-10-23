@@ -17,16 +17,7 @@
 
 {% block base_content %}
     <div class="row">
-        <div
-            {% if not person.is_terminated and not person.is_non_transfer_termination_resolved %}
-                {% if requesting_user.can_view_human_resources or requesting_user.can_view_all %}
-                    class="col-lg-9"
-                {% else %}
-                    class="col-lg-12"
-                {% endif %}
-            {% else %}
-                class="col-lg-12"
-            {% endif %}>
+        <div class="col-12">
             <div class="panel">
                 <div class="panel-hdr bg-faded">
                     <h2>{{ person }}</h2>
@@ -132,7 +123,7 @@
                     <div class="col-lg-3">
                         <div class="card mb-4">
                             <div class="card-body shadow-hover-5">
-                                <a href="{% url "core:dashboard" %}" class="d-flex flex-row align-items-center">
+                                <a href="{% url "administration:application_decline" application.pk %}" class="d-flex flex-row align-items-center">
                                     <div class="icon-stack display-4 flex-shrink-0">
                                         <i class="fal fa-circle icon-stack-3x color-danger-600"></i>
                                         <i class="fal fa-times icon-stack-1x color-danger-600"></i>
@@ -148,7 +139,7 @@
                         </div>
                         <div class="card mb-4">
                             <div class="card-body shadow-hover-5">
-                                <a type="submit" href="#" class="d-flex flex-row align-items-center btn_submit">
+                                <a href="{% url "administration:application_approve" application.pk %}" class="d-flex flex-row align-items-center">
                                     <div class="icon-stack display-4 flex-shrink-0">
                                         <i class="fal fa-circle icon-stack-3x color-info-600"></i>
                                         <i class="fal fa-check icon-stack-1x color-info-600"></i>
@@ -164,7 +155,7 @@
                         </div>
                         <div class="card mb-4">
                             <div class="card-body shadow-hover-5">
-                                <a href="{% url "core:dashboard" %}" class="d-flex flex-row align-items-center">
+                                <a href="{% url "administration:applications_list" %}" class="d-flex flex-row align-items-center">
                                     <div class="icon-stack display-4 flex-shrink-0">
                                         <i class="fal fa-circle icon-stack-3x color-danger-600"></i>
                                         <i class="fal fa-times icon-stack-1x color-danger-600"></i>

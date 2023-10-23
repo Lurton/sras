@@ -43,12 +43,12 @@ def application(request, template_name="administration/application.html"):
             application.room = form.cleaned_data["room"]
             application.save()
 
-            redirect(reverse("core:dashboard"))
-
             messages.success(
                 request,
                 "Your application has been submitted successfully!"
             )
+
+            return redirect(reverse("core:dashboard"))
 
         else:
             messages.error(
@@ -97,7 +97,7 @@ def transfer(request, template_name="administration/transfer.html"):
                 "Your transfer request has been submitted successfully!"
             )
 
-            redirect(reverse("core:dashboard"))
+            return redirect(reverse("core:dashboard"))
 
         else:
             messages.error(
@@ -155,14 +155,13 @@ def application_approve(request, application_pk):
     # successful application.
     now = get_date_time_now()
     timestamp = date_format(now, "DATETIME_FORMAT", use_l10n=False)
-    template = "email/password-reset-confirmation.html"
+    template = "email/application-approved-confirmation.html"
     subject = f"{settings.SITE_TITLE} - Application Approved"
     email_data = {
         "subject": subject,
-        "full_name": f"{application.student.first_name.title()}",
+        "full_name": f"{application.student.user.first_name.title()}",
         "timestamp": f"{timestamp}",
-        "uid": urlsafe_base64_encode(force_bytes(application.student.pk)),
-        "token": default_token_generator.make_token(application.student)
+        "application": application
     }
     recipient = application.student.personal_email
 
@@ -171,10 +170,10 @@ def application_approve(request, application_pk):
 
     messages.success(
         request,
-        "The appplication has been approved"
+        "The application has been approved"
     )
 
-    redirect(reverse("administration:applications_list"))
+    return redirect(reverse("administration:applications_list"))
 
 
 def application_decline(request, application_pk):
@@ -182,5 +181,11 @@ def application_decline(request, application_pk):
     application.status = Application.Status.REJECTED
     application.save()
 
-    redirect(reverse("administration:applications_list"))
+    return redirect(reverse("administration:applications_list"))
+
+
+def application_resolve(request, application_pk):
+    application = Application.objects.get(pk=application_pk)
+    application.resolved = True
+    application.save()
 

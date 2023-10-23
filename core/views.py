@@ -26,8 +26,7 @@ def index(request, template_name="core/index.html"):
     """
     if request.user:
         if request.user.is_authenticated:
-            # return redirect("core:dashboard")
-            pass
+            return redirect("core:dashboard")
     return TemplateResponse(request, template_name)
 
 
