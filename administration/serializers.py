@@ -28,11 +28,11 @@ class ApplicationsListSerializer(serializers.ModelSerializer):
 
     @staticmethod
     def get_campus(obj):
-        return obj.room.residence.campus
+        return obj.room.residence.campus.name
 
     @staticmethod
     def get_residence(obj):
-        return obj.room.residence
+        return obj.room.residence.name
 
 
 def get_applications_serialized_data(

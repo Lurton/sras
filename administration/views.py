@@ -129,9 +129,13 @@ def applications_list(request, template_name="administration/applications-list.h
             request, search_value=search_value
         )
 
-    return TemplateResponse(request, template_name="administration/applications-view.html")
+    return TemplateResponse(request, template_name)
 
 
-def application_view(request, application_pk, template=""):
-    pass
+def application_view(request, application_pk, template_name="administration/application-view.html"):
+    application = Application.objects.get(pk=application_pk)
+
+    template_context = {"application": application}
+
+    return TemplateResponse(request, template_name, template_context)
 
