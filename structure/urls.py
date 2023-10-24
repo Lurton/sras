@@ -71,11 +71,11 @@ urlpatterns = [
             views.room_list,
             name="room_list"
         ),
-        # path(
-        #     "add/",
-        #     views.room_add,
-        #     name="room_add"
-        # ),
+        path(
+            "add/",
+            views.room_add,
+            name="room_add"
+        ),
         path("<int:room_pk>/", include([
             path(
                 "",

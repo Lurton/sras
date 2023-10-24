@@ -3,15 +3,15 @@
 {% load humanize %}
 
 {% block breadcrumbs %}
-    <li class="breadcrumb-item active">Campuses</li>
+    <li class="breadcrumb-item active">Rooms</li>
 {% endblock breadcrumbs %}
 
 {% block sub_header_block %}
     <div class="subheader-block d-lg-flex align-items-center border-faded border-top-0 border-bottom-0 pl-3 pr-3">
         <div class="d-inline-flex flex-column justify-content-center">
-{#            <a href="{% url "structure:campus_add" %}" class="btn btn-sm btn-outline-secondary waves-effect waves-themed">#}
-{#                <i class="fal fa-business-time mr-2"></i>Add a Campus#}
-{#            </a>#}
+            <a href="{% url "structure:room_add" %}" class="btn btn-sm btn-outline-secondary waves-effect waves-themed">
+                <i class="fal fa-business-time mr-2"></i>Add a Room
+            </a>
         </div>
     </div>
 {% endblock sub_header_block %}

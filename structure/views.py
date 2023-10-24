@@ -6,7 +6,7 @@ from django.shortcuts import get_object_or_404, redirect
 from django.template.response import TemplateResponse
 
 from structure.forms import get_residence_choices, get_room_choices, RoomEditForm, CampusEditForm, ResidenceEditForm, \
-    CampusAddForm, ResidenceAddForm
+    CampusAddForm, ResidenceAddForm, RoomAddForm
 from structure.models import Campus, Residence, Room
 from structure.serializers import (
     get_campus_serialized_data, get_residences_serialized_data, get_rooms_serialized_data
@@ -204,9 +204,9 @@ def residence_add(request, template_name="structure/residence-add.html"):
         form = ResidenceAddForm(request.POST)
 
         if form.is_valid():
-            updated_campus = form.save()
+            updated_residence = form.save()
             messages.success(request, "The residence was added successfully")
-            return redirect(updated_campus)
+            return redirect(updated_residence)
         else:
             messages.error(
                 request,
@@ -282,6 +282,34 @@ def room_edit(request, room_pk, template_name="structure/room-edit.html"):
     template_context = {
         "form": form,
         "room": room
+    }
+
+    return TemplateResponse(request, template_name, template_context)
+
+
+# Create your views here.
+def room_add(request, template_name="structure/room-add.html"):
+    """
+    This function adds a room into the system.
+    """
+    if request.method == "POST":
+        form = RoomAddForm(request.POST)
+
+        if form.is_valid():
+            updated_room = form.save()
+            messages.success(request, "The room was added successfully")
+            return redirect(updated_room)
+        else:
+            messages.error(
+                request,
+                "There was an error while trying to add the room."
+            )
+
+    else:
+        form = RoomAddForm()
+
+    template_context = {
+        "form": form
     }
 
     return TemplateResponse(request, template_name, template_context)
