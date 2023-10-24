@@ -292,8 +292,17 @@ def room_add(request, template_name="structure/room-add.html"):
     """
     This function adds a room into the system.
     """
+    first_campus = Campus.objects.all().first()
+    print(first_campus.name)
+    first_campus_res = Residence.objects.filter(campus=first_campus).first()
+    first_campus_res_room = Room.objects.filter(residence=first_campus_res).first()
+    initial_data = {
+        "campus": first_campus,
+        "residence": first_campus_res,
+        "room": first_campus_res_room
+    }
     if request.method == "POST":
-        form = RoomAddForm(request.POST)
+        form = RoomAddForm(request.POST, initial_data=initial_data)
 
         if form.is_valid():
             updated_room = form.save()
@@ -306,7 +315,7 @@ def room_add(request, template_name="structure/room-add.html"):
             )
 
     else:
-        form = RoomAddForm()
+        form = RoomAddForm(initial_data=initial_data)
 
     template_context = {
         "form": form
