@@ -23,14 +23,14 @@ urlpatterns = [
             views.campus_list,
             name="campus_list"
         ),
-        # path(
-        #     "add/",
-        #     views.campus_add,
-        #     name="campus_add"
-        # ),
+        path(
+            "add/",
+            views.campus_add,
+            name="campus_add"
+        ),
         path("<int:campus_pk>/", include([
             path(
-                "view/",
+                "",
                 views.campus_view,
                 name="campus_view"
             ),
@@ -47,9 +47,14 @@ urlpatterns = [
             views.residence_list,
             name="residence_list"
         ),
+        path(
+            "add/",
+            views.residence_add,
+            name="residence_add"
+        ),
         path("<int:residence_pk>/", include([
             path(
-                "view/",
+                "",
                 views.residence_view,
                 name="residence_view"
             ),
@@ -66,9 +71,14 @@ urlpatterns = [
             views.room_list,
             name="room_list"
         ),
+        # path(
+        #     "add/",
+        #     views.room_add,
+        #     name="room_add"
+        # ),
         path("<int:room_pk>/", include([
             path(
-                "view/",
+                "",
                 views.room_view,
                 name="room_view"
             ),

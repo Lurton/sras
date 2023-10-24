@@ -5,7 +5,8 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.template.response import TemplateResponse
 
-from structure.forms import get_residence_choices, get_room_choices, RoomEditForm, CampusEditForm, ResidenceEditForm
+from structure.forms import get_residence_choices, get_room_choices, RoomEditForm, CampusEditForm, ResidenceEditForm, \
+    CampusAddForm, ResidenceAddForm
 from structure.models import Campus, Residence, Room
 from structure.serializers import (
     get_campus_serialized_data, get_residences_serialized_data, get_rooms_serialized_data
@@ -22,6 +23,36 @@ def campus_list(request, template_name="structure/campus-list.html"):
 
     if json_:
         return get_campus_serialized_data(
+            request, search_value=search_value
+        )
+
+    return TemplateResponse(request, template_name)
+
+
+def residence_list(request, template_name="structure/residence-list.html"):
+    """
+    This function returns a list of all Residences loaded into the system.
+    """
+    json_ = request.GET.get("json", None)
+    search_value = request.GET.get("search[value]", None)
+
+    if json_:
+        return get_residences_serialized_data(
+            request, search_value=search_value
+        )
+
+    return TemplateResponse(request, template_name)
+
+
+def residence_list(request, template_name="structure/room-list.html"):
+    """
+    This function returns a list of all Rooms loaded into the system.
+    """
+    json_ = request.GET.get("json", None)
+    search_value = request.GET.get("search[value]", None)
+
+    if json_:
+        return get_rooms_serialized_data(
             request, search_value=search_value
         )
 
@@ -67,6 +98,34 @@ def campus_edit(request, campus_pk, template_name="structure/campus-edit.html"):
     template_context = {
         "form": form,
         "campus": campus
+    }
+
+    return TemplateResponse(request, template_name, template_context)
+
+
+# Create your views here.
+def campus_add(request, template_name="structure/campus-add.html"):
+    """
+    This function returns a view of all Campuses loaded into the system.
+    """
+    if request.method == "POST":
+        form = CampusAddForm(request.POST)
+
+        if form.is_valid():
+            updated_campus = form.save()
+            messages.success(request, "The campus was added successfully")
+            return redirect(updated_campus)
+        else:
+            messages.error(
+                request,
+                "There was an error while trying to add the campus."
+            )
+
+    else:
+        form = CampusAddForm()
+
+    template_context = {
+        "form": form
     }
 
     return TemplateResponse(request, template_name, template_context)
@@ -131,6 +190,34 @@ def residence_edit(request, residence_pk, template_name="structure/residence-edi
     template_context = {
         "form": form,
         "residence": residence
+    }
+
+    return TemplateResponse(request, template_name, template_context)
+
+
+# Create your views here.
+def residence_add(request, template_name="structure/residence-add.html"):
+    """
+    This function returns a view of all Campuses loaded into the system.
+    """
+    if request.method == "POST":
+        form = ResidenceAddForm(request.POST)
+
+        if form.is_valid():
+            updated_campus = form.save()
+            messages.success(request, "The residence was added successfully")
+            return redirect(updated_campus)
+        else:
+            messages.error(
+                request,
+                "There was an error while trying to add the residence."
+            )
+
+    else:
+        form = ResidenceAddForm()
+
+    template_context = {
+        "form": form
     }
 
     return TemplateResponse(request, template_name, template_context)

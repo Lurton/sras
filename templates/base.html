@@ -33,32 +33,7 @@
 						</ol>
 						<div class="subheader mb-0">
 							<h1 class="subheader-title">
-								{% if application == "Dashboard" or application == "Search" %}
-									<i class="subheader-icon fal fa-th-large"></i>
-								{% elif application == "Help" %}
-									<i class="subheader-icon fal fa-question-circle"></i>
-								{% elif application == "Companies" %}
-									<i class="subheader-icon fal fa-business-time"></i>
-								{% elif application == "People" %}
-									<i class="subheader-icon fal fa-users"></i>
-								{% elif application == "Assets" %}
-									<i class="subheader-icon fal fa-truck"></i>
-								{% elif application == "Money" %}
-									<i class="subheader-icon fal fa-money-bill-wave"></i>
-								{% elif application == "Customers" %}
-									<i class="subheader-icon fal fa-warehouse-alt"></i>
-								{% elif application == "Documents" %}
-									<i class="subheader-icon fal fa-folder-tree"></i>
-								{% elif application == "Profiles" %}
-									<i class="subheader-icon fal fa-user"></i>
-								{% elif application == "Reports" %}
-									<i class="subheader-icon fal fa-chart-bar"></i>
-								{% elif application == "Tools" %}
-									<i class="subheader-icon fal fa-tools"></i>
-                                {% elif application == "Settings" %}
-									<i class="subheader-icon fal fa-cogs"></i>
-								{% endif %}
-								{% if application == "Search" %}Dashboard{% else %}{{ application|default:"Dashboard" }}{% endif %}
+
 								<small>{% block sub_heading %}{% endblock sub_heading %}</small>
 							</h1>
 							{% block definitions_block %}

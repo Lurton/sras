@@ -120,7 +120,10 @@ def get_residences_serialized_data(
     which returns the appropriate JSON response.
     """
     # base queryset.
-    queryset = Residence.objects.filter(**search_parameters)
+    if not search_parameters:
+        queryset = Residence.objects.all()
+    else:
+        queryset = Residence.objects.filter(**search_parameters)
 
     # This is to further `filter / search` the above queryset based on the table
     # search input.
@@ -165,7 +168,10 @@ def get_rooms_serialized_data(
     which returns the appropriate JSON response.
     """
     # base queryset.
-    queryset = Room.objects.filter(**search_parameters)
+    if not search_parameters:
+        queryset = Room.objects.all()
+    else:
+        queryset = Room.objects.filter(**search_parameters)
 
     # This is to further `filter / search` the above queryset based on the table
     # search input.

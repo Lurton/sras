@@ -17,7 +17,7 @@ from core.forms import LoginForm, RegistrationForm, SearchForm, PasswordResetFor
 from core.models import BaseUserAuthentication, USER_MODEL, BasePhysicalAddress
 from core.utilities import get_client_ip, get_date_time_now, send_email
 from administration.apps import AdministrationConfig
-from administration.models import Personnel
+from administration.models import Personnel, Application
 
 
 def index(request, template_name="core/index.html"):
@@ -36,51 +36,13 @@ def dashboard(request, template_name="core/dashboard.html"):
     This is the dashboard page of the system after a successful authentication
     attempt.
     """
-    # Handle the search if present from the querystring.
-    querystring = request.GET
-    search_parameters = querystring.dict()
-
-    if request.method == "POST":
-        form = SearchForm(request.POST, initial=search_parameters)
-
-        if form.is_valid():
-            # Format the input from the form into a "GET" querystring used for
-            # the redirect.
-            querystring = urlencode(form.cleaned_data)
-
-            redirect_url = reverse("core:dashboard") + f"?{querystring}"
-
-            return redirect(redirect_url)
-
-        else:
-            messages.error(
-                request, "There was an error while trying to perform the search."
-            )
-
-    else:
-        form = SearchForm(initial=search_parameters)
-
-    if search_parameters:
-        messages.info(
-            request, "You entered the following search criteria."
-        )
-        messages.info(
-            request,
-            f"{search_parameters.get('search_type').title()}"
-            f" | {search_parameters.get('search_status').title()}",
-            extra_tags="Search Type | Search Status"
-        )
-        if search_parameters.get("search_parameters"):
-            messages.info(
-                request, search_parameters.get("search_parameters"),
-                extra_tags="Search Parameters"
-            )
 
     user = Personnel.objects.get(student_email=request.user)
+    application = Application.objects.filter(student=user).exclude(status=Application.Status.TERMINATED)
 
     template_context = {
-        "form": form,
-        "name": user.get_full_name
+        "name": user.get_full_name,
+        "application": application
     }
 
     return TemplateResponse(request, template_name, template_context)

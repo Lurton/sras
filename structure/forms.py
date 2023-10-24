@@ -3,6 +3,7 @@ from itertools import chain
 from django.db.models import BLANK_CHOICE_DASH
 from django import forms
 
+from core.utilities import cleanup_string
 from structure.models import Campus, Residence, Room
 
 
@@ -66,6 +67,45 @@ def get_room_choices(residence, json_response=None):
         else:
             response.append((room.pk, room.number))
     return response
+
+
+class ResidenceAddForm(forms.ModelForm):
+    campus = forms.ChoiceField(
+        label="Campus",
+        required=True,
+        widget=forms.Select
+    )
+
+    class Meta:
+        model = Residence
+        fields = ["name", "campus"]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields["campus"].choices = get_campus_choices()
+
+        self.fields["campus"].widget.attrs.update({
+            "class": "select2",
+            "data-placeholder": "Select the campus this residence belongs to..."
+        })
+
+        self.fields["name"].label = "Residence name"
+
+    def clean(self):
+        cleaned_data = super().clean()
+
+        # This is to catch and display any individual field errors from the
+        # form during the default clean.
+        if self._errors:
+            return cleaned_data
+
+        # Ensure that fields across the system are neat and valid.
+        for field, value in cleaned_data.items():
+            if isinstance(value, str):
+                cleaned_data[field] = cleanup_string(value)
+
+        return cleaned_data
 
 
 class ResidenceEditForm(forms.ModelForm):
@@ -148,11 +188,31 @@ class CampusEditForm(forms.ModelForm):
         except KeyError:
             pass
 
-        # self.fields["residence"].choices = list(chain(
-        #     get_residence_choices()
-        # ))
-        # self.fields["number"].label = "Enter the room number"
-        # self.fields["floor"].label = "Room floor"
+    def clean(self):
+        cleaned_data = super().clean()
+
+        # This is to catch and display any individual field errors from the
+        # form during the default clean.
+        if self._errors:
+            return cleaned_data
+
+        # Ensure that fields across the system are neat and valid.
+        for field, value in cleaned_data.items():
+            if isinstance(value, str):
+                cleaned_data[field] = value.strip()
+
+        return cleaned_data
+
+
+class CampusAddForm(forms.ModelForm):
+    class Meta:
+        model = Campus
+        fields = ["name", "location", "address", "email_address", "image"]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields["name"].label = "Campus Name"
 
     def clean(self):
         cleaned_data = super().clean()

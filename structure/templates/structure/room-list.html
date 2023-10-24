@@ -9,9 +9,9 @@
 {% block sub_header_block %}
     <div class="subheader-block d-lg-flex align-items-center border-faded border-top-0 border-bottom-0 pl-3 pr-3">
         <div class="d-inline-flex flex-column justify-content-center">
-            <a href="{% url "structure:campus_add" %}" class="btn btn-sm btn-outline-secondary waves-effect waves-themed">
-                <i class="fal fa-business-time mr-2"></i>Add a Campus
-            </a>
+{#            <a href="{% url "structure:campus_add" %}" class="btn btn-sm btn-outline-secondary waves-effect waves-themed">#}
+{#                <i class="fal fa-business-time mr-2"></i>Add a Campus#}
+{#            </a>#}
         </div>
     </div>
 {% endblock sub_header_block %}
@@ -21,7 +21,7 @@
 {% block table_heading %}Campuses{% endblock table_heading %}
 
 {% block table_data %}
-    "{% url "structure:campus_list" %}?json=true"
+    "{% url "structure:room_list" %}?json=true"
 {% endblock table_data %}
 
 {% block table_ordering %}[0, "asc"]{% endblock table_ordering %}
@@ -30,40 +30,31 @@
     "columnDefs": [
         {
             "targets": 0,
-            "title": "Campus Name",
-            "name": "name",
-            "data": "name",
+            "title": "Room number",
+            "name": "number",
+            "data": "number",
             "searchable": true
         },
         {
             "targets": 1,
-            "title": "Location",
-            "name": "location",
-            "data": "location",
+            "title": "Room Floor",
+            "name": "floor",
+            "data": "floor",
             "className": "dataTables_right",
             "searchable": true,
             "orderable": true
         },
         {
             "targets": 2,
-            "title": "Address",
-            "name": "address",
-            "data": "address",
+            "title": "Residence",
+            "name": "residence",
+            "data": "residence",
             "className": "dataTables_right",
             "searchable": true,
             "orderable": true
         },
         {
             "targets": 3,
-            "title": "Email Address",
-            "name": "email_address",
-            "data": "email_address",
-            "className": "dataTables_right",
-            "searchable": true,
-            "orderable": true
-        },
-        {
-            "targets": 4,
             "title": "Actions",
             "orderable": false,
             "data": "absolute_url",

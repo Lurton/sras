@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+
+{% block breadcrumbs %}
+	<li class="breadcrumb-item">
+        <a href="{% url "structure:campus_list" %}">Campuses</a>
+    </li>
+    <li class="breadcrumb-item active">Add</li>
+{% endblock breadcrumbs %}
+
+{% block sub_heading %}Campus | Add{% endblock sub_heading %}
+
+{% block base_content %}
+    <div class="row">
+        <div class="col-lg-9">
+            <div class="panel shadow">
+                <div class="panel-hdr bg-faded">
+                    <h2>Leave Scheme Add</h2>
+                    <div class="panel-toolbar">
+                        <a href="#" class="btn btn-panel hover-effect-dot js-panel-collapse waves-effect waves-themed" data-action="panel-collapse" data-toggle="tooltip" data-offset="0,10" data-original-title="Expand / Collapse"></a>
+                        <a href="#" class="btn btn-panel hover-effect-dot js-panel-fullscreen waves-effect waves-themed" data-action="panel-fullscreen" data-toggle="tooltip" data-offset="0,10" data-original-title="Fullscreen"></a>
+                        <button class="btn btn-toolbar-master waves-effect waves-themed" data-toggle="dropdown">
+                            <i class="fal fa-ellipsis-v"></i>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-animated dropdown-menu-right">
+                            <button href="" type="submit" class="dropdown-item btn_submit">Submit</button>
+                            <div class="dropdown-divider m-0"></div>
+                            <a href="{% url "structure:campus_list" %}" class="dropdown-item">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-container collapse show">
+                    <div class="panel-content">
+                        {% include "base-form.html" with form=form %}
+                    </div>
+                    <div class="panel-content bg-faded rounded-bottom border-faded border-left-0 border-right-0 border-bottom-0 text-right">
+                        <a href="{% url "structure:campus_list" %}" class="btn btn-outline-danger waves-effect waves-themed">
+                            <i class="fal fa-times mr-2"></i>Cancel
+                        </a>
+                        <button type="button" id="btn_submit" class="btn btn-outline-info waves-effect waves-themed ml-2">
+                            <i class="fal fa-check mr-2"></i>Submit
+                        </button>
+                    </div>
+                </div>
+            </div>
+            {% include "base-form-footer.html" %}
+        </div>
+        <div class="col-lg-3">
+            <div class="card mb-4">
+                <div class="card-body shadow-hover-5">
+                    <a href="{% url "structure:campus_list" %}" class="d-flex flex-row align-items-center">
+                        <div class="icon-stack display-4 flex-shrink-0">
+                            <i class="fal fa-circle icon-stack-3x color-danger-600"></i>
+                            <i class="fal fa-times icon-stack-1x color-danger-600"></i>
+                        </div>
+                        <div class="ml-3">
+                            <strong>Cancel</strong>
+                            <span class="d-lg-none d-xl-block">
+                                Stop and go back to the list of Campuses.
+                            </span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="card mb-4">
+                <div class="card-body shadow-hover-5">
+                    <a type="submit" href="#" class="d-flex flex-row align-items-center btn_submit">
+                        <div class="icon-stack display-4 flex-shrink-0">
+                            <i class="fal fa-circle icon-stack-3x color-info-600"></i>
+                            <i class="fal fa-check icon-stack-1x color-info-600"></i>
+                        </div>
+                        <div class="ml-3">
+                            <strong>Submit Campus Information</strong>
+                            <span class="d-lg-none d-xl-block">
+                                Save the Campus information.
+                            </span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock base_content %}
+
+{% block scripts %}
+	<script type="text/javascript">
+	    $(document).ready(function() {
+	        $("#base_form").keydown(function(event) {
+	    		if ((event.keyCode === 13) && ($(event.target).attr("class") !== "chosen-search-input") && ($(event.target)[0] !== $("textarea")[0])) {
+	    			$("#btn_submit, .btn_submit").trigger("click");
+	                return false;
+	            }
+	        });
+	    	$("#btn_submit, .btn_submit").click(function(event) {
+	    		event.preventDefault();
+				sweetalert.fire({
+            		"icon": "question",
+                    "title": "Are you sure?",
+                    "text": "You are about to add a campus...",
+                    "showCloseButton": true
+            	}).then(
+            		result => {
+				    	if (result.value) {
+				    		sweetalert.fire({
+                                "text": "The campus is busy being added...",
+                                "icon": "info",
+                                "showConfirmButton": false,
+                                "showCancelButton": false
+                            });
+                            sweetalert.showLoading();
+				      		$("#base_form").submit();
+				      	}
+				    }
+				);
+	    	});
+	    });
+	</script>
+{% endblock scripts %}

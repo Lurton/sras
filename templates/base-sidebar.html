@@ -16,14 +16,7 @@
 		</div>
 		<div class="info-card px-3">
 			<div class="info-card-text pt-2 m-0">
-{#				<a href="{% url "settings:organization_view" request.organization.pk %}" class="text-white">#}
-{#					{{ request.organization }}#}
-{#				</a>#}
 				<br><br>
-{#				<a href="{% url "settings:profile_view" request.profile.pk %}" class="text-white">#}
-{#					{{ request.profile }}#}
-{#					{{ request.profile.email_address|lower }}#}
-{#				</a>#}
 			</div>
 {#			<img src="{% static "images/cput_sidebar.png" %}" class="cover" alt="{{ site_title }}">#}
 			<a href="javascript:void(0);" class="pull-trigger-btn" data-action="toggle" data-class="list-filter-active" data-target=".page-sidebar" data-focus="nav_filter_input">
@@ -53,6 +46,18 @@
 				<a href="{% url "structure:campus_list" %}" data-filter-tags="dashboard" class="waves-effect waves-themed">
 					<i class="fal fa-th-large"></i>
 					<span class="nav-link-text">Campuses</span>
+				</a>
+			</li>
+			<li{% if application == "Dashboard" %} class="active"{% endif %}>
+				<a href="{% url "structure:residence_list" %}" data-filter-tags="dashboard" class="waves-effect waves-themed">
+					<i class="fal fa-th-large"></i>
+					<span class="nav-link-text">Residences</span>
+				</a>
+			</li>
+			<li{% if application == "Dashboard" %} class="active"{% endif %}>
+				<a href="{% url "structure:room_list" %}" data-filter-tags="dashboard" class="waves-effect waves-themed">
+					<i class="fal fa-th-large"></i>
+					<span class="nav-link-text">Rooms</span>
 				</a>
 			</li>
 			<li class="nav-title">Tools</li>

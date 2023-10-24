@@ -2,9 +2,9 @@
 
 {% load static l10n %}
 
-{% block breadcrumbs %}<li class="breadcrumb-item active">{{ profile }}</li>{% endblock breadcrumbs %}
+{% block breadcrumbs %}<li class="breadcrumb-item active">{{ name }}</li>{% endblock breadcrumbs %}
 
-{% block sub_heading %}{{ profile }}{% endblock sub_heading %}
+{% block sub_heading %}{{ name }}{% endblock sub_heading %}
 
 {% block base_content %}
     <div class="row">
@@ -30,38 +30,42 @@
                 </div>
                 <div class="panel-container">
                     <div class="panel-content mb-g">
-                        <div class="row">
-                            <div class="col-md-9">
-                                <div class="my-2">
-                                    <strong>Application</strong><br>
-                                    <div class="col-md-3 mt-3">
-                                            <a href="{% url "administration:application" %}" class="btn btn-block btn-outline-danger waves-effect waves-themed"><i class="fal fa-play mr-2"></i>Apply</a>
+                        {% if not application %}
+                            <div class="row">
+                                <div class="col-md-9">
+                                    <div class="my-2">
+                                        <strong>Application</strong><br>
+                                        <div class="col-md-3 mt-3">
+                                                <a href="{% url "administration:application" %}" class="btn btn-block btn-outline-danger waves-effect waves-themed"><i class="fal fa-play mr-2"></i>Apply</a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-md-9">
-                                <div class="my-2">
-                                    <strong>Transfer to different residence</strong><br>
-                                    <div class="col-md-3 mt-3">
-                                            <a href="{% url "administration:transfer" %}" class="btn btn-block btn-outline-info waves-effect waves-themed"><i class="fal fa-play mr-2"></i>Transfer</a>
+                            <hr>
+                        {% endif %}
+                        {% if application %}
+                            <div class="row">
+                                <div class="col-md-9">
+                                    <div class="my-2">
+                                        <strong>Transfer to different residence</strong><br>
+                                        <div class="col-md-3 mt-3">
+                                                <a href="{% url "administration:transfer" %}" class="btn btn-block btn-outline-info waves-effect waves-themed"><i class="fal fa-play mr-2"></i>Transfer</a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-md-9">
-                                <div class="my-2">
-                                    <strong>Cancel Residence Application</strong><br>
-                                    <div class="col-md-3 mt-3">
-                                        <a href="{% url "administration:terminate" %}" class="btn btn-block btn-outline-success waves-effect waves-themed"><i class="fal fa-check mr-2"></i>Cancel</a>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-9">
+                                    <div class="my-2">
+                                        <strong>Cancel Residence Application</strong><br>
+                                        <div class="col-md-3 mt-3">
+                                            <a href="{% url "administration:terminate" %}" class="btn btn-block btn-outline-success waves-effect waves-themed"><i class="fal fa-check mr-2"></i>Cancel</a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>

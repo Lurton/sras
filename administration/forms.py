@@ -193,7 +193,7 @@ class TransferForm(forms.ModelForm):
         if self._errors:
             print(self.data["campus"])
             print(self.data["residence"])
-            print(self.data["room"])
+            print(self.data["to_room"])
             print(self._errors)
             return cleaned_data
 

@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.tokens import default_token_generator
+from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect
 from django.template.response import TemplateResponse
 from django.urls import reverse
@@ -10,7 +11,7 @@ from django.utils.formats import date_format
 from django.utils.http import urlsafe_base64_encode
 
 from administration.forms import ApplicationForm, TransferForm
-from administration.models import Application
+from administration.models import Application, Termination
 from administration.serializers import get_applications_serialized_data
 from core.utilities import get_date_time_now, send_email
 from structure.models import Campus, Residence, Room, Personnel
@@ -112,14 +113,19 @@ def transfer(request, template_name="administration/transfer.html"):
 
 # Create your views here.
 def terminate(request):
-    application = get_object_or_404(Application, student__student_email=request.user, status=Application.Status.APPROVED)
+    application = Application.objects.get(
+        Q(status=Application.Status.APPROVED) | Q(status=Application.Status.SUBMITTED), student__student_email=request.user
+    )
     application.status = Application.Status.TERMINATED
     application.save()
+    Termination.objects.create(application=application, date=timezone.now().date())
 
     messages.success(
         request,
         "Your residency has been terminated successfully"
     )
+
+    return redirect(reverse("core:dashboard"))
 
 
 # Create your views here.
