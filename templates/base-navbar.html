@@ -24,20 +24,14 @@
         </button>
     </div>
     <div class="ml-auto d-flex">
-	    <div class="fw-500 fs-lg">
-		    <span class="header-icon pt-1">{{ request.organization }}&nbsp;&nbsp;|&nbsp;&nbsp;{{ application }}&nbsp;&nbsp;|</span>
-	    </div>
 	    <button type="button" class="header-icon cursor-pointer bg-white border-0" data-action="app-fullscreen" data-toggle="tooltip" data-placement="bottom" title="Full Screen">
 		    <i class="fal fa-expand"></i>
 	    </button>
-{#	    <a href="{% url "core:core_help" %}" class="header-icon cursor-pointer bg-white border-0" data-toggle="tooltip" data-placement="bottom" title="Help">#}
-{#		    <i class="fal fa-question-circle"></i>#}
-{#	    </a>#}
-{#	    <a href="{% url "settings:profile_view" request.profile.pk %}" class="header-icon cursor-pointer bg-white border-0" data-toggle="tooltip" data-placement="bottom" title="{{ request.profile }}">#}
-{#		    <i class="fal fa-user"></i>#}
-{#	    </a>#}
-{#	    <a href="{% url "core:core_logout" %}" class="header-icon cursor-pointer bg-white border-0" data-toggle="tooltip" data-placement="bottom" title="Logout" data-original-title="Logout">#}
-{#		    <i class="fal fa-sign-out-alt"></i>#}
-{#	    </a>#}
+	    <a href="{% url "core:profile_view" person.pk %}" class="header-icon cursor-pointer bg-white border-0" data-toggle="tooltip" data-placement="bottom" title="{{ request.profile }}">
+		    <i class="fal fa-user"></i>
+	    </a>
+	    <a href="{% url "core:logout" %}" class="header-icon cursor-pointer bg-white border-0" data-toggle="tooltip" data-placement="bottom" title="Logout" data-original-title="Logout">
+		    <i class="fal fa-sign-out-alt"></i>
+	    </a>
     </div>
 </header>

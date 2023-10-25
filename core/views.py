@@ -1,6 +1,6 @@
 from django.conf import settings
 from django.contrib import messages
-from django.contrib.auth import authenticate, login, get_user_model
+from django.contrib.auth import authenticate, login as login_user, get_user_model, logout as logout_user
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.tokens import default_token_generator
@@ -125,8 +125,6 @@ def login(request, template_name="core/login.html"):
     safe_redirect_url = url_has_allowed_host_and_scheme(
         redirect_url, settings.ALLOWED_HOSTS, require_https=True
     )
-    print(safe_redirect_url, "safe_redirect_url")
-
     if not safe_redirect_url:
         redirect_url = default_redirect_url
 
@@ -143,7 +141,6 @@ def login(request, template_name="core/login.html"):
             # Validate the Google reCaptcha token.
             recaptcha = form.cleaned_data["recaptcha"]
             response = verify_recaptcha(recaptcha, requesting_ip)
-            print(response)
 
             if response.get("success"):
                 # Do the typical Django authentication.
@@ -152,32 +149,7 @@ def login(request, template_name="core/login.html"):
                 user = authenticate(request, username=username, password=password)
 
                 # Login the user profile / account and redirect.
-                login(request, user)
-
-                # Security checks on the IP address as we also want to record
-                # the login attempt in the `BaseAuthentication` table.
-                # Note: session checks also occur in the signals.
-                # BaseUserAuthentication.objects.create(
-                #     user=user,
-                #     ip_address=requesting_ip
-                # )
-
-                # Send an e-mail message to the user account about the
-                # successful login.
-                timestamp = get_date_time_now()
-
-                template = "email/login-confirmation.html"
-                subject = f"{settings.SITE_TITLE} - Login Confirmation"
-                timestamp = date_format(timestamp, "DATETIME_FORMAT", use_l10n=False)
-                email_data = {
-                    "subject": subject,
-                    "full_name": f"{user.first_name.title()}",
-                    "timestamp": f"{timestamp}"
-                }
-                recipient = user.email
-
-                # Sends the login confirmation email to the person.
-                # send_email(recipient, subject, template, email_data)
+                login_user(request, user)
 
                 messages.success(
                     request,
@@ -202,6 +174,18 @@ def login(request, template_name="core/login.html"):
         form = LoginForm(initial={"next": redirect_url})
 
     return TemplateResponse(request, template_name, {"form": form})
+
+
+def logout(request):
+    """
+    Logs you out of the system completely by deleting the session cookie etc.
+    """
+    logout_user(request)
+    messages.success(
+        request,
+        f"You have successfully logged out of {settings.SITE_TITLE}."
+    )
+    return redirect("core:index")
 
 
 def password_reset(request, template_name="core/password-reset.html"):
