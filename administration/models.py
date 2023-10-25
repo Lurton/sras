@@ -15,6 +15,7 @@ class Personnel(BaseUserAuthentication):
         "Student Number",
         max_length=9,
         blank=False,
+        null=True,
         unique=True
     )
     personnel_type = models.PositiveIntegerField(choices=Type.choices)
