@@ -65,24 +65,26 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-3">
-            <div class="card mb-4">
-                <div class="card-body shadow-hover-5">
-                    <a href="{% url "structure:campus_edit" campus.pk %}" class="d-flex flex-row align-items-center">
-                        <div class="icon-stack display-4 flex-shrink-0">
-                            <i class="fal fa-circle icon-stack-3x opacity-100 color-primary-400"></i>
-                            <i class="fal fa-edit icon-stack-1x opacity-100 color-primary-500"></i>
-                        </div>
-                        <div class="ml-3">
-                            <strong>Edit Campus Information</strong>
-                            <span class="d-lg-none d-xl-block">
-                                Campus name, campus address, campus email address and campus location.
-                            </span>
-                        </div>
-                    </a>
+        {% if person.get_personnel_type_display == "Administrator" %}
+            <div class="col-lg-3">
+                <div class="card mb-4">
+                    <div class="card-body shadow-hover-5">
+                        <a href="{% url "structure:campus_edit" campus.pk %}" class="d-flex flex-row align-items-center">
+                            <div class="icon-stack display-4 flex-shrink-0">
+                                <i class="fal fa-circle icon-stack-3x opacity-100 color-primary-400"></i>
+                                <i class="fal fa-edit icon-stack-1x opacity-100 color-primary-500"></i>
+                            </div>
+                            <div class="ml-3">
+                                <strong>Edit Campus Information</strong>
+                                <span class="d-lg-none d-xl-block">
+                                    Campus name, campus address, campus email address and campus location.
+                                </span>
+                            </div>
+                        </a>
+                    </div>
                 </div>
             </div>
-        </div>
+        {% endif %}
     </div>
     <div class="row">
         <div class="col-lg-12">
@@ -173,10 +175,10 @@
                             "className": "dataTables_nowrap dataTables_center",
                             "render": function (data) {
                                 let view_button = '<a href="' + data + '" class="btn btn-sm btn-icon btn-outline-primary mr-2"><i class="fal fa-clipboard"></i></a>';
-                {#                {% if requesting_user.can_view_human_resources or requesting_user.can_view_all %}#}
-                                let edit_button = '<a href="' + data + 'edit/" class="btn btn-sm btn-icon btn-outline-dark"><i class="fal fa-edit"></i></a>';
-                                return view_button + edit_button
-                {#                {% endif %}#}
+                                {% if person.get_personnel_type_display == "Administrator" %}
+                                    let edit_button = '<a href="' + data + 'edit/" class="btn btn-sm btn-icon btn-outline-dark"><i class="fal fa-edit"></i></a>';
+                                    return view_button + edit_button
+                                {% endif %}
                                 return view_button
                             }
                         }

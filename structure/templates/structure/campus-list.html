@@ -7,13 +7,15 @@
 {% endblock breadcrumbs %}
 
 {% block sub_header_block %}
-    <div class="subheader-block d-lg-flex align-items-center border-faded border-top-0 border-bottom-0 pl-3 pr-3">
-        <div class="d-inline-flex flex-column justify-content-center">
-            <a href="{% url "structure:campus_add" %}" class="btn btn-sm btn-outline-secondary waves-effect waves-themed">
-                <i class="fal fa-business-time mr-2"></i>Add a Campus
-            </a>
+    {% if person.get_personnel_type_display == "Administrator" %}
+        <div class="subheader-block d-lg-flex align-items-center border-faded border-top-0 border-bottom-0 pl-3 pr-3">
+            <div class="d-inline-flex flex-column justify-content-center">
+                <a href="{% url "structure:campus_add" %}" class="btn btn-sm btn-outline-secondary waves-effect waves-themed">
+                    <i class="fal fa-business-time mr-2"></i>Add a Campus
+                </a>
+            </div>
         </div>
-    </div>
+    {% endif %}
 {% endblock sub_header_block %}
 
 {% block sub_heading %}Campuses{% endblock sub_heading %}
@@ -70,10 +72,10 @@
             "className": "dataTables_nowrap dataTables_center",
             "render": function (data) {
                 let view_button = '<a href="' + data + '" class="btn btn-sm btn-icon btn-outline-primary mr-2"><i class="fal fa-clipboard"></i></a>';
-{#                {% if requesting_user.can_view_human_resources or requesting_user.can_view_all %}#}
-                let edit_button = '<a href="' + data + 'edit/" class="btn btn-sm btn-icon btn-outline-dark"><i class="fal fa-edit"></i></a>';
-                return view_button + edit_button
-{#                {% endif %}#}
+                {% if person.get_personnel_type_display == "Administrator" %}
+                    let edit_button = '<a href="' + data + 'edit/" class="btn btn-sm btn-icon btn-outline-dark"><i class="fal fa-edit"></i></a>';
+                    return view_button + edit_button
+                {% endif %}
                 return view_button
             }
         }

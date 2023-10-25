@@ -7,13 +7,15 @@
 {% endblock breadcrumbs %}
 
 {% block sub_header_block %}
-    <div class="subheader-block d-lg-flex align-items-center border-faded border-top-0 border-bottom-0 pl-3 pr-3">
-        <div class="d-inline-flex flex-column justify-content-center">
-            <a href="{% url "structure:residence_add" %}" class="btn btn-sm btn-outline-secondary waves-effect waves-themed">
-                <i class="fal fa-business-time mr-2"></i>Add a Residence
-            </a>
+    {% if person.get_personnel_type_display == "Administrator" %}
+        <div class="subheader-block d-lg-flex align-items-center border-faded border-top-0 border-bottom-0 pl-3 pr-3">
+            <div class="d-inline-flex flex-column justify-content-center">
+                <a href="{% url "structure:residence_add" %}" class="btn btn-sm btn-outline-secondary waves-effect waves-themed">
+                    <i class="fal fa-business-time mr-2"></i>Add a Residence
+                </a>
+            </div>
         </div>
-    </div>
+    {% endif %}
 {% endblock sub_header_block %}
 
 {% block sub_heading %}Campuses{% endblock sub_heading %}

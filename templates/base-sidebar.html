@@ -24,30 +24,36 @@
 			</a>
 		</div>
 		<ul id="js-nav-menu" class="nav-menu">
-			<li{% if application == "Profile" %} class="active"{% endif %}>
-				<a href="{% url "core:profile_view" person.pk %}" data-filter-tags="dashboard" class="waves-effect waves-themed">
-					<i class="fal fa-th-large"></i>
-					<span class="nav-link-text">Profile</span>
-				</a>
-			</li>
+        {% if person.get_personnel_type_display == "Student" %}
+            <li{% if application == "Profile" %} class="active"{% endif %}>
+                <a href="{% url "core:profile_view" person.pk %}" data-filter-tags="dashboard" class="waves-effect waves-themed">
+                    <i class="fal fa-th-large"></i>
+                    <span class="nav-link-text">Profile</span>
+                </a>
+            </li>
+        {% endif %}
+        {% if person.get_personnel_type_display == "Administrator" %}
 			<li{% if application == "Profile" %} class="active"{% endif %}>
 				<a href="{% url "administration:applications_list" %}" data-filter-tags="dashboard" class="waves-effect waves-themed">
 					<i class="fal fa-th-large"></i>
 					<span class="nav-link-text">Applications</span>
 				</a>
 			</li>
+        {% endif %}
 			<li{% if application == "Dashboard" %} class="active"{% endif %}>
 				<a href="{% url "core:dashboard" %}" data-filter-tags="dashboard" class="waves-effect waves-themed">
 					<i class="fal fa-th-large"></i>
 					<span class="nav-link-text">Dashboard</span>
 				</a>
 			</li>
+        {% if person.get_personnel_type_display == "Student" %}
 			<li{% if application == "Dashboard" %} class="active"{% endif %}>
 				<a href="{% url "structure:campus_list" %}" data-filter-tags="dashboard" class="waves-effect waves-themed">
 					<i class="fal fa-th-large"></i>
 					<span class="nav-link-text">Campuses</span>
 				</a>
 			</li>
+        {% endif %}
 			<li{% if application == "Dashboard" %} class="active"{% endif %}>
 				<a href="{% url "structure:residence_list" %}" data-filter-tags="dashboard" class="waves-effect waves-themed">
 					<i class="fal fa-th-large"></i>
@@ -60,8 +66,6 @@
 					<span class="nav-link-text">Rooms</span>
 				</a>
 			</li>
-			<li class="nav-title">Tools</li>
-            <li class="nav-title">Settings</li>
 		</ul>
 		<div class="filter-message js-filter-message bg-success-600"></div>
 	</nav>

@@ -64,23 +64,25 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-3">
-            <div class="card mb-4">
-                <div class="card-body shadow-hover-5">
-                    <a href="{% url "structure:room_edit" room.pk %}" class="d-flex flex-row align-items-center">
-                        <div class="icon-stack display-4 flex-shrink-0">
-                            <i class="fal fa-circle icon-stack-3x opacity-100 color-primary-400"></i>
-                            <i class="fal fa-edit icon-stack-1x opacity-100 color-primary-500"></i>
-                        </div>
-                        <div class="ml-3">
-                            <strong>Edit Room Information</strong>
-                            <span class="d-lg-none d-xl-block">
-                                Room name, room address, campus email address and campus location.
-                            </span>
-                        </div>
-                    </a>
+        {% if person.get_personnel_type_display == "Administrator" %}
+            <div class="col-lg-3">
+                <div class="card mb-4">
+                    <div class="card-body shadow-hover-5">
+                        <a href="{% url "structure:room_edit" room.pk %}" class="d-flex flex-row align-items-center">
+                            <div class="icon-stack display-4 flex-shrink-0">
+                                <i class="fal fa-circle icon-stack-3x opacity-100 color-primary-400"></i>
+                                <i class="fal fa-edit icon-stack-1x opacity-100 color-primary-500"></i>
+                            </div>
+                            <div class="ml-3">
+                                <strong>Edit Room Information</strong>
+                                <span class="d-lg-none d-xl-block">
+                                    Room name, room address, campus email address and campus location.
+                                </span>
+                            </div>
+                        </a>
+                    </div>
                 </div>
             </div>
-        </div>
+        {% endif %}
     </div>
 {% endblock base_content %}
