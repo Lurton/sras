@@ -84,6 +84,16 @@
 {% block scripts %}
 	<script type="text/javascript">
 	    $(document).ready(function() {
+            $('[data-toggle-second="tooltip"]').tooltip();
+            sweetalert = Swal.mixin({
+                "reverseButtons": true,
+                "focusCancel": true,
+                "focusConfirm": false,
+                "showCancelButton": true,
+                "showCloseButton": true,
+                "allowOutsideClick": () => !Swal.isLoading(),
+                "allowEscapeKey": () => !Swal.isLoading()
+            });
             function update_residence_options(campus_pk) {
                 let campus_id = campus_pk
                 let residence = $("#id_residence");

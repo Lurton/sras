@@ -84,6 +84,16 @@
 {% block scripts %}
 	<script type="text/javascript">
 	    $(document).ready(function() {
+            $('[data-toggle-second="tooltip"]').tooltip();
+            sweetalert = Swal.mixin({
+                "reverseButtons": true,
+                "focusCancel": true,
+                "focusConfirm": false,
+                "showCancelButton": true,
+                "showCloseButton": true,
+                "allowOutsideClick": () => !Swal.isLoading(),
+                "allowEscapeKey": () => !Swal.isLoading()
+            });
 	        $("#base_form").keydown(function(event) {
 	    		if ((event.keyCode === 13) && ($(event.target).attr("class") !== "chosen-search-input") && ($(event.target)[0] !== $("textarea")[0])) {
 	    			$("#btn_submit, .btn_submit").trigger("click");

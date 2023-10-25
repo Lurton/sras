@@ -105,6 +105,8 @@ class ResidenceAddForm(forms.ModelForm):
             if isinstance(value, str):
                 cleaned_data[field] = cleanup_string(value)
 
+        self.cleaned_data["campus"] = Campus.objects.get(pk=self.cleaned_data["campus"])
+
         return cleaned_data
 
 
