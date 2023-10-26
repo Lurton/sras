@@ -195,3 +195,5 @@ def application_resolve(request, application_pk):
     application.resolved = True
     application.save()
 
+    return redirect(reverse("core:dashboard"))
+

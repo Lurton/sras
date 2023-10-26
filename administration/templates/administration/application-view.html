@@ -93,9 +93,9 @@
                                         <div class="form-group">
                                             <label class="form-label">Student Email</label>
                                             <p class="form-control-plaintext">
-                                                 {% if person.student_email %}
-                                                    <a href="mailto:{{ person.student_email }}">
-                                                        {{ person.student_email }}
+                                                 {% if application.student.student_email %}
+                                                    <a href="mailto:{{ application.student.student_email }}">
+                                                        {{ application.student.student_email }}
                                                     </a>
                                                 {% else %}
                                                     -
@@ -107,8 +107,8 @@
                                         <div class="form-group">
                                             <label class="form-label">Mobile Number</label>
                                             <p class="form-control-plaintext">
-                                                 {% if person.mobile_number %}
-                                                    <a href="tel:{{ person.mobile_number }}">{{ person.mobile_number }}</a>
+                                                 {% if application.student.mobile_number %}
+                                                    <a href="tel:{{ application.student.mobile_number }}">{{ application.student.mobile_number }}</a>
                                                 {% else %}
                                                     -
                                                 {% endif %}
