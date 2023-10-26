@@ -98,6 +98,23 @@ def transfer(request, template_name="administration/transfer.html"):
                 "Your transfer request has been submitted successfully!"
             )
 
+            # Send an e-mail message to the user account about the
+            # successful application.
+            now = get_date_time_now()
+            timestamp = date_format(now, "DATETIME_FORMAT", use_l10n=False)
+            template = "email/application-transfer-confirmation.html"
+            subject = f"{settings.SITE_TITLE} - Transfer Request"
+            email_data = {
+                "subject": subject,
+                "full_name": f"{application.student.user.first_name.title()}",
+                "timestamp": f"{timestamp}",
+                "application": application
+            }
+            recipient = application.student.personal_email
+
+            # Sends the login confirmation email to the person.
+            send_email(recipient, subject, template, email_data)
+
             return redirect(reverse("core:dashboard"))
 
         else:
@@ -186,6 +203,23 @@ def application_decline(request, application_pk):
     application = Application.objects.get(pk=application_pk)
     application.status = Application.Status.REJECTED
     application.save()
+
+    # Send an e-mail message to the user account about the
+    # successful application.
+    now = get_date_time_now()
+    timestamp = date_format(now, "DATETIME_FORMAT", use_l10n=False)
+    template = "email/application-denied-confirmation.html"
+    subject = f"{settings.SITE_TITLE} - Application Declined"
+    email_data = {
+        "subject": subject,
+        "full_name": f"{application.student.user.first_name.title()}",
+        "timestamp": f"{timestamp}",
+        "application": application
+    }
+    recipient = application.student.personal_email
+
+    # Sends the login confirmation email to the person.
+    send_email(recipient, subject, template, email_data)
 
     return redirect(reverse("administration:applications_list"))
 
