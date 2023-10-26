@@ -10,7 +10,6 @@ class Campus(models.Model):
     name = models.CharField("Campus", max_length=64, unique=True)
     location = models.CharField("Location", max_length=64)
     address = models.CharField("Address", max_length=128)
-    path = models.CharField(max_length=32, unique=True)
     email_address = models.EmailField(
         "Email Address",
         blank=True,

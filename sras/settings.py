@@ -78,8 +78,8 @@ EMAIL_AWS_SES_ARN = CONFIG.get("setup").get("aws").get("ses").get("identity")
 EMAIL_HOST = CONFIG.get("setup").get("aws").get("ses").get("smtp_host")
 EMAIL_HOST_USER = EMAIL_AWS_IAM_USER
 EMAIL_HOST_PASSWORD = CONFIG.get("setup").get("aws").get("ses").get("access_key_secret")
-SERVER_EMAIL = "Student Residence <administrator@takealotgroup.team>"
-DEFAULT_FROM_EMAIL = "Student Residence <administrator@takealotgroup.team>"
+SERVER_EMAIL = "The Student Residence <administrator@takealotgroup.team>"
+DEFAULT_FROM_EMAIL = "The Student Residence <administrator@takealotgroup.team>"
 
 
 
@@ -101,7 +101,7 @@ DEFAULT_FROM_EMAIL = "Student Residence <administrator@takealotgroup.team>"
 SITE_ID = 1
 SITE_TITLE = "Student Residence Administration System"
 SITE_VERSION = "1.0"
-SITE_DESCRIPTION = "The Cape Peninsula University of Technology Student Residence Administration System"
+SITE_DESCRIPTION = "The Student Residence Administration System"
 SITE_AUTHOR = "Argus Ndabashinze"
 
 # Authentication URL defaults.
