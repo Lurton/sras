@@ -36,6 +36,10 @@ def dashboard(request, template_name="core/dashboard.html"):
     This is the dashboard page of the system after a successful authentication
     attempt.
     """
+    person = Personnel.objects.get(student_email=request.user)
+    print(person.get_personnel_type_display())
+    if person.get_personnel_type_display() == "Administrator":
+        return redirect(reverse("administration:applications_list"))
 
     user = Personnel.objects.get(student_email=request.user)
     application = Application.objects.filter(student=user).exclude(status=Application.Status.TERMINATED)

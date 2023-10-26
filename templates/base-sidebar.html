@@ -40,20 +40,20 @@
 				</a>
 			</li>
         {% endif %}
+        {% if person.get_personnel_type_display == "Student" %}
 			<li{% if application == "Dashboard" %} class="active"{% endif %}>
 				<a href="{% url "core:dashboard" %}" data-filter-tags="dashboard" class="waves-effect waves-themed">
 					<i class="fal fa-th-large"></i>
 					<span class="nav-link-text">Dashboard</span>
 				</a>
 			</li>
-        {% if person.get_personnel_type_display == "Student" %}
+        {% endif %}
 			<li{% if application == "Dashboard" %} class="active"{% endif %}>
 				<a href="{% url "structure:campus_list" %}" data-filter-tags="dashboard" class="waves-effect waves-themed">
 					<i class="fal fa-th-large"></i>
 					<span class="nav-link-text">Campuses</span>
 				</a>
 			</li>
-        {% endif %}
 			<li{% if application == "Dashboard" %} class="active"{% endif %}>
 				<a href="{% url "structure:residence_list" %}" data-filter-tags="dashboard" class="waves-effect waves-themed">
 					<i class="fal fa-th-large"></i>

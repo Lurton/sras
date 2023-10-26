@@ -38,6 +38,7 @@ def create_residence_admin():
     )
     
 def main():
+    create_residence_admin()
     print("Done!")
 
 
