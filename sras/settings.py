@@ -15,7 +15,7 @@ from pathlib import Path
 from sras import CONFIG
 
 DOMAIN_NAME = "cput.ac.za"
-HasHish = "#19GHOSTprinceLURTON95#"
+HasHish = "anypassword"
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -167,7 +167,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'sras',
         'USER': 'sras',
-        'PASSWORD': '#19GpL95#',
+        'PASSWORD': '',
         'HOST': '127.0.0.1',
         'PORT': '3306',
         "OPTIONS": {
